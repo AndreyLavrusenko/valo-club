@@ -45,8 +45,8 @@ export const StatusItem = ({type, data}: IProps) => {
 				<img src={icon} alt=""/>
 			</div>
 			<div className="status-item--text">
-				<div className="status-item--title">{title}</div>
 				<div className="status-item--subtitle">{data}</div>
+				<div className="status-item--title">{title}</div>
 			</div>
 		</div>
 	);

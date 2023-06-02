@@ -1,15 +1,18 @@
 import React from 'react';
-import {TrainingUser} from "./page/TrainingUser";
+
 import './style/components/main.scss'
-import {CurrentStage} from "./component/CurrentStage";
+
+import {TrainingUser} from "./page/TrainingUser";
+import {Header} from "./component/Header";
+import {NavBar} from "./component/NavBar";
 
 function App() {
     return (
         <div>
+            <Header />
             <TrainingUser />
-            <main>
-                <CurrentStage />
-            </main>
+
+            {/*<NavBar />*/}
         </div>
     );
 }

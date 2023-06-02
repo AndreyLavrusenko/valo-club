@@ -1,0 +1,56 @@
+@import "../base/variable";
+
+.current-stage {
+    margin-top: 20px;
+    padding: 16px;
+
+    box-shadow: $shadow-classic;
+    border-radius: 8px;
+    background-color: $white-color;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &--stage--count {
+            display: flex;
+            align-items: center;
+        }
+
+        &--stage--title {
+            padding-right: 8px;
+
+            color: $black-color;
+
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 19px;
+        }
+
+        &--all {
+            color: $gray-color;
+
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 19px;
+        }
+    }
+
+    &__content {
+        margin-top: 16px;
+
+        &--wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        &--items {
+            margin-left: 26px;
+
+            .status-item:not(:last-child) {
+                margin-bottom: 13px;
+            }
+        }
+    }
+}

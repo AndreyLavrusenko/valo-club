@@ -1,9 +1,10 @@
 import React from 'react';
+import {TrainingUser} from "./page/TrainingUser";
 
 function App() {
     return (
-        <div className="App">
-            Hello
+        <div>
+            <TrainingUser />
         </div>
     );
 }

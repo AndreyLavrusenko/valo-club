@@ -1,0 +1,133 @@
+@import '../base/variable';
+
+.current-stage--item {
+    display: inline;
+
+    padding: 4px 8px;
+
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 15px;
+
+    color: $primary;
+    background: $primary-light;
+
+    border-radius: 6px;
+}
+
+
+//TIMER
+.base-timer {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.base-timer__svg {
+    transform: scaleX(-1);
+}
+
+.base-timer__circle {
+    fill: none;
+    stroke: none;
+}
+
+.base-timer__path-elapsed {
+    stroke-width: 7px;
+    stroke: #EDF0F4;
+}
+
+.base-timer__path-remaining {
+    stroke-width: 7px;
+    stroke-linecap: round;
+    transform: rotate(90deg);
+    transform-origin: center;
+    transition: 1s linear all;
+    fill-rule: nonzero;
+    stroke: currentColor;
+
+    stroke-dasharray: 180 283
+}
+
+.base-timer__path-remaining.green {
+    color: #43CC7B;
+}
+
+.base-timer__path-remaining.orange {
+    color: orange;
+}
+
+.base-timer__path-remaining.red {
+    color: red;
+}
+
+.base-timer__label {
+    position: absolute;
+    top: 0;
+
+    width: 150px;
+    height: 130px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 42px;
+
+    color: $black-color;
+
+    &-subtitle {
+        position: absolute;
+        top: 82px;
+        left: 36px;
+
+        width: 100px;
+
+        color: $gray-color;
+
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 19px;
+    }
+}
+
+
+// STATUS ITEM
+
+.status-item {
+    display: flex;
+    align-items: center;
+
+    &__round {
+        width: 30px;
+        height: 30px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 50%;
+    }
+
+    &--text {
+        margin-left: 12px;
+    }
+
+    &--title {
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 15px;
+
+        color: $gray-color;
+    }
+
+    &--subtitle {
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18px;
+
+        color: $black-color;
+    }
+}

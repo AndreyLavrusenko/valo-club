@@ -1,0 +1,28 @@
+@import 'variable';
+
+@mixin white-board {
+    box-shadow: $shadow-classic;
+    border-radius: 8px;
+    background-color: $white-color;
+}
+
+@mixin input {
+    padding: 10px;
+
+    border: 1px solid #DDDDDD;
+    border-radius: 6px;
+}
+
+@mixin button-orange {
+    padding: 10px 20px;
+
+    color: $white-color;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+
+    background: $primary;
+    border-radius: 6px;
+    border: none;
+}

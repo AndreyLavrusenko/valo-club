@@ -3,49 +3,63 @@ import jwtDecode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import {authAPI} from "../api/api";
 
+import '../style/layout/login.scss'
+
 type IProps = {
-	setIsTrainer: Function
+    setIsTrainer: Function
 }
 
 export const LoginTrainer = ({setIsTrainer}: IProps) => {
-	const [login, setLogin] = useState("");
-	const [error, setError] = useState("");
+    const [login, setLogin] = useState("");
+    const [error, setError] = useState("");
 
-	const navigate = useNavigate();
+    const navigate = useNavigate();
 
-	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target) {
-			setLogin(e.target.value);
-		}
-	};
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target) {
+            setLogin(e.target.value);
+        }
+    };
 
-	const trainerLogin = async (event: React.FormEvent<HTMLButtonElement>) => {
-		event.preventDefault();
+    const trainerLogin = async (event: React.FormEvent<HTMLButtonElement>) => {
+        event.preventDefault();
 
-		try {
-			const res = await authAPI.trainerAuth(login);
-			if (res.resultCode === 0) {
-				setError("");
-				if ((jwtDecode(res.token) as any).isTrainer) {
-					window.localStorage.setItem("token", res.token);
-					setIsTrainer(true)
-					navigate("/trainer");
-				}
-			} else {
-				setError(res.message);
-			}
-		} catch (err) {}
-	};
+        try {
+            const res = await authAPI.trainerAuth(login);
+            if (res.resultCode === 0) {
+                setError("");
+                if ((jwtDecode(res.token) as any).isTrainer) {
+                    window.localStorage.setItem("token", res.token);
+                    setIsTrainer(true)
+                    navigate("/");
+                }
+            } else {
+                setError(res.message);
+            }
+        } catch (err) {
+        }
+    };
 
-	return (
-		<>
-			<form>
-				<input type="number" value={login} onChange={onChange} required placeholder="Введите логин для входа"/>
-				<button onClick={trainerLogin}>Вход</button>
-				{error
-					? <p>{error}</p>
-					: null}
-			</form>
-		</>
-	);
+    return (
+        <>
+            <div className="login">
+                <h2 className="login__title">Вход для тренера</h2>
+                <form className="login__container">
+                    <input
+                        type="number"
+                        value={login}
+                        onChange={onChange}
+                        className="login__input"
+                        required
+                        placeholder="Логин для входа"
+                    />
+                    <button className="login__button" onClick={trainerLogin}>Вход</button>
+                </form>
+                {error
+                    ? <p className="error u-margin-top-l">{error}</p>
+                    : null
+                }
+            </div>
+        </>
+    );
 };

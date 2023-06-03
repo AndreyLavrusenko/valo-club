@@ -1,13 +1,12 @@
 @import '../base/variable';
+@import '../base/mixin';
 
 .next-stage {
     &__item {
         padding: 12px;
         margin-bottom: 8px;
 
-        background-color: $white-color;
-        box-shadow: $shadow-classic;
-        border-radius: 8px;
+       @include white-board;
     }
 
     &__header {
@@ -35,5 +34,11 @@
         justify-content: space-between;
 
         padding-top: 12px;
+
+        .status-item:not(:last-child) {
+            border-right: $divider-right;
+
+            padding-right: 12px;
+        }
     }
 }

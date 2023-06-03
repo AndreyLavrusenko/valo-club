@@ -4,21 +4,19 @@ import {useEffect, useState} from "react";
 
 
 type IProps = {
-	workout: Workout
+	workout: WorkoutType[],
+	activeStage: number
 }
-export const NextStage = ({workout}: IProps) => {
-	const [workoutInfo, setWorkoutInfo] = useState([]);
-
-	useEffect(() => {
-		// @ts-ignore
-		setWorkoutInfo(JSON.parse(workout.workout))
-	}, []);
+export const NextStage = ({workout, activeStage}: IProps) => {
 
 	return (
 		<>
-			{workoutInfo.map((element: WorkoutType) => (
-				<NextStageItem key={element.id} element={element} />
-			))}
+			{workout.map((element: WorkoutType) => {
+				if (element.id > activeStage)
+				return (
+					<NextStageItem key={element.id} element={element} />
+				)}
+			)}
 		</>
 	);
 };

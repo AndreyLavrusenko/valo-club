@@ -3,7 +3,7 @@ import {CurrentStageItem} from "../ui/CurrentStageItem";
 import {CONDITION_TYPE, STATUS_ITEM} from "../helpers/const";
 import {StatusItem} from "../ui/StatusItem";
 import {WorkoutType} from "../types/workout";
-import {convertFromSecondToMinutes, declOfNum} from "../helpers/getDate";
+import {convertFromMsToMinutes, declOfNum} from "../helpers/getDate";
 
 
 type IProps = {
@@ -15,7 +15,7 @@ export const NextStageItem = ({element}: IProps) => {
 	// @ts-ignore
 	const condition = CONDITION_TYPE[element.condition]
 
-	const minutes = convertFromSecondToMinutes(element.time)
+	const minutes = convertFromMsToMinutes(element.time)
 	const minutesWord = declOfNum(minutes, ['минута', 'минуты', 'минут'])
 
 	return (

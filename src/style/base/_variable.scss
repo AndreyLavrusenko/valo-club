@@ -3,6 +3,7 @@ $white-color: #FFF;
 $black-color: rgba(0, 0, 0, 0.8);
 $gray-color: #AEAEB1;
 $gray-light-color: #DDDDDD;
+$divider-color: #F0F0F0;
 
 $background-color: #F5F5FB;
 
@@ -18,8 +19,15 @@ $blue-color: #1CC3E6;
 $purple-light-color: #EBE8FB;
 $purple-color: #6E61DA;
 
+$green-light-color: #EAF9F0;
+$green-color: #43CC7B;
+
 
 //SHADOW
-
 $shadow-classic: 0px 8px 18px rgba(0, 0, 0, 0.06);
 $shadow-reverse: 0px -8px 18px rgba(0, 0, 0, 0.06);
+
+
+//DIVIDER
+$divider-bottom: 1px solid $divider-color;
+$divider-right: 1px solid $divider-color;

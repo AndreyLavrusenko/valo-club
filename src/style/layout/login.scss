@@ -1,0 +1,37 @@
+@import '../base/variable';
+@import '../base/mixin';
+
+.login {
+    padding: 20px;
+
+    &__container {
+        display: flex;
+        align-items: center;
+
+        padding: 16px;
+
+        @include white-board;
+    }
+
+    &__title {
+        margin-bottom: 12px;
+
+        color: $black-color;
+
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 23px;
+    }
+
+    &__input {
+        width: 100%;
+
+        @include input;
+    }
+
+    &__button {
+        margin-left: 12px;
+
+        @include button-orange;
+    }
+}

@@ -1,4 +1,5 @@
 @import '../base/variable';
+@import '../base/mixin';
 
 .current-stage--item {
     display: inline;
@@ -50,7 +51,7 @@
 }
 
 .base-timer__path-remaining.green {
-    color: #43CC7B;
+    color: $primary;
 }
 
 .base-timer__path-remaining.orange {
@@ -139,7 +140,7 @@
     text-align: center;
 
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 19px;
 }
 
@@ -149,4 +150,14 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+//BUTTON
+.start__button {
+    position: fixed;
+    bottom: 20px;
+
+    width: calc(100% - 40px);
+
+    @include button-orange;
 }

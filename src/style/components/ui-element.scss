@@ -131,3 +131,22 @@
         color: $black-color;
     }
 }
+
+// ERROR
+.error {
+    color: $rose-color;
+
+    text-align: center;
+
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+//PRELOADER
+.preloader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

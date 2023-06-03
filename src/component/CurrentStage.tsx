@@ -10,13 +10,13 @@ import {convertFromMsToSeconds} from "../helpers/getDate";
 type IProps = {
 	activeWorkout: WorkoutType,
 	allStagesCount: number,
-	timeStagePast: number
+	timeStagePast: number,
+	goToTheNextStage: (current_stage: number) => {}
 }
 
-export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast}: IProps) => {
+export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goToTheNextStage}: IProps) => {
 	const [timer, setTimer] = useState(timeStagePast);
 	const timerId = useRef();
-
 
 	useEffect(() => {
 		(timerId.current as any) = setInterval(() => {
@@ -29,8 +29,15 @@ export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast}: IPr
 
 
 	useEffect(() => {
-		if (timer <= 0) {
+
+		if (convertFromMsToSeconds(timer) <= 2) {
+			// Переход на след этап
+			goToTheNextStage(activeWorkout.id)
+		}
+
+		if (convertFromMsToSeconds(timer) <= 0) {
 			clearInterval(timerId.current)
+			setTimer(0)
 		}
 	}, [timer]);
 

@@ -4,6 +4,7 @@ import React, {useEffect, useState} from "react";
 import {workoutAPI} from "../api/api";
 import {Preloader} from "../common/Preloader";
 import {Workout, WorkoutType} from "../types/workout";
+import {convertFromMsToSeconds} from "../helpers/getDate";
 
 type IProps = {
     isTrainer: boolean
@@ -15,7 +16,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     const [workout, setWorkout] = useState<Workout | null>(null);
     const [activeWorkout, setActiveWorkout] = useState<WorkoutType | null>(null);
     const [allStagesCount, setAllStagesCount] = useState(0);
-    const [timeStagePast, setTimeStagePast] = useState(0)
+    const [timeStagePast, setTimeStagePast] = useState(0);
 
     // Получает данные о тренировке и выводит ее
     useEffect(() => {
@@ -27,7 +28,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
             } else {
                 setError("");
                 setWorkout(res.data[0]);
-                setAllStagesCount(res.data[0].workout.length)
+                setAllStagesCount(res.data[0].workout.length);
             }
 
             setLoading(false);
@@ -52,16 +53,17 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         const workoutActive = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage);
 
         if (workoutActive) {
+            // Функция которая вернет время старта с бэка
+            getTimeStart()
             // Записывает данные для текущего этапа
             setActiveWorkout(workoutActive);
             if (workout?.time_start) {
                 // Получает оставшееся время текущего этапа
-
-                setTimeStagePast((workout.time_start - Date.now()) + workoutActive.time)
+                setTimeStagePast((workout.time_start - Date.now()) + workoutActive.time);
             }
         }
 
-    }, [workout?.active_stage]);
+    }, [workout?.active_stage, workout?.time_start]);
 
 
     const getDataAboutWorkout = async () => {
@@ -74,6 +76,33 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         }
     };
 
+    // Получает время начала тренировки
+    const getTimeStart = async () => {
+        const res = await workoutAPI.getTimeStart(1);
+
+        if (res.resultCode === 0) {
+            if (workout) {
+                setWorkout({...workout, time_start: res.time_start});
+            }
+        }
+
+    };
+
+    const startWorkoutHandler = async () => {
+        await workoutAPI.startWorkout(1);
+    };
+
+    const resetWorkoutHandler = async () => {
+        await workoutAPI.resetWorkout(1);
+    };
+
+    const goToTheNextStage = async (current_stage: number) => {
+        // const res = await workoutAPI.goToTheNextStage(1, current_stage)
+        // if (res && res.data.resultCode === 0) {
+        //     //@ts-ignore
+        //     setWorkout({...workout, active_stage: res.data.active_stage})
+        // }
+    };
 
     return (
         <>
@@ -95,6 +124,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                                                 allStagesCount={allStagesCount}
                                                                 activeWorkout={activeWorkout}
                                                                 timeStagePast={timeStagePast}
+                                                                goToTheNextStage={goToTheNextStage}
                                                             />
                                                             : null
                                                     }
@@ -102,7 +132,24 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                                         <NextStage activeStage={workout.active_stage}
                                                                    workout={workout.workout}/>
                                                     </div>
-                                                    {isTrainer ? <button className="start__button">Старт</button> : null}
+                                                    {isTrainer && !workout.active_stage && !workout.is_start
+                                                        ? <button
+                                                            className="start__button"
+                                                            onClick={startWorkoutHandler}
+                                                        >
+                                                            Старт
+                                                        </button>
+                                                        : null
+                                                    }
+                                                    {isTrainer && workout.active_stage && workout.is_start
+                                                        ? <button
+                                                            className="start__button"
+                                                            onClick={resetWorkoutHandler}
+                                                        >
+                                                            Сбросить
+                                                        </button>
+                                                        : null
+                                                    }
                                                 </main>
                                             </>
                                             : <p className="error u-margin-top-xl">Не удалось загрузить тренировку</p>

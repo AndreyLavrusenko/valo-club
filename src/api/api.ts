@@ -34,5 +34,38 @@ export const workoutAPI = {
         } catch (err) {
             console.log(err)
         }
+    },
+
+    startWorkout: async (workout_id: number) => {
+        try {
+            return await instance.put('workout/start-workout', {}, {headers: {workout_id}})
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    resetWorkout: async (workout_id: number) =>  {
+        try {
+            return await instance.put('workout/reset-workout', {}, {headers: {workout_id}})
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    goToTheNextStage: async (workout_id: number, current_stage: number) =>  {
+        try {
+            return await instance.put('workout/go-next-stage', {current_stage}, {headers: {workout_id}})
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    getTimeStart: async (workout_id: number) => {
+        try {
+            const {data} = await instance.get('workout/get-start-time', {headers: {workout_id}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
     }
 }

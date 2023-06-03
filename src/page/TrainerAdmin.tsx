@@ -1,9 +1,8 @@
 import {CurrentStage} from "../component/CurrentStage";
 import {NextStage} from "../component/NextStage";
-import React, {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import React from "react";
 
-export const TrainingUser = () => {
+export const TrainerAdmin = () => {
 	return (
 		<>
 			<main>
@@ -13,5 +12,5 @@ export const TrainingUser = () => {
 				</div>
 			</main>
 		</>
-	);
-};
+	)
+}

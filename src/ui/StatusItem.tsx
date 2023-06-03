@@ -8,7 +8,7 @@ import condition from '../assets/images/candle.svg'
 
 type IProps = {
 	type: string,
-	data: string,
+	data: number | string,
 }
 
 export const StatusItem = ({type, data}: IProps) => {

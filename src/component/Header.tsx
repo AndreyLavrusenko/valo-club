@@ -1,14 +1,40 @@
 import logo from "../assets/images/logo.svg";
 import '../style/components/header.scss'
+import {NavLink} from "react-router-dom";
+import {useRef} from "react";
 
-export const Header = () => {
+type IProps = {
+	isTrainer: boolean
+	setIsTrainer: Function
+}
+
+export const Header = ({isTrainer, setIsTrainer}: IProps) => {
+	const ref = useRef<HTMLInputElement>(null);
+
+	const hideBurgerHandler = () => {
+		if (ref.current) {
+			ref.current.checked = false
+		}
+	}
+
+	const logout = () => {
+		localStorage.removeItem('token')
+		setIsTrainer(false)
+
+		if (ref.current) {
+			ref.current.checked = false
+		}
+	}
+
 	return (
 		<>
 			<header className="header">
 				<div className="header__content">
-					<img src={logo} alt="Вело Клуб 47"/>
+					<NavLink to={isTrainer ? '/trainer' : '/'}>
+						<img src={logo} alt="Вело Клуб 47"/>
+					</NavLink>
 					<div className="header__burger">
-						<input id="toggle" type="checkbox"></input>
+						<input  ref={ref} id="toggle" type="checkbox"></input>
 
 						<label htmlFor="toggle" className="hamburger">
 							<div className="top-bun"></div>
@@ -19,7 +45,10 @@ export const Header = () => {
 						<div className="nav">
 							<div className="nav-wrapper">
 								<nav>
-									<a href="#">Я тренер</a><br/>
+									{isTrainer
+										? <NavLink to={'/'} onClick={logout}>Выйти</NavLink>
+										: <NavLink to={'/login'} onClick={hideBurgerHandler}>Я тренер</NavLink>
+									}
 								</nav>
 							</div>
 						</div>

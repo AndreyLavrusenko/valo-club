@@ -21,7 +21,7 @@
     position: absolute;
     top: 15px;
     right: 20px;
-    z-index: 5;
+    z-index: 1001;
 }
 
 .hamburger div {
@@ -46,6 +46,8 @@
 
     background-color: #090E6B;
 
+    z-index: 1000;
+
     transition: all 0.3s ease-in-out;
     transform: scale(0);
 }
@@ -56,6 +58,16 @@
 
     overflow: hidden;
     overflow-y: auto;
+
+    nav {
+        padding: 20px;
+
+        a {
+            text-decoration: none;
+
+            color: $white-color;
+        }
+    }
 }
 
 

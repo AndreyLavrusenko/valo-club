@@ -30,7 +30,7 @@ export const Header = ({isTrainer, setIsTrainer}: IProps) => {
 		<>
 			<header className="header">
 				<div className="header__content">
-					<NavLink to={isTrainer ? '/trainer' : '/'}>
+					<NavLink to={'/'}>
 						<img src={logo} alt="Вело Клуб 47"/>
 					</NavLink>
 					<div className="header__burger">
@@ -47,7 +47,7 @@ export const Header = ({isTrainer, setIsTrainer}: IProps) => {
 								<nav>
 									{isTrainer
 										? <NavLink to={'/'} onClick={logout}>Выйти</NavLink>
-										: <NavLink to={'/login'} onClick={hideBurgerHandler}>Я тренер</NavLink>
+										: <NavLink to={'/login'} onClick={hideBurgerHandler}>Войти как тренер</NavLink>
 									}
 								</nav>
 							</div>

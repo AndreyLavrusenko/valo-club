@@ -25,5 +25,14 @@ export const workoutAPI = {
         } catch (err) {
             console.log(err)
         }
+    },
+
+    getWorkoutInterval: async (workout_id: number) => {
+        try {
+            const {data} = await instance.get('workout/get-workout-info', {headers: {workout_id}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
     }
 }

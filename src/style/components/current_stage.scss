@@ -1,17 +1,19 @@
 @import "../base/variable";
+@import "../base/mixin";
 
 .current-stage {
     margin-top: 20px;
     padding: 16px;
 
-    box-shadow: $shadow-classic;
-    border-radius: 8px;
-    background-color: $white-color;
+    @include white-board;
 
     &__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        border-bottom: $divider-bottom;
+        padding-bottom: 8px;
 
         &--stage--count {
             display: flex;
@@ -43,13 +45,20 @@
         &--wrapper {
             display: flex;
             align-items: center;
+            justify-content: space-around
         }
 
         &--items {
             margin-left: 26px;
 
             .status-item:not(:last-child) {
-                margin-bottom: 13px;
+                padding-bottom: 8px;
+
+                border-bottom: $divider-bottom;
+            }
+
+            .status-item:not(:first-child) {
+                padding-top: 8px;
             }
         }
     }

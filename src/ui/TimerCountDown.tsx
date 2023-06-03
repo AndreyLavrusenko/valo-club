@@ -1,6 +1,13 @@
 import '../style/components/ui-element.scss'
+import {formatTime} from "../helpers/getDate";
 
-export const TimerCountDown = () => {
+type IProps = {
+    timer: number,
+}
+
+export const TimerCountDown = ({timer}: IProps) => {
+
+
     return (
         <>
             <div className="base-timer">
@@ -9,7 +16,7 @@ export const TimerCountDown = () => {
                         <circle className="base-timer__path-elapsed" cx="50" cy="50" r="45"/>
                         <path
                             id="base-timer-path-remaining"
-                            strokeDasharray="283"
+                            style={{strokeDasharray: 283 + ' ' + 283}}
                             className="base-timer__path-remaining green"
                             d="
                               M 50, 50
@@ -20,7 +27,7 @@ export const TimerCountDown = () => {
                         ></path>
                     </g>
                 </svg>
-                <span id="base-timer-label" className="base-timer__label">12:55</span>
+                <span id="base-timer-label" className="base-timer__label">{formatTime(timer)}</span>
                 <span className="base-timer__label-subtitle">Время этапа</span>
             </div>
         </>

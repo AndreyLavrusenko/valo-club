@@ -7,6 +7,10 @@ export const convertFromMsToSeconds = (time: number) => {
     return Math.floor(time / 1000)
 }
 
+export const convertFromMinutesToMs = (time: number) => {
+    return Math.floor(time * 1000 * 60)
+}
+
 
 export const formatTime = (time: number) => {
     let seconds: number = Math.floor((time / 1000) % 60);

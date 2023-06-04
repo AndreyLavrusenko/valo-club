@@ -29,15 +29,12 @@ export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goTo
 
 	useEffect(() => {
 		if (timeStagePast !== 0) {
-			console.log(timeStagePast)
-			setTimer(timeStagePast)
-			console.log(timer)
+			setTimer(timeStagePast);
 		}
 	}, [timeStagePast]);
 
 	useEffect(() => {
 		if (convertFromMsToSeconds(timer) <= 0) {
-			console.log('goToTheNextStage')
 			// Переход на след этап
 			goToTheNextStage(activeWorkout.id);
 			clearInterval(timerId.current);

@@ -76,5 +76,14 @@ export const workoutAPI = {
         } catch (err) {
             console.log(err)
         }
+    },
+
+    getUpdatedWorkout: async (workout_id: number) => {
+        try {
+            const {data} = await instance.get('workout/get-update-workout', {headers: {workout_id}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
     }
 }

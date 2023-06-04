@@ -11,6 +11,12 @@ export const TimerCountDown = ({timer}: IProps) => {
 
 
     useEffect(() => {
+        if (convertFromMsToSeconds(timer) > 20){
+            if (ref.current) {
+                ref.current.style.color = "#43CC7B"
+            }
+        }
+
         if (convertFromMsToSeconds(timer) <= 20) {
             // Переход на след этап
             if (ref.current) {

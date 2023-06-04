@@ -38,7 +38,9 @@ export const NextStageItem = ({element, isAdmin, deleteStage}: IProps) => {
 			</div>
 			<div className="next-stage__info">
 				<StatusItem type={STATUS_ITEM.pulse} data={element.pulse} />
+				<div className="next-stage__info--divider"></div>
 				<StatusItem type={STATUS_ITEM.turns} data={element.turns} />
+				<div className="next-stage__info--divider"></div>
 				<StatusItem type={STATUS_ITEM.condition} data={condition} />
 			</div>
 		</div>

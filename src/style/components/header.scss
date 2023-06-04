@@ -26,11 +26,11 @@
 
 .hamburger div {
     position: relative;
-    width: 14px;
+    width: 17px;
     height: 2px;
     border-radius: 3px;
     background-color: $primary;
-    margin-top: 3px;
+    margin-top: 4px;
     transition: all 0.3s ease-in-out;
 }
 
@@ -60,16 +60,32 @@
     overflow-y: auto;
 
     nav {
-        padding: 20px;
+        display: flex;
+        height: calc(100vh - 70px);
+        flex-direction: column;
+        justify-content: space-between;
 
+        padding: 20px;
         margin-top: 40px;
 
         a {
-            display: block;
+            display: flex;
+            align-items: center;
 
             text-decoration: none;
 
-            color: $gray-color;
+            color: $black-color;
+
+            svg {
+                margin-right: 8px;
+
+                width: 24px;
+                height: 24px;
+
+                path {
+                    fill: $black-color;
+                }
+            }
 
             &:not(:last-child) {
                 margin-bottom: 12px;

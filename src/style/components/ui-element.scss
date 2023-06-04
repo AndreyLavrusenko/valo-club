@@ -51,7 +51,7 @@
 }
 
 .base-timer__path-remaining.green {
-    color: $primary;
+    color: $green-color;
 }
 
 .base-timer__path-remaining.orange {
@@ -96,7 +96,6 @@
 
 
 // STATUS ITEM
-
 .status-item {
     display: flex;
     align-items: center;

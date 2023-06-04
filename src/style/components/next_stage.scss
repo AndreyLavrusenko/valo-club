@@ -56,10 +56,14 @@
 
         padding-top: 12px;
 
-        .status-item:not(:last-child) {
-            border-right: $divider-right;
+        &--divider {
+            content: "";
+            width: 1px;
+            height: 34px;
 
-            padding-right: 12px;
+            display: block;
+
+            background-color: $divider-color;
         }
     }
 }

@@ -29,7 +29,7 @@ export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goTo
 
 	useEffect(() => {
 		if (timeStagePast !== 0) {
-			setTimer(timeStagePast)
+			setTimer(timeStagePast);
 		}
 	}, [timeStagePast]);
 

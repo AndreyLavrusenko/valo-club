@@ -2,11 +2,12 @@ import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {StatusItem} from "../ui/StatusItem";
 
-import "../style/layout/create_workout.scss";
 import {workoutAPI} from "../api/api";
 import {WorkoutType} from "../types/workout";
 import {convertFromMinutesToMs} from "../helpers/getDate";
 import {NextStageItem} from "../component/NextStageItem";
+
+import "../style/layout/create_workout.scss";
 
 type IProps = {
     isTrainer: boolean
@@ -99,17 +100,18 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 		}
 	}
 
-	const deleteStage = (index: number) => {
+	const deleteStage = async (index: number) => {
 		// Удаляет копию из массива
 		const deleteCopy = [...allWorkouts].filter((item: WorkoutType) => item.id !== index)
 		// Проходит по всем элементам и меняет им id
-		for (let i = 0; i < deleteCopy.length; i++) {
-			deleteCopy[i].id = i + 1
+
+		let idx = 1
+		for (let i = deleteCopy.length - 1; i >= 0; i--) {
+			deleteCopy[i].id = idx
+			idx += 1
 		}
 
-		deleteCopy.reverse()
-
-		setAllWorkouts([...deleteCopy])
+		setAllWorkouts(deleteCopy)
 	}
 
     return (

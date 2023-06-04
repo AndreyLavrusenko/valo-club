@@ -28,11 +28,23 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     useEffect(() => {
         const intervalCall = setInterval(() => {
             getDataAboutWorkout();
-        }, 1000);
+        }, 2000);
         return () => {
             clearInterval(intervalCall);
         };
     }, [workout]);
+
+
+    // Делает запроса каждые несколько секунд и сверяет обновилась ли тренировка или нет
+    useEffect(() => {
+        const intervalCall = setInterval(() => {
+            getUpdatedWorkout();
+        }, 2000);
+        return () => {
+            clearInterval(intervalCall);
+        };
+    }, [workout]);
+
 
     // Если была нажата кнопка сброса, то переводит в исходное состояние
     useEffect(() => {
@@ -93,6 +105,17 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
         setLoading(false);
     };
+
+    // Пока тренировка не началась смотрит не обновилась ли тренировка
+    const getUpdatedWorkout = async () => {
+        const res = await workoutAPI.getUpdatedWorkout(1);
+
+        if (res.resultCode === 0) {
+            if (workout) {
+                setWorkout({...workout, workout: res.workout})
+            }
+        }
+    }
 
     // Получает время начала тренировки
     const getTimeStart = async () => {

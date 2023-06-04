@@ -28,7 +28,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     useEffect(() => {
         const intervalCall = setInterval(() => {
             getDataAboutWorkout();
-        }, 2000);
+        }, 1000);
         return () => {
             clearInterval(intervalCall);
         };
@@ -39,7 +39,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     useEffect(() => {
         const intervalCall = setInterval(() => {
             getUpdatedWorkout();
-        }, 2000);
+        }, 4000);
         return () => {
             clearInterval(intervalCall);
         };
@@ -108,17 +108,22 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
     // Пока тренировка не началась смотрит не обновилась ли тренировка
     const getUpdatedWorkout = async () => {
-        const res = await workoutAPI.getUpdatedWorkout(1);
 
-        if (res.resultCode === 0) {
-            if (workout) {
-                setWorkout({...workout, workout: res.workout})
+        if (workout?.is_start) {
+            const res = await workoutAPI.getUpdatedWorkout(1);
+
+            if (res.resultCode === 0) {
+                if (workout) {
+                    setWorkout({...workout, workout: res.workout})
+                }
             }
         }
+
     }
 
     // Получает время начала тренировки
     const getTimeStart = async () => {
+
         const res = await workoutAPI.getTimeStart(1);
 
         if (res.resultCode === 0) {

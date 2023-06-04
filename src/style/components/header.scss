@@ -50,6 +50,7 @@
 
     transition: all 0.3s ease-in-out;
 }
+
 .nav-wrapper {
     position: relative;
 
@@ -64,9 +65,15 @@
         margin-top: 40px;
 
         a {
+            display: block;
+
             text-decoration: none;
 
             color: $gray-color;
+
+            &:not(:last-child) {
+                margin-bottom: 12px;
+            }
         }
     }
 }

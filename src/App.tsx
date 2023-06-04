@@ -7,6 +7,7 @@ import {Header} from "./component/Header";
 import {NavBar} from "./component/NavBar";
 import {Route, Routes} from "react-router-dom";
 import {LoginTrainer} from "./page/LoginTrainer";
+import {CreateWorkout} from "./page/CreateWorkout";
 
 function App() {
     const [isTrainer, setIsTrainer] = useState(false);
@@ -23,6 +24,7 @@ function App() {
             <Header isTrainer={isTrainer} setIsTrainer={setIsTrainer}/>
             <Routes>
                 <Route path="/" element={<TrainingUser isTrainer={isTrainer} />} />
+                <Route path="/create-workout" element={<CreateWorkout isTrainer={isTrainer} />} />
                 <Route path="/login" element={<LoginTrainer setIsTrainer={setIsTrainer} />} />
             </Routes>
 

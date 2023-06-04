@@ -1,0 +1,105 @@
+@import '../base/variable';
+@import '../base/mixin';
+
+.create-workout {
+    padding: 20px;
+
+    &__header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+
+        margin-bottom: 12px;
+
+        &--title {
+            @include title;
+        }
+
+        &--count {
+            @include text-gray;
+        }
+    }
+
+    &__content {
+        padding: 12px 16px;
+
+        @include white-board;
+
+        &--title {
+            margin-bottom: 12px;
+
+            @include text-gray;
+        }
+
+        &--button {
+            width: 100%;
+
+            margin-bottom: 8px;
+
+            @include button-orange;
+        }
+
+        &-wrapper-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 12px;
+
+            &--input {
+                width: 130px;
+
+                text-align: center;
+
+                @include input;
+            }
+
+            .form_radio_btn {
+                display: inline-block;
+
+                &:not(:last-child) {
+                    margin-right: 12px;
+                }
+            }
+
+            .form_radio_btn input[type=radio] {
+                display: none;
+            }
+
+            .form_radio_btn label {
+                display: inline-block;
+
+                cursor: pointer;
+
+                padding: 10px;
+
+                border: 1px solid #DDDDDD;
+                border-radius: 6px;
+
+                user-select: none;
+            }
+
+            /* Checked */
+            .form_radio_btn input[type=radio]:checked + label {
+                background: $primary-light;
+                border-color: $primary-light;
+                color: $primary;
+            }
+        }
+    }
+
+    &__cards {
+        margin-top: 12px;
+    }
+
+    &__footer {
+        &--button {
+            position: fixed;
+            bottom: 15px;
+
+            width: calc(100% - 40px);
+
+            @include button-orange;
+        }
+    }
+}

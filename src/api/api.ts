@@ -1,4 +1,5 @@
 import axios from "axios";
+import {Workout, WorkoutType} from "../types/workout";
 
 const instance = axios.create({
     withCredentials: true,
@@ -64,6 +65,14 @@ export const workoutAPI = {
         try {
             const {data} = await instance.get('workout/get-start-time', {headers: {workout_id}})
             return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    updateWorkout: async (workout: WorkoutType[], workout_id: number) => {
+        try {
+            return await instance.put('workout/update-workout', {workout}, {headers: {workout_id}})
         } catch (err) {
             console.log(err)
         }

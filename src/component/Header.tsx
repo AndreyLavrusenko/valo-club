@@ -46,6 +46,10 @@ export const Header = ({isTrainer, setIsTrainer}: IProps) => {
 							<div className="nav-wrapper">
 								<nav>
 									{isTrainer
+										? <NavLink to={'/create-workout'} onClick={hideBurgerHandler}>Создание тренировки</NavLink>
+										: null
+									}
+									{isTrainer
 										? <NavLink to={'/'} onClick={logout}>Выйти</NavLink>
 										: <NavLink to={'/login'} onClick={hideBurgerHandler}>Войти как тренер</NavLink>
 									}

@@ -23,19 +23,11 @@
         &--stage--title {
             padding-right: 8px;
 
-            color: $black-color;
-
-            font-weight: 500;
-            font-size: 20px;
-            line-height: 23px;
+           @include title
         }
 
         &--all {
-            color: $gray-color;
-
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 19px;
+            @include text-gray
         }
     }
 

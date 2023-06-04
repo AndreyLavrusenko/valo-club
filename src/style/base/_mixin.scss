@@ -11,6 +11,16 @@
 
     border: 1px solid #DDDDDD;
     border-radius: 6px;
+
+    &::placeholder {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 16px;
+
+        color: $gray-color;
+
+        text-align: center;
+    }
 }
 
 @mixin button-orange {
@@ -25,4 +35,21 @@
     background: $primary;
     border-radius: 6px;
     border: none;
+}
+
+@mixin title {
+    color: $black-color;
+
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 23px;
+}
+
+
+@mixin text-gray {
+    color: $gray-color;
+
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
 }

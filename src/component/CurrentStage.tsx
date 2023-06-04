@@ -5,7 +5,7 @@ import {StatusItem} from "../ui/StatusItem";
 import {CONDITION_TYPE, STATUS_ITEM} from "../helpers/const";
 import {WorkoutType} from "../types/workout";
 import {useEffect, useRef, useState} from "react";
-import {convertFromMsToSeconds} from "../helpers/getDate";
+import {convertFromMsToMinutes, convertFromMsToSeconds} from "../helpers/getDate";
 
 type IProps = {
 	activeWorkout: WorkoutType,
@@ -25,21 +25,25 @@ export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goTo
 
 		return () => clearInterval(timerId.current);
 
-	}, []);
-
+	}, [timer]);
 
 	useEffect(() => {
-
-		if (convertFromMsToSeconds(timer) <= 2) {
-			// Переход на след этап
-			goToTheNextStage(activeWorkout.id)
+		if (timeStagePast !== 0) {
+			console.log(timeStagePast)
+			setTimer(timeStagePast)
+			console.log(timer)
 		}
+	}, [timeStagePast]);
 
+	useEffect(() => {
 		if (convertFromMsToSeconds(timer) <= 0) {
-			clearInterval(timerId.current)
-			setTimer(0)
+			console.log('goToTheNextStage')
+			// Переход на след этап
+			goToTheNextStage(activeWorkout.id);
+			clearInterval(timerId.current);
 		}
 	}, [timer]);
+
 
 	const currentStage = activeWorkout.id;
 

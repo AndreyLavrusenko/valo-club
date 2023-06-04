@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {workoutAPI} from "../api/api";
 import {Preloader} from "../common/Preloader";
 import {Workout, WorkoutType} from "../types/workout";
-import {convertFromMsToSeconds} from "../helpers/getDate";
+import {convertFromMsToMinutes, convertFromMsToSeconds} from "../helpers/getDate";
 
 type IProps = {
     isTrainer: boolean
@@ -20,20 +20,6 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
     // Получает данные о тренировке и выводит ее
     useEffect(() => {
-        const getWorkoutData = async () => {
-            const res = await workoutAPI.getWorkout(1);
-
-            if (res.resultCode === 1) {
-                setError(res.message);
-            } else {
-                setError("");
-                setWorkout(res.data[0]);
-                setAllStagesCount(res.data[0].workout.length);
-            }
-
-            setLoading(false);
-        };
-
         getWorkoutData();
     }, []);
 
@@ -48,22 +34,39 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         };
     }, [workout]);
 
+    // Если была нажата кнопка сброса, то переводит в исходное состояние
+    useEffect(() => {
+        if (workout?.is_start === 0) {
+            getWorkoutData()
+        }
+    }, [workout?.is_start]);
+
     // Следит за этапом
     useEffect(() => {
         const workoutActive = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage);
 
+        let prevTime = 0;
+        if (workoutActive) {
+            workout?.workout.forEach((item: WorkoutType) => {
+                if (item.id < workoutActive.id) {
+                    prevTime += item.time;
+                }
+            });
+        }
+
         if (workoutActive) {
             // Функция которая вернет время старта с бэка
-            getTimeStart()
+            getTimeStart();
             // Записывает данные для текущего этапа
             setActiveWorkout(workoutActive);
+
             if (workout?.time_start) {
                 // Получает оставшееся время текущего этапа
-                setTimeStagePast((workout.time_start - Date.now()) + workoutActive.time);
+                setTimeStagePast((workout.time_start - Date.now()) + workoutActive.time + prevTime);
             }
         }
 
-    }, [workout?.active_stage, workout?.time_start]);
+    }, [workout?.active_stage, workout?.time_start, workout?.is_start]);
 
 
     const getDataAboutWorkout = async () => {
@@ -76,6 +79,21 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         }
     };
 
+    // Получает данные о тренировке и выводит ее
+    const getWorkoutData = async () => {
+        const res = await workoutAPI.getWorkout(1);
+
+        if (res.resultCode === 1) {
+            setError(res.message);
+        } else {
+            setError("");
+            setWorkout(res.data[0]);
+            setAllStagesCount(res.data[0].workout.length);
+        }
+
+        setLoading(false);
+    };
+
     // Получает время начала тренировки
     const getTimeStart = async () => {
         const res = await workoutAPI.getTimeStart(1);
@@ -85,7 +103,6 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                 setWorkout({...workout, time_start: res.time_start});
             }
         }
-
     };
 
     const startWorkoutHandler = async () => {
@@ -97,11 +114,16 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     };
 
     const goToTheNextStage = async (current_stage: number) => {
-        // const res = await workoutAPI.goToTheNextStage(1, current_stage)
-        // if (res && res.data.resultCode === 0) {
-        //     //@ts-ignore
-        //     setWorkout({...workout, active_stage: res.data.active_stage})
-        // }
+        const res = await workoutAPI.goToTheNextStage(1, current_stage);
+
+        if (res && workout && res.data.resultCode === 0) {
+            // Если конец тренировки
+            if (res.data.active_stage === 0) {
+                getWorkoutData();
+            } else {
+                setWorkout({...workout, active_stage: res.data.active_stage});
+            }
+        }
     };
 
     return (
@@ -119,7 +141,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                             <>
                                                 <main>
                                                     {
-                                                        activeWorkout && workout.active_stage && workout.is_start
+                                                        activeWorkout && workout.active_stage && workout.is_start && timeStagePast
                                                             ? <CurrentStage
                                                                 allStagesCount={allStagesCount}
                                                                 activeWorkout={activeWorkout}

@@ -154,9 +154,9 @@
 //BUTTON
 .start__button {
     position: fixed;
-    bottom: 20px;
+    bottom: 22px;
 
     width: calc(100% - 40px);
 
-    @include button-orange;
+    @include button-orange-big;
 }

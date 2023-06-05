@@ -178,7 +178,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                                             className="start__button"
                                                             onClick={startWorkoutHandler}
                                                         >
-                                                            Старт
+                                                            Начать тренировку
                                                         </button>
                                                         : null
                                                     }

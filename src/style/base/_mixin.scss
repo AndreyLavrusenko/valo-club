@@ -37,6 +37,20 @@
     border: none;
 }
 
+@mixin button-orange-big {
+    padding: 14px 20px;
+
+    color: $white-color;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+
+    background: $primary;
+    border-radius: 6px;
+    border: none;
+}
+
 @mixin title {
     color: $black-color;
 

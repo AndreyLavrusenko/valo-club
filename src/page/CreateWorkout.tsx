@@ -69,9 +69,10 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 		// Получаение id по порядку
 		let id = 1
 
-		if (allWorkouts.length > 1) {
+		if (allWorkouts.length >= 1) {
 			id = allWorkouts.length + 1
 		}
+
 
 		const timeInMs = convertFromMinutesToMs(workoutData.time)
 

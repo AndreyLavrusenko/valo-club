@@ -3,7 +3,7 @@ import {CurrentStageItem} from "../ui/CurrentStageItem";
 import {CONDITION_TYPE, STATUS_ITEM} from "../helpers/const";
 import {StatusItem} from "../ui/StatusItem";
 import {WorkoutType} from "../types/workout";
-import {convertFromMsToMinutes, declOfNum} from "../helpers/getDate";
+import {convertFromMsToMinutes, declOfNum, millisToMinutesAndSeconds} from "../helpers/getDate";
 import {useEffect} from "react";
 
 
@@ -18,15 +18,14 @@ export const NextStageItem = ({element, isAdmin, deleteStage}: IProps) => {
 	// @ts-ignore
 	const condition = CONDITION_TYPE[element.condition];
 
-	const minutes = convertFromMsToMinutes(element.time);
-	const minutesWord = declOfNum(minutes, ["минута", "минуты", "минут"]);
+	const minutes = millisToMinutesAndSeconds(element.time);
 
 	return (
 		<div className="next-stage__item">
 			<div className="next-stage__header">
 				<div className="next-stage__header--item">
 					<CurrentStageItem current_stage={`${element.id} этап`} />
-					<p>{minutes} {minutesWord} </p>
+					<p>{minutes} </p>
 				</div>
 				{isAdmin &&
 					<button

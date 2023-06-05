@@ -4,7 +4,7 @@ import {StatusItem} from "../ui/StatusItem";
 
 import {workoutAPI} from "../api/api";
 import {WorkoutType} from "../types/workout";
-import {convertFromMinutesToMs} from "../helpers/getDate";
+import {convertFromMinutesToMs, convertFromSecondsToMs} from "../helpers/getDate";
 import {NextStageItem} from "../component/NextStageItem";
 
 import "../style/layout/create_workout.scss";
@@ -19,7 +19,8 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
 	const [workoutData, setWorkoutData] = useState({
 		id: 1,
-		time: undefined,
+		minutes: undefined,
+		seconds: undefined,
 		pulse: undefined,
 		turns: undefined,
 		condition: undefined
@@ -60,7 +61,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 	const addNewStage = async (e: any) => {
 		e.preventDefault();
 
-		if (!workoutData.time || !workoutData.turns || !workoutData.pulse || !workoutData.condition) {
+		if ((!workoutData.minutes && !workoutData.seconds) || !workoutData.turns || !workoutData.pulse || !workoutData.condition) {
 			return setIsError(true);
 		}
 
@@ -74,7 +75,15 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 		}
 
 
-		const timeInMs = convertFromMinutesToMs(workoutData.time)
+		let timeInMs = 0
+
+		if (workoutData.minutes) {
+			timeInMs += convertFromMinutesToMs(workoutData.minutes)
+		}
+
+		if (workoutData.seconds) {
+			timeInMs += convertFromSecondsToMs(workoutData.seconds)
+		}
 
 		if (timeInMs && id) {
 			const deployArr = {
@@ -125,15 +134,30 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                 <div className="create-workout__content--title">Выберите значения для этапа</div>
                 <div className="create-workout__content-wrapper-item">
                     <StatusItem type={"Время"}/>
-                    <input
-						value={workoutData.time}
-						name={"time"}
-						onChange={onChange}
-						required
-						type="number"
-						placeholder={"Минуты"}
-					   className="create-workout__content-wrapper-item--input"
-					/>
+                    <div>
+						<input
+							value={workoutData.minutes}
+							name={"minutes"}
+							onChange={onChange}
+							required
+							max={59}
+							pattern="[0-9]*"
+							type="number"
+							placeholder={"Мин"}
+							className="create-workout__content-wrapper-item--input create-workout__content-wrapper-item--input-small"
+						/>
+						<input
+							value={workoutData.seconds}
+							name={"seconds"}
+							onChange={onChange}
+							required
+							max={59}
+							pattern="[0-9]*"
+							type="number"
+							placeholder={"Сек"}
+							className="create-workout__content-wrapper-item--input create-workout__content-wrapper-item--input-small"
+						/>
+					</div>
                 </div>
                 <div className="create-workout__content-wrapper-item">
                     <StatusItem type={"Пульс"}/>

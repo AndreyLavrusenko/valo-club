@@ -36,7 +36,7 @@
 
             margin-bottom: 8px;
 
-            @include button-orange;
+            @include button-orange-big;
         }
 
         &-wrapper-item {
@@ -95,11 +95,11 @@
     &__footer {
         &--button {
             position: fixed;
-            bottom: 15px;
+            bottom: 20px;
 
             width: calc(100% - 40px);
 
-            @include button-orange;
+            @include button-orange-big;
         }
     }
 }

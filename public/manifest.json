@@ -22,7 +22,7 @@
       "purpose": "any"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#F5F5FB",
   "background_color": "#F5F5FB"

@@ -167,6 +167,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 						onChange={onChange}
 						required
 						type="number"
+						pattern="[0-9]*"
 						placeholder={"Уд / мин"}
 					   className="create-workout__content-wrapper-item--input"
 					/>
@@ -179,6 +180,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 						onChange={onChange}
 						required
 						type="number"
+						pattern="[0-9]*"
 						placeholder={"Значние"}
 						className="create-workout__content-wrapper-item--input"
 					/>

@@ -66,7 +66,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
             if (workout?.time_start) {
                 // Получает оставшееся время текущего этапа
-                setTimeStagePast((workout.time_start - Date.now()) + workoutActive.time + prevTime);
+                setTimeStagePast((workout.time_start - workout.time_current) + workoutActive.time + prevTime);
             }
         }
 
@@ -78,7 +78,13 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
         if (res.resultCode === 0) {
             if (workout) {
-                setWorkout({...workout, is_start: res.data[0].is_start, active_stage: res.data[0].active_stage});
+                console.log(res.data)
+                setWorkout({
+                    ...workout,
+                    is_start: res.data[0].is_start,
+                    active_stage: res.data[0].active_stage,
+                    time_current: res.data[0].time_current
+                });
             }
         }
     };

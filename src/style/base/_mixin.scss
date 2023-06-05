@@ -21,6 +21,11 @@
 
         text-align: center;
     }
+
+    &:focus {
+        outline: none !important;
+        border-color: $primary;
+    }
 }
 
 @mixin button-orange {

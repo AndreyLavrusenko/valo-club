@@ -3,6 +3,7 @@ export type Workout = {
     is_start: number,
     workout: WorkoutType[],
     time_start: number,
+    time_current: number,
     active_stage: number,
     trainer_id?: number
 }

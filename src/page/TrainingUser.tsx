@@ -67,41 +67,40 @@ export const TrainingUser = ({isTrainer}: IProps) => {
             setActiveWorkout(workoutActive);
 
             if (workout?.time_start) {
-                console.log(workout.time_current);
                 // Получает оставшееся время текущего этапа
                 setTimeStagePast((workout.time_start - workout.time_current) + workoutActive.time + prevTime);
             }
         }
 
-    }, [workout?.active_stage, workout?.time_start, workout?.is_start, workout?.time_current]);
+    }, [workout?.active_stage, workout?.time_start, workout?.is_start]);
+    // Если не заработает сюда workout?.time_current
 
 
-    // useEffect(() => {
-    //     const workoutActive = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage);
-    //
-    //     let prevTime = 0;
-    //     if (workoutActive) {
-    //         workout?.workout.forEach((item: WorkoutType) => {
-    //             if (item.id < workoutActive.id) {
-    //                 prevTime += item.time;
-    //             }
-    //         });
-    //     }
-    //
-    //     if (workoutActive) {
-    //         // Функция которая вернет время старта с бэка
-    //         getTimeStart();
-    //         // Записывает данные для текущего этапа
-    //         setActiveWorkout(workoutActive);
-    //
-    //         if (workout?.time_start) {
-    //             console.log(workout.time_current);
-    //             // Получает оставшееся время текущего этапа
-    //             setTimeStagePast((workout.time_start - workout.time_current) + workoutActive.time + prevTime);
-    //         }
-    //     }
-    //
-    // }, [firstEnter]);
+    useEffect(() => {
+        const workoutActive = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage);
+
+        let prevTime = 0;
+        if (workoutActive) {
+            workout?.workout.forEach((item: WorkoutType) => {
+                if (item.id < workoutActive.id) {
+                    prevTime += item.time;
+                }
+            });
+        }
+
+        if (workoutActive) {
+            // Функция которая вернет время старта с бэка
+            getTimeStart();
+            // Записывает данные для текущего этапа
+            setActiveWorkout(workoutActive);
+
+            if (workout?.time_start) {
+                // Получает оставшееся время текущего этапа
+                setTimeStagePast((workout.time_start - workout.time_current) + workoutActive.time + prevTime);
+            }
+        }
+
+    }, [firstEnter]);
 
     const getDataAboutWorkout = async () => {
         const res = await workoutAPI.getWorkoutInterval(1);

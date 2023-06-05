@@ -3,12 +3,40 @@ export const convertFromMsToMinutes = (time: number) => {
     return Math.floor((time / 1000 / 60) % 60)
 }
 
+
+export const millisToMinutesAndSeconds = (time: number) => {
+    const minutes = Number(Math.floor(time / 60000))
+    const seconds = Number(((time % 60000) / 1000).toFixed(0));
+
+    let resultString = ''
+
+    // Если только минуты
+    if (minutes > 0 && seconds === 0) {
+        resultString += minutes + ' мин'
+    }
+
+    // Если есть и минуты и секнуды
+    if (minutes > 0 && seconds > 0) {
+        resultString += minutes + ':' + seconds + ' мин'
+    }
+
+    if (minutes === 0 && seconds > 0) {
+        resultString += seconds + ' сек'
+    }
+
+    return resultString
+}
+
 export const convertFromMsToSeconds = (time: number) => {
     return Math.floor(time / 1000)
 }
 
 export const convertFromMinutesToMs = (time: number) => {
     return Math.floor(time * 1000 * 60)
+}
+
+export const convertFromSecondsToMs = (time: number) => {
+    return Math.floor(time * 1000)
 }
 
 

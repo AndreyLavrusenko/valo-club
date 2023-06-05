@@ -52,6 +52,14 @@
                 text-align: center;
 
                 @include input;
+
+                &-small {
+                    width: 59px;
+
+                    &:not(:last-child) {
+                        margin-right: 12px;
+                    }
+                }
             }
 
             .form_radio_btn {

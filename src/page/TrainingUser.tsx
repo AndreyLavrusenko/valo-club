@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {workoutAPI} from "../api/api";
 import {Preloader} from "../common/Preloader";
 import {Workout, WorkoutType} from "../types/workout";
-import {convertFromMsToMinutes, convertFromMsToSeconds} from "../helpers/getDate";
+import { useWakeLock } from "react-screen-wake-lock";
 
 type IProps = {
     isTrainer: boolean
@@ -19,11 +19,18 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     const [timeStagePast, setTimeStagePast] = useState(0);
     const [firstEnter, setFirstEnter] = useState(false);
 
+    const { isSupported, released, request, release } = useWakeLock({
+        onRequest: () => alert('Screen Wake Lock: requested!'),
+        onError: () => alert('An error happened 💥'),
+        onRelease: () => alert('Screen Wake Lock: released!'),
+    });
+
     // Получает данные о тренировке и выводит ее
     useEffect(() => {
         getWorkoutData();
-    }, []);
 
+        addWakeLock();
+    }, []);
 
     // Делает запроса каждые несколько секунд и сверяет этап и началась стренировка или нет
     useEffect(() => {
@@ -114,7 +121,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                     time_current: res.data[0].time_current
                 });
 
-                setFirstEnter(true)
+                setFirstEnter(true);
             }
         }
     };
@@ -168,6 +175,11 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         await workoutAPI.resetWorkout(1);
     };
 
+    // Не блокирует экран в приложении
+    const addWakeLock = async () => {
+
+    };
+
     const goToTheNextStage = async (current_stage: number) => {
         const res = await workoutAPI.goToTheNextStage(1, current_stage);
 
@@ -195,6 +207,19 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                         workout ?
                                             <>
                                                 <main>
+                                                    <div>
+                                                        <p>
+                                                            Screen Wake Lock API supported: <b>{`${isSupported}`}</b>
+                                                            <br />
+                                                            Released: <b>{`${released}`}</b>
+                                                        </p>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => (released === false ? release() : request())}
+                                                        >
+                                                            {released === false ? 'Release' : 'Request'}
+                                                        </button>
+                                                    </div>
                                                     {
                                                         activeWorkout && workout.active_stage && workout.is_start && timeStagePast
                                                             ? <CurrentStage

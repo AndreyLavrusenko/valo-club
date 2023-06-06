@@ -234,7 +234,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                                 </main>
                                                 <Modal active={modalActive} setActive={setModalActive}>
                                                     <div className="modal__title">Завершение тренировки</div>
-                                                    <p className="modal__subtitle">Вы уверены что хотите завершить запущенную тренировку?</p>
+                                                    <p className="modal__subtitle">Вы уверены, что хотите завершить запущенную тренировку?</p>
                                                     <div className="modal__content-buttons">
                                                         <button
                                                             className="modal__content-buttons--secondary"

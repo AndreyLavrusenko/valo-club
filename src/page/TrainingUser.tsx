@@ -5,6 +5,7 @@ import {workoutAPI} from "../api/api";
 import {Preloader} from "../common/Preloader";
 import {Workout, WorkoutType} from "../types/workout";
 import { useWakeLock } from "react-screen-wake-lock";
+import {Modal} from "../ui/Modal";
 
 type IProps = {
     isTrainer: boolean
@@ -18,6 +19,8 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     const [allStagesCount, setAllStagesCount] = useState(0);
     const [timeStagePast, setTimeStagePast] = useState(0);
     const [firstEnter, setFirstEnter] = useState(false);
+
+    const [modalActive, setModalActive] = useState(false);
 
     // Получает данные о тренировке и выводит ее
     useEffect(() => {
@@ -165,6 +168,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
     const resetWorkoutHandler = async () => {
         await workoutAPI.resetWorkout(1);
+        setModalActive(false)
     };
 
     // Не блокирует экран в приложении
@@ -221,13 +225,31 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                                     {isTrainer && workout.active_stage && workout.is_start
                                                         ? <button
                                                             className="start__button"
-                                                            onClick={resetWorkoutHandler}
+                                                            onClick={() => setModalActive(true)}
                                                         >
                                                             Сбросить
                                                         </button>
                                                         : null
                                                     }
                                                 </main>
+                                                <Modal active={modalActive} setActive={setModalActive}>
+                                                    <div className="modal__title">Завершение тренировки</div>
+                                                    <p className="modal__subtitle">Вы уверены что хотите завершить запущенную тренировку?</p>
+                                                    <div className="modal__content-buttons">
+                                                        <button
+                                                            className="modal__content-buttons--secondary"
+                                                            onClick={() => setModalActive(false)}
+                                                        >
+                                                            Отменить
+                                                        </button>
+                                                        <button
+                                                            className="modal__content-buttons--primary"
+                                                            onClick={resetWorkoutHandler}
+                                                        >
+                                                            Завершить тренировку
+                                                        </button>
+                                                    </div>
+                                                </Modal>
                                             </>
                                             : <p className="error u-margin-top-xl">Не удалось загрузить тренировку</p>
                                     }

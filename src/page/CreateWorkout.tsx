@@ -181,7 +181,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 						required
 						type="number"
 						pattern="[0-9]*"
-						placeholder={"Значние"}
+						placeholder={"Значение"}
 						className="create-workout__content-wrapper-item--input"
 					/>
 				</div>

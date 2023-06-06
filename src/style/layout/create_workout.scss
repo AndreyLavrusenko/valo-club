@@ -77,6 +77,8 @@
             .form_radio_btn label {
                 display: inline-block;
 
+                width: 59px;
+
                 cursor: pointer;
 
                 padding: 10px;
@@ -85,6 +87,14 @@
                 border-radius: 6px;
 
                 user-select: none;
+
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 16px;
+
+                color: $gray-color;
+
+                text-align: center;
             }
 
             /* Checked */

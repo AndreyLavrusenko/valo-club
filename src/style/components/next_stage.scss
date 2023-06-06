@@ -7,6 +7,10 @@
         margin-bottom: 8px;
 
        @include white-board;
+
+        &:last-child {
+            margin-bottom: 80px;
+        }
     }
 
     &__header {

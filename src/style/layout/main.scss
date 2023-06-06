@@ -1,7 +1,45 @@
+@import '../base/_variable.scss';
+@import '../base/mixin';
+
 main {
     padding: 0 20px;
 }
 
 .next-state {
     margin-top: 12px;
+}
+
+
+.modal {
+    &__title {
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 23px;
+
+        color: $black-color;
+    }
+
+    &__subtitle {
+        margin-top: 4px;
+    }
+
+    &__content-buttons {
+        height: 90%;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &--secondary {
+            display: block;
+
+            @include button-orange-inline;
+        }
+
+        &--primary {
+            display: block;
+
+            @include button-orange;
+        }
+    }
 }

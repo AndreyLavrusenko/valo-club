@@ -42,6 +42,19 @@
     border: none;
 }
 
+@mixin button-orange-inline {
+    padding: 10px 20px;
+
+    color: $primary;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+
+    background: inherit;
+    border: none;
+}
+
 @mixin button-orange-big {
     padding: 14px 20px;
 

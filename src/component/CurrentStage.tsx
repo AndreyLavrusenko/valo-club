@@ -6,6 +6,8 @@ import {CONDITION_TYPE, STATUS_ITEM} from "../helpers/const";
 import {WorkoutType} from "../types/workout";
 import {useEffect, useRef, useState} from "react";
 import {convertFromMsToMinutes, convertFromMsToSeconds} from "../helpers/getDate";
+import preloader from '../assets/images/preloader.svg'
+
 
 type IProps = {
 	activeWorkout: WorkoutType,
@@ -16,11 +18,15 @@ type IProps = {
 
 export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goToTheNextStage}: IProps) => {
 	const [timer, setTimer] = useState(timeStagePast);
+	const [isTimerCorrectAfterReload, setIsTimerCorrectAfterReload] = useState(false);
 	const timerId = useRef();
 
 	useEffect(() => {
 		(timerId.current as any) = setInterval(() => {
 			setTimer(prev => prev - 1000);
+			setTimeout(() => {
+				setIsTimerCorrectAfterReload(true)
+			}, 1000)
 		}, 1000);
 
 		return () => clearInterval(timerId.current);
@@ -61,7 +67,12 @@ export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goTo
 			</div>
 			<div className="current-stage__content">
 				<div className="current-stage__content--wrapper">
-					<TimerCountDown timer={timer} />
+					{
+						isTimerCorrectAfterReload
+							? <TimerCountDown timer={timer} />
+							: <img src={preloader} alt=""/>
+					}
+
 					<div className="current-stage__content--items">
 						<StatusItem type={STATUS_ITEM.pulse} data={activeWorkout.pulse} />
 						<StatusItem type={STATUS_ITEM.turns} data={activeWorkout.turns} />

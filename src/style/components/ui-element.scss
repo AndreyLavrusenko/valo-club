@@ -159,4 +159,8 @@
     width: calc(100% - 40px);
 
     @include button-orange-big;
+
+    &:disabled {
+        background-color: #ff9668;
+    }
 }

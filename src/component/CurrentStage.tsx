@@ -73,6 +73,7 @@ export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goTo
 							: <img src={preloader} alt=""/>
 					}
 
+					{/* Не показывать ничего если это разминка или отдых */}
 					{
 						!activeWorkout.isWarmUp && !activeWorkout.isRecovery
 							? <div className="current-stage__content--items">

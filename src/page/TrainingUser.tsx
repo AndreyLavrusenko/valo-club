@@ -7,6 +7,7 @@ import {Workout, WorkoutType} from "../types/workout";
 import {Modal} from "../ui/Modal";
 import {NextStageItem} from "../component/NextStageItem";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { useWakeLock } from 'react-screen-wake-lock';
 
 type IProps = {
     isTrainer: boolean
@@ -33,6 +34,12 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     const [isStartButtonPressed, setIsStartButtonPressed] = useState(false);
 
     const [prevStage, setPrevStage] = useState<WorkoutType | null>(null);
+
+    const { isSupported, released, request, release } = useWakeLock({
+        onRequest: () => alert('Screen Wake Lock: requested!'),
+        onError: () => alert('An error happened 💥'),
+        onRelease: () => alert('Screen Wake Lock: released!'),
+    });
 
     // Получает данные о тренировке и выводит ее
     useEffect(() => {
@@ -248,6 +255,19 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                         workout ?
                                             <>
                                                 <main>
+                                                    <div>
+                                                        <p>
+                                                            Screen Wake Lock API supported: <b>{`${isSupported}`}</b>
+                                                            <br />
+                                                            Released: <b>{`${released}`}</b>
+                                                        </p>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => (released === false ? release() : request())}
+                                                        >
+                                                            {released === false ? 'Release' : 'Request'}
+                                                        </button>
+                                                    </div>
                                                     {prevStage
                                                         ? <div style={{marginTop: "16px"}}>
                                                             <NextStageItem notLastChild={true} element={prevStage} />

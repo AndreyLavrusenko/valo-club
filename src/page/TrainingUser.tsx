@@ -6,6 +6,7 @@ import {Preloader} from "../common/Preloader";
 import {Workout, WorkoutType} from "../types/workout";
 import { useWakeLock } from "react-screen-wake-lock";
 import {Modal} from "../ui/Modal";
+import {NextStageItem} from "../component/NextStageItem";
 
 type IProps = {
     isTrainer: boolean
@@ -24,6 +25,8 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
     // Отвечает за нажатие на кнопку начать тренировку, что бы нельзя было нажать 2 раза
     const [isStartButtonPressed, setIsStartButtonPressed] = useState(false);
+
+    const [prevStage, setPrevStage] = useState<WorkoutType | null>(null);
 
     // Получает данные о тренировке и выводит ее
     useEffect(() => {
@@ -66,6 +69,12 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         }
 
         if (workoutActive) {
+            // Получает предыдущий этап и выводит его сверху
+            const prevWorkout = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage - 1)
+            if (prevWorkout) {
+                setPrevStage(prevWorkout)
+            }
+
             // Функция которая вернет время старта с бэка
             getTimeStart();
             // Записывает данные для текущего этапа
@@ -86,6 +95,13 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
         let prevTime = 0;
         if (workoutActive) {
+
+            // Получает предыдущий этап и выводит его сверху
+            const prevWorkout = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage - 1)
+            if (prevWorkout) {
+                setPrevStage(prevWorkout)
+            }
+
             workout?.workout.forEach((item: WorkoutType) => {
                 if (item.id < workoutActive.id) {
                     prevTime += item.time;
@@ -134,6 +150,8 @@ export const TrainingUser = ({isTrainer}: IProps) => {
             setError("");
             setWorkout(res.data[0]);
             setAllStagesCount(res.data[0].workout.length);
+            setPrevStage(null)
+            setIsStartButtonPressed(false)
         }
 
         setLoading(false);
@@ -166,17 +184,16 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     };
 
     const startWorkoutHandler = async () => {
-        setIsStartButtonPressed(true)
-        await workoutAPI.startWorkout(1)
+        setIsStartButtonPressed(true);
+        await workoutAPI.startWorkout(1);
     };
 
     const resetWorkoutHandler = async () => {
         await workoutAPI.resetWorkout(1);
         setModalActive(false);
-        setIsStartButtonPressed(false)
+        setIsStartButtonPressed(false);
     };
 
-    // Не блокирует экран в приложении
     const goToTheNextStage = async (current_stage: number) => {
         if (isTrainer) {
             const res = await workoutAPI.goToTheNextStage(1, current_stage);
@@ -206,6 +223,13 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                         workout ?
                                             <>
                                                 <main>
+                                                    {prevStage
+                                                        ? <div style={{marginTop: '16px'}}>
+                                                            <NextStageItem notLastChild={true} element={prevStage} />
+                                                    </div>
+                                                        : null
+                                                    }
+
                                                     {
                                                         activeWorkout && workout.active_stage && workout.is_start && timeStagePast
                                                             ? <CurrentStage
@@ -226,7 +250,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                                             onClick={startWorkoutHandler}
                                                             disabled={isStartButtonPressed}
                                                         >
-                                                            {isStartButtonPressed ? 'Загрузка...' : 'Начать тренировку'}
+                                                            {isStartButtonPressed ? "Загрузка..." : "Начать тренировку"}
                                                         </button>
                                                         : null
                                                     }

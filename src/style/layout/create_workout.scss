@@ -120,4 +120,8 @@
             @include button-orange-big;
         }
     }
+
+    .custom-checkbox--create+label {
+        margin-bottom: 12px;
+    }
 }

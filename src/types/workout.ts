@@ -12,8 +12,10 @@ export type Workout = {
 export type WorkoutType = {
     id: number,
     time: number,
-    pulse: number,
-    turns: number,
-    condition: string
+    pulse_1?: string,
+    pulse_2?: number,
+    turns_1?: number,
+    turns_2?: number,
+    condition?: string,
+    isRecovery: boolean,
 }
-

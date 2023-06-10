@@ -120,4 +120,21 @@
             @include button-orange-big;
         }
     }
+
+    .custom-checkbox--create+label {
+        margin-bottom: 12px;
+    }
+
+    .draggable__parent {
+        position: relative;
+    }
+
+    .draggable__child {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+
+        //background-color: #1CC3E6;
+
+    }
 }

@@ -23,6 +23,10 @@
         width: 100%;
 
         @include input;
+
+       &::placeholder {
+           text-align: left;
+       }
     }
 
     &__button {

@@ -67,7 +67,11 @@ export const TimerCountDown = ({timer}: IProps) => {
 
         if (convertFromMsToSeconds(timer) <= 4) {
             if (audioPlayer.current) {
-                audioPlayer.current.play();
+                try {
+                    audioPlayer.current.play();
+                } catch (err) {
+                    console.log('error with sound')
+                }
             }
         }
     }, [timer]);

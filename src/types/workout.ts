@@ -18,4 +18,5 @@ export type WorkoutType = {
     turns_2?: number,
     condition?: string,
     isRecovery: boolean,
+    isWarmUp: boolean,
 }

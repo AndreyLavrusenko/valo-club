@@ -8,7 +8,7 @@ import timer_start from "../assets/images/timer-start.svg";
 
 type IProps = {
 	type: string,
-	data?: number | string,
+	data?: number | string | Array<string | number| undefined>,
 }
 
 export const StatusItem = ({type, data}: IProps) => {
@@ -44,6 +44,9 @@ export const StatusItem = ({type, data}: IProps) => {
 		}
 	}, []);
 
+	const dataSecond = Array.isArray(data) ? data[1] ? ' - ' + data[1] : '' : ''
+	const dataType = Array.isArray(data) ? data[0] + '' + dataSecond : data
+
 
 	return (
 		<div className="status-item">
@@ -51,7 +54,7 @@ export const StatusItem = ({type, data}: IProps) => {
 				<img src={icon} alt=""/>
 			</div>
 			<div className="status-item--text">
-				{data && <div className="status-item--subtitle">{data}</div>}
+				{data && <div className="status-item--subtitle">{dataType}</div>}
 				<div className={data ? "status-item--title" : "status-item--subtitle"}>{title}</div>
 			</div>
 		</div>

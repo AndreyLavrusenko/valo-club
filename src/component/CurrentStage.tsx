@@ -73,14 +73,16 @@ export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goTo
 							: <img src={preloader} alt=""/>
 					}
 
-					{activeWorkout.isRecovery
-						? null
-						: <div className="current-stage__content--items">
-							<StatusItem type={STATUS_ITEM.pulse} data={[activeWorkout.pulse_1, activeWorkout.pulse_2]} />
-							<StatusItem type={STATUS_ITEM.turns} data={[activeWorkout.turns_1, activeWorkout.turns_2]} />
-							<StatusItem type={STATUS_ITEM.condition} data={condition} />
-						</div>
+					{
+						!activeWorkout.isWarmUp && !activeWorkout.isRecovery
+							? <div className="current-stage__content--items">
+								<StatusItem type={STATUS_ITEM.pulse} data={[activeWorkout.pulse_1, activeWorkout.pulse_2]} />
+								<StatusItem type={STATUS_ITEM.turns} data={[activeWorkout.turns_1, activeWorkout.turns_2]} />
+								<StatusItem type={STATUS_ITEM.condition} data={condition} />
+							</div>
+							: null
 					}
+
 				</div>
 			</div>
 		</div>

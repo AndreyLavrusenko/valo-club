@@ -22,19 +22,7 @@ export const TimerCountDown = ({timer}: IProps) => {
                 ref.current.style.color = "#43CC7B"
             }
 
-            if (circle.current) {
-                circle.current.style.fill = 'inherit'
-                circle.current.style.stroke = "#EDF0F4"
-            }
-
-            if (timerRef.current) {
-                timerRef.current.style.color = "#000"
-            }
-
-            if (stageRef.current) {
-                stageRef.current.style.color = "#AEAEB1"
-            }
-
+            getTimerNormalStyle()
         }
 
         if (convertFromMsToSeconds(timer) <= 20) {
@@ -42,6 +30,8 @@ export const TimerCountDown = ({timer}: IProps) => {
             if (ref.current) {
                 ref.current.style.color = "#FF7B3E"
             }
+
+            getTimerNormalStyle()
         }
 
         if (convertFromMsToSeconds(timer) <= 10) {
@@ -75,6 +65,21 @@ export const TimerCountDown = ({timer}: IProps) => {
             }
         }
     }, [timer]);
+
+    const getTimerNormalStyle = () => {
+        if (circle.current) {
+            circle.current.style.fill = 'inherit'
+            circle.current.style.stroke = "#EDF0F4"
+        }
+
+        if (timerRef.current) {
+            timerRef.current.style.color = "#000"
+        }
+
+        if (stageRef.current) {
+            stageRef.current.style.color = "#AEAEB1"
+        }
+    }
 
     return (
         <>

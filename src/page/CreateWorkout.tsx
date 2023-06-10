@@ -190,7 +190,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                 <div className="create-workout__content--title">Выберите значения для этапа</div>
 
                 <input type="checkbox" className="custom-checkbox custom-checkbox--create" name="isChill"
-                       checked={isRecovery}/>
+                       checked={isRecovery} onChange={() => console.log('change')}/>
                 <label htmlFor="isChill" onClick={() => setIsRecovery(!isRecovery)}>
                     <div style={{marginLeft: '10px'}}>Этап отдыха</div>
                 </label>
@@ -309,13 +309,23 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
             <div className="create-workout__cards">
                 {
                     allWorkouts.map((card: WorkoutType) => (
-                        <NextStageItem
+                        <div
+                            className={"draggable__parent"}
                             key={card.id}
-                            element={card}
-                            isAdmin={true}
-                            //@ts-ignore
-                            deleteStage={deleteStage}
-                        />
+                            draggable
+                        >
+                            <div
+                                className={"draggable__child"}
+
+                            ></div>
+                            <NextStageItem
+                                element={card}
+                                isAdmin={true}
+                                notLastChild={true}
+                                //@ts-ignore
+                                deleteStage={deleteStage}
+                            />
+                        </div>
                     ))
                 }
             </div>

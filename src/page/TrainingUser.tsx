@@ -4,9 +4,9 @@ import React, {useEffect, useState} from "react";
 import {workoutAPI} from "../api/api";
 import {Preloader} from "../common/Preloader";
 import {Workout, WorkoutType} from "../types/workout";
-import { useWakeLock } from "react-screen-wake-lock";
 import {Modal} from "../ui/Modal";
 import {NextStageItem} from "../component/NextStageItem";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 type IProps = {
     isTrainer: boolean
@@ -22,6 +22,12 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     const [firstEnter, setFirstEnter] = useState(false);
 
     const [modalActive, setModalActive] = useState(false);
+
+    // Общее время тренировки
+    const [timeAllStages, setTimeAllStages] = useState(0);
+
+    // Сколько времени от тренировки прошло на данный момент
+    const [timeSpendAtThisMoment, setTimeSpendAtThisMoment] = useState(0);
 
     // Отвечает за нажатие на кнопку начать тренировку, что бы нельзя было нажать 2 раза
     const [isStartButtonPressed, setIsStartButtonPressed] = useState(false);
@@ -51,6 +57,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     useEffect(() => {
         if (workout?.is_start === 0) {
             getWorkoutData();
+            setTimeSpendAtThisMoment(0)
         }
     }, [workout?.is_start]);
 
@@ -66,13 +73,15 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                     prevTime += item.time;
                 }
             });
+
+            setTimeSpendAtThisMoment(prevTime)
         }
 
         if (workoutActive) {
             // Получает предыдущий этап и выводит его сверху
-            const prevWorkout = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage - 1)
+            const prevWorkout = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage - 1);
             if (prevWorkout) {
-                setPrevStage(prevWorkout)
+                setPrevStage(prevWorkout);
             }
 
             // Функция которая вернет время старта с бэка
@@ -87,9 +96,9 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         }
 
     }, [workout?.active_stage, workout?.time_start, workout?.is_start]);
-    // Если не заработает сюда workout?.time_current
 
 
+    // Получает данные о идущей тренировки при первом запуске приложения
     useEffect(() => {
         const workoutActive = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage);
 
@@ -97,9 +106,9 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         if (workoutActive) {
 
             // Получает предыдущий этап и выводит его сверху
-            const prevWorkout = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage - 1)
+            const prevWorkout = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage - 1);
             if (prevWorkout) {
-                setPrevStage(prevWorkout)
+                setPrevStage(prevWorkout);
             }
 
             workout?.workout.forEach((item: WorkoutType) => {
@@ -150,8 +159,9 @@ export const TrainingUser = ({isTrainer}: IProps) => {
             setError("");
             setWorkout(res.data[0]);
             setAllStagesCount(res.data[0].workout.length);
-            setPrevStage(null)
-            setIsStartButtonPressed(false)
+            setPrevStage(null);
+            setIsStartButtonPressed(false);
+            getWorkoutLengthInMs(res.data[0].workout);
         }
 
         setLoading(false);
@@ -170,6 +180,20 @@ export const TrainingUser = ({isTrainer}: IProps) => {
             }
         }
     };
+
+    // Получает длину всей тренировки
+    const getWorkoutLengthInMs = (workout: WorkoutType[]) => {
+        let time = 0;
+
+        if (workout.length > 0) {
+            for (let i = 0; i < workout.length; i++) {
+                time += workout[i].time;
+            }
+        }
+
+        setTimeAllStages(time);
+    };
+    
 
     // Получает время начала тренировки
     const getTimeStart = async () => {
@@ -209,6 +233,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         }
     };
 
+
     return (
         <>
             {
@@ -224,26 +249,46 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                             <>
                                                 <main>
                                                     {prevStage
-                                                        ? <div style={{marginTop: '16px'}}>
+                                                        ? <div style={{marginTop: "16px"}}>
                                                             <NextStageItem notLastChild={true} element={prevStage} />
-                                                    </div>
+                                                          </div>
+                                                        : null
+                                                    }
+
+                                                    {workout.is_start
+
+                                                        ? <ProgressBar
+                                                            className="progressBar"
+                                                            customLabel={((timeSpendAtThisMoment / timeAllStages) * 100).toFixed(0) + '%'}
+                                                            completed={timeSpendAtThisMoment}
+                                                            maxCompleted={timeAllStages}
+                                                            baseBgColor={"#FFEEE7"}
+                                                            bgColor={"#FF7B3E"}
+                                                        />
+
                                                         : null
                                                     }
 
                                                     {
                                                         activeWorkout && workout.active_stage && workout.is_start && timeStagePast
+
                                                             ? <CurrentStage
                                                                 allStagesCount={allStagesCount}
                                                                 activeWorkout={activeWorkout}
                                                                 timeStagePast={timeStagePast}
                                                                 goToTheNextStage={goToTheNextStage}
                                                             />
+
                                                             : null
                                                     }
+
                                                     <div className="next-state">
-                                                        <NextStage activeStage={workout.active_stage}
-                                                                   workout={workout.workout}/>
+                                                        <NextStage
+                                                            activeStage={workout.active_stage}
+                                                            workout={workout.workout}
+                                                        />
                                                     </div>
+
                                                     {isTrainer && !workout.active_stage && !workout.is_start
                                                         ? <button
                                                             className="start__button"

@@ -94,7 +94,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
     }
 
     const getId = () => {
-        let id = 0
+        let id = 1
 
         if (allWorkouts.length >= 1) {
             id = allWorkouts.length + 1;
@@ -111,6 +111,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
             pulse_1: "",
             pulse_2: "",
             condition: "",
+            comment: "",
             turns_1: "",
             turns_2: ""
         });
@@ -118,6 +119,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
     const addWarmUp = async (e: any) => {
         e.preventDefault();
+
 
         if (!workoutData.minutes && !workoutData.seconds) {
             return setIsError(true);
@@ -127,7 +129,6 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
         // Получаение id по порядку
         let id = getId()
-
 
         let timeInMs = convertTime(workoutData)
 
@@ -204,6 +205,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                     turns_1: Number(workoutData.turns_1),
                     turns_2: workoutData.turns_2 ? Number(workoutData.turns_2) : 0,
                     condition: workoutData.condition,
+                    comment: workoutData.comment,
                     isRecovery: false,
                     isWarmUp: false,
 

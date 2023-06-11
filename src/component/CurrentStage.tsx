@@ -86,6 +86,15 @@ export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goTo
 
 				</div>
 			</div>
+			{
+				activeWorkout.comment
+					? <div className="current-stage__comment">
+						<div className="status-item--subtitle">
+							{activeWorkout.comment}
+						</div>
+					</div>
+					: null
+			}
 		</div>
 	);
 };

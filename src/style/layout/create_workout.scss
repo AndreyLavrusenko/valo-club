@@ -46,6 +46,19 @@
 
             margin-bottom: 12px;
 
+            &-comment {
+                flex-direction: column;
+
+                textarea {
+                    width: 100%;
+
+                    margin-bottom: 12px;
+                    margin-top: 4px;
+
+                    @include input;
+                }
+            }
+
             &--input {
                 width: 130px;
 

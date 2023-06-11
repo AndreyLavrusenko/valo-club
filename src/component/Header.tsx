@@ -29,6 +29,10 @@ export const Header = ({isTrainer, setIsTrainer}: IProps) => {
 	const hideBurgerHandler = () => {
 		if (ref.current) {
 			ref.current.checked = false;
+			if (nav.current) {
+				nav.current.style.left = "100%"
+				nav.current.style.boxShadow = "none"
+			}
 		}
 	};
 
@@ -38,6 +42,10 @@ export const Header = ({isTrainer, setIsTrainer}: IProps) => {
 
 		if (ref.current) {
 			ref.current.checked = false;
+			if (nav.current) {
+				nav.current.style.left = "100%"
+				nav.current.style.boxShadow = "none"
+			}
 		}
 	};
 

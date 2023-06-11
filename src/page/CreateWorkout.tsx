@@ -33,6 +33,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
         turns_1: "",
         turns_2: "",
         condition: "",
+        comment: "",
         isRecovery: isRecovery,
         isWarmUp: false
     });

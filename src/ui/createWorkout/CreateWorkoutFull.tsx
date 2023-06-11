@@ -128,6 +128,10 @@ export const CreateWorkoutFull = ({workoutData, isRecovery, setIsRecovery, onCha
 								</div>
 							</div>
 						</div>
+						<div className="create-workout__content-wrapper-item-comment">
+							<div className="status-item--subtitle">Комментарий</div>
+							<textarea value={workoutData.comment} onChange={onChange} name="comment"></textarea>
+						</div>
 					</>
 			}
 			<button onClick={addNewStage} className="create-workout__content--button">Добавить</button>

@@ -7,6 +7,14 @@
 
     @include white-board;
 
+    &__comment {
+        padding-top: 14px;
+        margin-top: 16px;
+
+        border-top: 1px solid $divider-color;
+    }
+
+
     &__header {
         display: flex;
         align-items: center;

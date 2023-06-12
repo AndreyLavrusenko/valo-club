@@ -254,16 +254,13 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                             <>
                                                 <main>
 
-                                                    {prevStage
-                                                        ? <div style={{marginTop: "16px"}}>
-                                                            <NextStageItem notLastChild={true} element={prevStage} />
-                                                          </div>
-                                                        : null
-                                                    }
-
                                                     {workout.is_start
 
                                                         ? <div className="progress-container">
+                                                            <div className="progress-container--header">
+                                                                <div className="status-item--subtitle">Тренировка</div>
+                                                                <p>Общее {timeAllStagesFormated}</p>
+                                                            </div>
                                                             <ProgressBar
                                                                 className="progressBar"
                                                                 customLabel={((timeSpendAtThisMoment / timeAllStages) * 100).toFixed(0) + '%'}
@@ -272,9 +269,15 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                                                 baseBgColor={"#FFEEE7"}
                                                                 bgColor={"#FF7B3E"}
                                                             />
-                                                            <p>{timeAllStagesFormated}</p>
                                                         </div>
 
+                                                        : null
+                                                    }
+
+                                                    {prevStage
+                                                        ? <div style={{marginTop: "12px"}}>
+                                                            <NextStageItem notLastChild={true} element={prevStage} prev={true} />
+                                                          </div>
                                                         : null
                                                     }
 
@@ -313,7 +316,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                                             className="start__button"
                                                             onClick={() => setModalActive(true)}
                                                         >
-                                                            Сбросить
+                                                            Завершить тренировку
                                                         </button>
                                                         : null
                                                     }

@@ -1,7 +1,8 @@
 export const STATUS_ITEM = {
     pulse: 'Пульс',
     turns: 'Обороты',
-    condition: 'Условие'
+    condition: 'Условие',
+    time: 'Время'
 }
 
 export const CONDITION_TYPE = {

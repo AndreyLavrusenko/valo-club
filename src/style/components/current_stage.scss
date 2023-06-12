@@ -3,15 +3,26 @@
 
 .current-stage {
     margin-top: 12px;
-    padding: 16px;
+    padding: 8px 16px;
 
     @include white-board;
 
     &__comment {
-        padding-top: 14px;
-        margin-top: 16px;
+        margin-top: 10px;
 
         border-top: 1px solid $divider-color;
+
+        &--text {
+            display: flex;
+            align-items: center;
+
+            margin-top: 10px;
+
+            img {
+                margin-right: 8px;
+            }
+
+        }
     }
 
 
@@ -24,6 +35,11 @@
         padding-bottom: 8px;
 
         &--stage--count {
+            display: flex;
+            align-items: center;
+        }
+
+        &--stage--stat {
             display: flex;
             align-items: center;
         }

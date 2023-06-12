@@ -8,15 +8,41 @@ main {
 .progressBar {
     width: 100%;
 
-    margin-top: 12px;
+    & > div {
+        height: 14px !important;
+
+        div {
+            height: 14px !important;
+
+            span {
+                position: relative;
+                top: 1px;
+
+                font-size: 12px !important;
+            }
+        }
+    }
 }
 
 .progress-container {
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
 
-    p {
-        margin-left: 8px;
+    margin-top: 12px;
+    padding: 8px 16px;
+
+    @include white-board;
+
+    &--header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 8px;
+
+        p {
+            @include text-gray;
+        }
     }
 }
 

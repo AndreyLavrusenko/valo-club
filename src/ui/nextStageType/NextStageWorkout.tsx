@@ -8,17 +8,16 @@ type IProps = {
     element: WorkoutType,
     isAdmin?: boolean,
     deleteStage?: (id: number) => Promise<void>,
-    notLastChild?: boolean,
     minutes: string,
     condition: string,
     prev?: boolean
 }
 
-export const NextStageWorkout = ({element, isAdmin, deleteStage, notLastChild, minutes, condition, prev}: IProps) => {
+export const NextStageWorkout = ({element, isAdmin, deleteStage, minutes, condition, prev}: IProps) => {
     return (
         <>
             {/*@ts-ignore*/}
-            <div className="next-stage__item next-stage__item--workout" style={prev ? {opacity: '0.7', marginBottom: notLastChild && '8px'} : {marginBottom: notLastChild && '8px'}}>
+            <div className="next-stage__item next-stage__item--workout" style={prev ? {opacity: '0.7'} : null}>
                 <div className="next-stage__header">
                     <div className="next-stage__header--item">
                         <CurrentStageItem current_stage={`${element.id} этап`} type={"workout"}/>

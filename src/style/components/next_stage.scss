@@ -8,9 +8,6 @@
 
        @include white-board;
 
-        &:last-child {
-            margin-bottom: 80px;
-        }
 
         &--recovery {
             border-left: 8px solid $green-color;

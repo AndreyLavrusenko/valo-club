@@ -276,7 +276,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
                                                     {prevStage
                                                         ? <div style={{marginTop: "12px"}}>
-                                                            <NextStageItem notLastChild={true} element={prevStage} prev={true} />
+                                                            <NextStageItem element={prevStage} prev={true} />
                                                           </div>
                                                         : null
                                                     }

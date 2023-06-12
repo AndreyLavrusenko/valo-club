@@ -329,7 +329,6 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                                                             element={card}
                                                             key={card.id}
                                                             isAdmin={true}
-                                                            notLastChild={true}
                                                             deleteStage={deleteStage}
                                                         />
                                                     </div>

@@ -6,7 +6,18 @@ main {
 }
 
 .progressBar {
+    width: 100%;
+
     margin-top: 12px;
+}
+
+.progress-container {
+    display: flex;
+    align-items: flex-end;
+
+    p {
+        margin-left: 8px;
+    }
 }
 
 .next-state {

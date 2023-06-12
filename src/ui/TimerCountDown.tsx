@@ -20,42 +20,26 @@ export const TimerCountDown = ({timer}: IProps) => {
         if (convertFromMsToSeconds(timer) > 20){
             if (ref.current) {
                 ref.current.style.color = "#43CC7B"
+                ref.current.style.animation = 'none';
             }
-
-            getTimerNormalStyle()
         }
 
         if (convertFromMsToSeconds(timer) <= 20) {
             // Переход на след этап
             if (ref.current) {
                 ref.current.style.color = "#FF7B3E"
+                ref.current.style.animation = 'none';
             }
-
-            getTimerNormalStyle()
         }
 
         if (convertFromMsToSeconds(timer) <= 10) {
             // Переход на след этап
             if (ref.current) {
-                ref.current.style.color = "#FF545A"
+                ref.current.style.animation = 'blinking 1s infinite';
             }
-
-            if (circle.current) {
-                circle.current.style.fill = "#FF545A"
-                circle.current.style.stroke = "#FF545A"
-            }
-
-            if (timerRef.current) {
-                timerRef.current.style.color = "#FFF"
-            }
-
-            if (stageRef.current) {
-                stageRef.current.style.color = "#FFF"
-            }
-
         }
 
-        if (convertFromMsToSeconds(timer) <= 4) {
+        if (convertFromMsToSeconds(timer) <= 6) {
             if (audioPlayer.current) {
                 try {
                     audioPlayer.current.play();
@@ -65,21 +49,6 @@ export const TimerCountDown = ({timer}: IProps) => {
             }
         }
     }, [timer]);
-
-    const getTimerNormalStyle = () => {
-        if (circle.current) {
-            circle.current.style.fill = 'inherit'
-            circle.current.style.stroke = "#EDF0F4"
-        }
-
-        if (timerRef.current) {
-            timerRef.current.style.color = "#000"
-        }
-
-        if (stageRef.current) {
-            stageRef.current.style.color = "#AEAEB1"
-        }
-    }
 
     return (
         <>

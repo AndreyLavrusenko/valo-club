@@ -234,3 +234,15 @@
 .custom-checkbox:disabled+label::before {
     background-color: $primary-light;
 }/* для элемента input c type="checkbox" */
+
+
+@keyframes blinking {
+    0% {
+        color: #FF545A;
+        stroke: #FF545A;
+    }
+    100% {
+        color: #ffdfdf;
+        stroke: #ffdfdf;
+    }
+}

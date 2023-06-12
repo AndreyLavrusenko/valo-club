@@ -1,4 +1,5 @@
 import {StatusItem} from "../StatusItem";
+import {useRef} from "react";
 
 
 type IProps = {
@@ -11,6 +12,27 @@ type IProps = {
 }
 
 export const CreateWorkoutFull = ({workoutData, isRecovery, setIsRecovery, onChange, addNewStage, isError}: IProps) => {
+
+	const standing = useRef<HTMLInputElement>(null)
+	const sitting = useRef<HTMLInputElement>(null)
+
+
+	const addNewStageHandler = async (e: any) => {
+		const err = await addNewStage(e)
+
+		// @ts-ignore
+		if (!err) {
+			if (standing.current) {
+				standing.current.checked = false
+			}
+
+			if (sitting.current) {
+				sitting.current.checked = false
+			}
+		}
+
+	}
+
 	return (
 		<>
 			<div className="create-workout__content--title">Выберите значения для этапа</div>
@@ -111,6 +133,7 @@ export const CreateWorkoutFull = ({workoutData, isRecovery, setIsRecovery, onCha
 										value={"sitting"}
 										name={"condition"}
 										onChange={onChange}
+										ref={sitting}
 										id="radio-2"
 										type="radio"
 									/>
@@ -121,6 +144,7 @@ export const CreateWorkoutFull = ({workoutData, isRecovery, setIsRecovery, onCha
 										value={"standing"}
 										name={"condition"}
 										onChange={onChange}
+										ref={standing}
 										id="radio-3"
 										type="radio"
 									/>
@@ -134,7 +158,7 @@ export const CreateWorkoutFull = ({workoutData, isRecovery, setIsRecovery, onCha
 						</div>
 					</>
 			}
-			<button onClick={addNewStage} className="create-workout__content--button">Добавить</button>
+			<button onClick={addNewStageHandler} className="create-workout__content--button">Добавить</button>
 			{isError && <p className="error">Пожалуйста, заполните все поля</p>}
 		</>
 	)

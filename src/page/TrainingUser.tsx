@@ -7,6 +7,7 @@ import {Workout, WorkoutType} from "../types/workout";
 import {Modal} from "../ui/Modal";
 import {NextStageItem} from "../component/NextStageItem";
 import ProgressBar from "@ramonak/react-progress-bar";
+import {formatTime} from "../helpers/getDate";
 
 type IProps = {
     isTrainer: boolean
@@ -25,6 +26,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
     // Общее время тренировки
     const [timeAllStages, setTimeAllStages] = useState(0);
+    const [timeAllStagesFormated, setTimeAllStagesFormated] = useState("");
 
     // Сколько времени от тренировки прошло на данный момент
     const [timeSpendAtThisMoment, setTimeSpendAtThisMoment] = useState(0);
@@ -192,6 +194,9 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         }
 
         setTimeAllStages(time);
+
+        const formatedTime = formatTime(time)
+        setTimeAllStagesFormated(formatedTime)
     };
     
 
@@ -258,14 +263,17 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
                                                     {workout.is_start
 
-                                                        ? <ProgressBar
-                                                            className="progressBar"
-                                                            customLabel={((timeSpendAtThisMoment / timeAllStages) * 100).toFixed(0) + '%'}
-                                                            completed={timeSpendAtThisMoment}
-                                                            maxCompleted={timeAllStages}
-                                                            baseBgColor={"#FFEEE7"}
-                                                            bgColor={"#FF7B3E"}
-                                                        />
+                                                        ? <div className="progress-container">
+                                                            <ProgressBar
+                                                                className="progressBar"
+                                                                customLabel={((timeSpendAtThisMoment / timeAllStages) * 100).toFixed(0) + '%'}
+                                                                completed={timeSpendAtThisMoment}
+                                                                maxCompleted={timeAllStages}
+                                                                baseBgColor={"#FFEEE7"}
+                                                                bgColor={"#FF7B3E"}
+                                                            />
+                                                            <p>{timeAllStagesFormated}</p>
+                                                        </div>
 
                                                         : null
                                                     }

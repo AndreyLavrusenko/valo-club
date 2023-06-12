@@ -1,5 +1,6 @@
 import "../style/components/ui-element.scss";
-import {useEffect, useState} from "react";
+import {memo, useEffect, useState} from "react";
+import {millisToMinutesAndSeconds} from "../helpers/getDate";
 
 import pulse from "../assets/images/heart.svg";
 import turns from "../assets/images/speedometer.svg";
@@ -11,10 +12,11 @@ type IProps = {
 	data?: number | string | Array<string | number| undefined>,
 }
 
-export const StatusItem = ({type, data}: IProps) => {
+export const StatusItem = memo(({type, data}: IProps) => {
 	const [color, setColor] = useState("");
 	const [title, setTitle] = useState("");
 	const [icon, setIcon] = useState("");
+	const [time, setTime] = useState("");
 
 	useEffect(() => {
 		switch (type) {
@@ -40,23 +42,29 @@ export const StatusItem = ({type, data}: IProps) => {
 				setColor("#EAF9F0");
 				setTitle("Время");
 				setIcon(timer_start);
+				if (data != null) {
+					// @ts-ignore
+					setTime(millisToMinutesAndSeconds(data[0]))
+				}
 				break;
 		}
 	}, []);
 
-	const dataSecond = Array.isArray(data) ? data[1] ? ' - ' + data[1] : '' : ''
-	const dataType = Array.isArray(data) ? data[0] + '' + dataSecond : data
+	const dataSecond = Array.isArray(data) ? data[1] ? " - " + data[1] : "" : "";
+	const dataType = Array.isArray(data) ? data[0] + "" + dataSecond : data;
 
 
 	return (
 		<div className="status-item">
-			<div className="status-item__round" style={{backgroundColor: color}}>
-				<img src={icon} alt=""/>
-			</div>
-			<div className="status-item--text">
-				{data && <div className="status-item--subtitle">{dataType}</div>}
+			<div className="status-item--header">
+				<div className="status-item__round" style={{backgroundColor: color}}>
+					<img src={icon} alt=""/>
+				</div>
 				<div className={data ? "status-item--title" : "status-item--subtitle"}>{title}</div>
+			</div>
+			<div className="status-item--main">
+				{data && <div className="status-item--subtitle">{time ? time : dataType}</div>}
 			</div>
 		</div>
 	);
-};
+});

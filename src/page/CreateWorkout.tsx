@@ -7,6 +7,7 @@ import {convertFromMinutesToMs, convertFromSecondsToMs} from "../helpers/getDate
 import {NextStageItem} from "../component/NextStageItem";
 import {CreateWorkoutWarmUp} from "../ui/createWorkout/CreateWorkoutWarmUp";
 import {CreateWorkoutFull} from "../ui/createWorkout/CreateWorkoutFull";
+import {DndContext} from "react-dnd";
 
 import "../style/layout/create_workout.scss";
 
@@ -285,6 +286,9 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
             </div>
             <div className="create-workout__cards">
+                {/*<DndContext collins>*/}
+
+                {/*</DndContext>*/}
                 {
                     allWorkouts.map((card: WorkoutType) => (
 

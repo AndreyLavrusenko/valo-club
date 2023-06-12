@@ -5,7 +5,8 @@ import {StatusItem} from "../ui/StatusItem";
 import {CONDITION_TYPE, STATUS_ITEM} from "../helpers/const";
 import {WorkoutType} from "../types/workout";
 import {memo, useEffect, useRef, useState} from "react";
-import {convertFromMsToMinutes, convertFromMsToSeconds} from "../helpers/getDate";
+import {convertFromMsToSeconds} from "../helpers/getDate";
+import comment from '../assets/images/comment.svg'
 import preloader from '../assets/images/preloader.svg'
 import {ProgressBar} from "../ui/ProgressBar";
 
@@ -59,11 +60,18 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 		<div className="current-stage">
 			<div className="current-stage__header">
 				<div className="current-stage__header--stage--count">
-					<h2 className="current-stage__header--stage--title">Текущий этап</h2>
-					<CurrentStageItem current_stage={`${currentStage}`} />
+					<h2 className="current-stage__header--stage--title">Текущий </h2>
+					<CurrentStageItem current_stage={`${currentStage}`} type={''} />
 				</div>
-				<div className="current-stage__header--all">
-					Всего: {allStagesCount}
+				<div className="current-stage__header--stage--stat">
+					<div className="current-stage__header--all">
+						Этапов: {allStagesCount}
+					</div>
+					{
+						activeWorkout.pulse_2
+							? <ProgressBar max={10} current={activeWorkout.pulse_2} type={"pulse"} />
+							: null
+					}
 				</div>
 			</div>
 			<div className="current-stage__content">
@@ -89,15 +97,10 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 			</div>
 
 			{
-				activeWorkout.pulse_2
-					? <ProgressBar max={10} current={activeWorkout.pulse_2} type={"pulse"} />
-					: null
-			}
-
-			{
 				activeWorkout.comment
 					? <div className="current-stage__comment">
-						<div className="status-item--subtitle">
+						<div className="status-item--title current-stage__comment--text">
+							<img src={comment} alt=""/>
 							{activeWorkout.comment}
 						</div>
 					</div>

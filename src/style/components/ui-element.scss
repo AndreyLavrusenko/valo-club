@@ -236,6 +236,34 @@
 }/* для элемента input c type="checkbox" */
 
 
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 200px;
+    height: 20px;
+
+    border: 1px solid $divider-color;
+
+    &--item {
+        width: 20px;
+        height: 18px;
+
+        background-color: #43cc7b;
+
+        &:first-child {
+            width: 19px;
+        }
+
+        &:not(:first-child) {
+            border-left: 1px solid $divider-color;
+        }
+    }
+}
+
+
 @keyframes blinking {
     0% {
         color: #FF545A;

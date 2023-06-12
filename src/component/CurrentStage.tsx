@@ -4,9 +4,10 @@ import {TimerCountDown} from "../ui/TimerCountDown";
 import {StatusItem} from "../ui/StatusItem";
 import {CONDITION_TYPE, STATUS_ITEM} from "../helpers/const";
 import {WorkoutType} from "../types/workout";
-import {useEffect, useRef, useState} from "react";
+import {memo, useEffect, useRef, useState} from "react";
 import {convertFromMsToMinutes, convertFromMsToSeconds} from "../helpers/getDate";
 import preloader from '../assets/images/preloader.svg'
+import {ProgressBar} from "../ui/ProgressBar";
 
 
 type IProps = {
@@ -16,7 +17,7 @@ type IProps = {
 	goToTheNextStage: (current_stage: number) => {}
 }
 
-export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goToTheNextStage}: IProps) => {
+export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast, goToTheNextStage}: IProps) => {
 	const [timer, setTimer] = useState(timeStagePast);
 	const [isTimerCorrectAfterReload, setIsTimerCorrectAfterReload] = useState(false);
 	const timerId = useRef();
@@ -86,6 +87,13 @@ export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goTo
 
 				</div>
 			</div>
+
+			{
+				activeWorkout.pulse_2
+					? <ProgressBar max={10} current={activeWorkout.pulse_2} type={"pulse"} />
+					: null
+			}
+
 			{
 				activeWorkout.comment
 					? <div className="current-stage__comment">
@@ -97,4 +105,4 @@ export const CurrentStage = ({activeWorkout, allStagesCount, timeStagePast, goTo
 			}
 		</div>
 	);
-};
+});

@@ -48,6 +48,7 @@ export const LoginTrainer = ({setIsTrainer}: IProps) => {
                     <input
                         type="number"
                         value={login}
+                        pattern="[0-9]*"
                         onChange={onChange}
                         className="login__input"
                         required

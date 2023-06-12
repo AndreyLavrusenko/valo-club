@@ -14,11 +14,10 @@ type IProps = {
     element: WorkoutType,
     isAdmin?: boolean,
     deleteStage?: (id: number) =>  Promise<void>,
-    notLastChild?: boolean,
     prev?: boolean,
 }
 
-export const NextStageItem = ({element, isAdmin, deleteStage, notLastChild, prev}: IProps) => {
+export const NextStageItem = ({element, isAdmin, deleteStage, prev}: IProps) => {
 
     // @ts-ignore
     const condition = CONDITION_TYPE[element.condition];
@@ -31,7 +30,7 @@ export const NextStageItem = ({element, isAdmin, deleteStage, notLastChild, prev
 
                 // Отдых
                 ? <NextStageRecovery element={element} minutes={minutes} deleteStage={deleteStage}
-                                     notLastChild={notLastChild} isAdmin={isAdmin} prev={prev} />
+                                    isAdmin={isAdmin} prev={prev} />
                 : null
             }
 
@@ -39,7 +38,7 @@ export const NextStageItem = ({element, isAdmin, deleteStage, notLastChild, prev
 
                 // Разминка
                 ? <NextStageWarmUp element={element} minutes={minutes} deleteStage={deleteStage}
-                                     notLastChild={notLastChild} isAdmin={isAdmin} prev={prev} />
+                                      isAdmin={isAdmin} prev={prev} />
                 : null
             }
 
@@ -47,7 +46,7 @@ export const NextStageItem = ({element, isAdmin, deleteStage, notLastChild, prev
 
                 // Тренировка
                 ? <NextStageWorkout element={element} minutes={minutes} condition={condition} deleteStage={deleteStage}
-                                    notLastChild={notLastChild} isAdmin={isAdmin} prev={prev} />
+                                    isAdmin={isAdmin} prev={prev} />
                 : null
             }
 

@@ -4,7 +4,7 @@ import {WorkoutType} from "../../types/workout";
 type IProps = {
 	element: WorkoutType,
 	isAdmin?: boolean,
-	deleteStage?: (id: number) => number,
+	deleteStage?: (id: number) => Promise<void>,
 	notLastChild?: boolean,
 	minutes: string,
 	prev?: boolean

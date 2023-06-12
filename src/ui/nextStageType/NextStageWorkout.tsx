@@ -7,7 +7,7 @@ import comment from "../../assets/images/comment.svg";
 type IProps = {
     element: WorkoutType,
     isAdmin?: boolean,
-    deleteStage?: (id: number) => number,
+    deleteStage?: (id: number) => Promise<void>,
     notLastChild?: boolean,
     minutes: string,
     condition: string,

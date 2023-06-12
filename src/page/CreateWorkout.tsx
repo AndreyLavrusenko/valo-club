@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import {workoutAPI} from "../api/api";
 import {WorkoutType} from "../types/workout";
@@ -7,7 +7,8 @@ import {convertFromMinutesToMs, convertFromSecondsToMs} from "../helpers/getDate
 import {NextStageItem} from "../component/NextStageItem";
 import {CreateWorkoutWarmUp} from "../ui/createWorkout/CreateWorkoutWarmUp";
 import {CreateWorkoutFull} from "../ui/createWorkout/CreateWorkoutFull";
-import {DndContext} from "react-dnd";
+//@ts-ignore
+import {DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvided} from "react-beautiful-dnd"
 
 import "../style/layout/create_workout.scss";
 
@@ -245,14 +246,41 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
         const deleteCopy = [...allWorkouts].filter((item: WorkoutType) => item.id !== index);
         // Проходит по всем элементам и меняет им id
 
+        const correctArr = setCorrectId(deleteCopy)
+
+        setAllWorkouts(correctArr);
+    };
+
+    const setCorrectId = (data: WorkoutType[]) => {
         let idx = 1;
-        for (let i = deleteCopy.length - 1; i >= 0; i--) {
-            deleteCopy[i].id = idx;
+        for (let i = data.length - 1; i >= 0; i--) {
+            data[i].id = idx;
             idx += 1;
         }
 
-        setAllWorkouts(deleteCopy);
-    };
+        return data
+    }
+
+    const handleDrop = (e: any) => {
+        const {source, destination, type} = e
+
+        if (!destination) return
+
+        if (destination.droppableId === source.droppableId && source.index === destination.index) return;
+
+        if (type === 'group') {
+            const reorderedStore = [...allWorkouts]
+            const sourceIndex = source.index
+            const destinationIndex = destination.index
+
+            const [removedWorkout] = reorderedStore.splice(sourceIndex, 1)
+            reorderedStore.splice(destinationIndex, 0, removedWorkout)
+
+            const correctReorderWorkout = setCorrectId(reorderedStore)
+            setAllWorkouts(correctReorderWorkout)
+        }
+    }
+
 
     return (
         <div className="create-workout">
@@ -286,21 +314,34 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
             </div>
             <div className="create-workout__cards">
-                {/*<DndContext collins>*/}
+                <DragDropContext onDragEnd={handleDrop}>
+                    <div>
+                        <Droppable droppableId={"ROOT"} type="group">
+                            {(provided: DroppableProvided) => (
+                                <div {...provided.droppableProps} ref={provided.innerRef}>
+                                    {
+                                        allWorkouts.map((card: WorkoutType, index: number) => (
 
-                {/*</DndContext>*/}
-                {
-                    allWorkouts.map((card: WorkoutType) => (
-
-                        <NextStageItem
-                            element={card}
-                            key={card.id}
-                            isAdmin={true}
-                            //@ts-ignore
-                            deleteStage={deleteStage}
-                        />
-                    ))
-                }
+                                            <Draggable draggableId={card.id.toString()} key={card.id} index={index}>
+                                                {(provided: DraggableProvided) => (
+                                                    <div {...provided.dragHandleProps} {...provided.draggableProps} ref={provided.innerRef}>
+                                                        <NextStageItem
+                                                            element={card}
+                                                            key={card.id}
+                                                            isAdmin={true}
+                                                            notLastChild={true}
+                                                            deleteStage={deleteStage}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))
+                                    }
+                                </div>
+                            )}
+                        </Droppable>
+                    </div>
+                </DragDropContext>
             </div>
             <button onClick={onSaveChange} className="create-workout__footer--button">Сохранить</button>
         </div>

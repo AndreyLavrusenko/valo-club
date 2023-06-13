@@ -17,7 +17,7 @@ export const NextStageWorkout = ({element, isAdmin, deleteStage, minutes, condit
     return (
         <>
             {/*@ts-ignore*/}
-            <div className="next-stage__item next-stage__item--workout" style={prev ? {opacity: '0.7'} : null}>
+            <div className="next-stage__item next-stage__item--workout" style={prev ? {opacity: '0.5'} : null}>
                 <div className="next-stage__header">
                     <div className="next-stage__header--item">
                         <CurrentStageItem current_stage={`${element.id} этап`} type={"workout"}/>

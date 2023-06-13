@@ -42,6 +42,10 @@ export const CreateWorkoutWarmUp = ({workoutData, isError, onChange, addWarmUp}:
 					/>
 				</div>
 			</div>
+			<div className="create-workout__content-wrapper-item-comment">
+				<div className="status-item--subtitle">Комментарий</div>
+				<textarea value={workoutData.comment} onChange={onChange} name="comment"></textarea>
+			</div>
 
 
 			<button onClick={addWarmUp} className="create-workout__content--button">Добавить</button>

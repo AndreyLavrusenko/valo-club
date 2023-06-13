@@ -10,25 +10,32 @@ export const CurrentStageItem = ({current_stage, type}: IProps) => {
 	const [color, setColor] = useState("");
 	const [colorBg, setColorBg] = useState("");
 	const [marginLeft, setMarginLeft] = useState(0);
+	const [text, setText] = useState("");
 
 	useEffect(() => {
 		if (type === "recovery") {
 			setColor("#43CC7B");
 			setColorBg("#EAF9F0");
-			setMarginLeft(-8)
+			setMarginLeft(-8);
+			setText("Отдых")
 		} else if (type === "warmup") {
 			setColor("#1CC3E6");
 			setColorBg("#EFF9FF");
-			setMarginLeft(-8)
-		} else if (type === "workout") {
+			setMarginLeft(-8);
+			setText("Разминка")
+		} else {
 			setColor("#FF7B3E");
 			setColorBg("#FFEEE7");
+			setText(current_stage)
 		}
+
+		console.log(current_stage)
+
 	}, []);
 
 	return (
 		<div className="current-stage--item" style={{background: colorBg, color: color, marginLeft: marginLeft}}>
-			{current_stage}
+			{text}
 		</div>
 	);
 };

@@ -29,7 +29,7 @@ export const CurrentStageItem = ({current_stage, type}: IProps) => {
 			setText(current_stage)
 		}
 
-	}, []);
+	}, [current_stage]);
 
 	return (
 		<div className="current-stage--item" style={{background: colorBg, color: color, marginLeft: marginLeft}}>

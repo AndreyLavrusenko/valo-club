@@ -6,8 +6,8 @@ import {CONDITION_TYPE, STATUS_ITEM} from "../helpers/const";
 import {WorkoutType} from "../types/workout";
 import {memo, useEffect, useRef, useState} from "react";
 import {convertFromMsToSeconds} from "../helpers/getDate";
-import comment from '../assets/images/comment.svg'
-import preloader from '../assets/images/preloader.svg'
+import comment from "../assets/images/comment.svg";
+import preloader from "../assets/images/preloader.svg";
 import {ProgressBar} from "../ui/ProgressBar";
 
 
@@ -27,8 +27,8 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 		(timerId.current as any) = setInterval(() => {
 			setTimer(prev => prev - 1000);
 			setTimeout(() => {
-				setIsTimerCorrectAfterReload(true)
-			}, 1000)
+				setIsTimerCorrectAfterReload(true);
+			}, 1000);
 		}, 1000);
 
 		return () => clearInterval(timerId.current);
@@ -61,7 +61,7 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 			<div className="current-stage__header">
 				<div className="current-stage__header--stage--count">
 					<h2 className="current-stage__header--stage--title">Текущий </h2>
-					<CurrentStageItem current_stage={`${currentStage}`} type={''} />
+					<CurrentStageItem current_stage={currentStage.toString()} type={""} />
 				</div>
 				<div className="current-stage__header--stage--stat">
 					<div className="current-stage__header--all">
@@ -101,7 +101,7 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 									className="current-stage__header--stage--title current-stage__header--stage--title-rest"
 								>
 									{/*style={activeWorkout.isRecovery ? {color: '#43CC7B'} : {color: '#1CC3E6'}}*/}
-									{activeWorkout.isRecovery ? 'Отдых' : 'Разминка'}
+									{activeWorkout.isRecovery ? "Отдых" : "Разминка"}
 								</div>
 							</div>
 							: null

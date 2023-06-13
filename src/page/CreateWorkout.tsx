@@ -141,16 +141,15 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                 time: timeInMs,
                 isRecovery: false,
                 isWarmUp: true,
+                comment: workoutData.comment,
             };
 
             setAllWorkouts([deployArrWorkout, ...allWorkouts]);
             setIsWarmUpActive(false);
-
-            clearWorkoutField()
         }
     };
 
-    const addNewStage = async (e: any): Promise<boolean> => {
+    const addNewStage = async (e: any) => {
         e.preventDefault();
 
         // Если восстановление
@@ -158,7 +157,6 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
             if (!workoutData.minutes && !workoutData.seconds) {
                 setIsError(true);
-                return true
             }
 
             setIsError(false);
@@ -175,15 +173,13 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                     time: timeInMs,
                     isRecovery: true,
                     isWarmUp: false,
+                    comment: workoutData.comment,
                 };
 
                 setAllWorkouts([deployArrWorkout, ...allWorkouts]);
-                clearWorkoutField()
 
-                return false
             }
 
-            return false
 
         } else {
             // Если этап тренировки и все поля заполнены
@@ -194,7 +190,6 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                 || !workoutData.condition
             ) {
                 setIsError(true);
-                return true
             }
 
             setIsError(false);
@@ -221,11 +216,8 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                 };
 
                 setAllWorkouts([deployArrWorkout, ...allWorkouts]);
-                clearWorkoutField()
-                return false
             }
 
-            return true
         }
     };
 

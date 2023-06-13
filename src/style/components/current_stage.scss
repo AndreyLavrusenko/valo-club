@@ -47,7 +47,12 @@
         &--stage--title {
             padding-right: 8px;
 
-           @include title
+           @include title;
+
+            &-rest {
+                font-size: 24px;
+                margin-left: -54px;
+            }
         }
 
         &--all {

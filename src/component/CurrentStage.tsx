@@ -93,6 +93,20 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 							: null
 					}
 
+					{/* Показывать если разминка или отдых */}
+					{
+						activeWorkout.isWarmUp || activeWorkout.isRecovery
+							? <div className="current-stage__content--items">
+								<div
+									className="current-stage__header--stage--title current-stage__header--stage--title-rest"
+								>
+									{/*style={activeWorkout.isRecovery ? {color: '#43CC7B'} : {color: '#1CC3E6'}}*/}
+									{activeWorkout.isRecovery ? 'Отдых' : 'Разминка'}
+								</div>
+							</div>
+							: null
+					}
+
 				</div>
 			</div>
 

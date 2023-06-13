@@ -13,7 +13,7 @@ export const NextStageWarmUp = ({element, isAdmin, deleteStage, minutes, prev}: 
 	return (
 		<>
 			{/*@ts-ignore*/}
-			<div className="next-stage__item next-stage__item--warmup" style={prev ? {opacity: '0.7'} : null}>
+			<div className="next-stage__item next-stage__item--warmup" style={prev ? {opacity: '0.5'} : null}>
 				<div className="next-stage__header next-stage__header--warmup">
 					<div className="next-stage__header--item">
 						<CurrentStageItem current_stage={`${element.id} этап`} type={"warmup"} />

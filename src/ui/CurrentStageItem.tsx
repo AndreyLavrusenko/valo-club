@@ -29,8 +29,6 @@ export const CurrentStageItem = ({current_stage, type}: IProps) => {
 			setText(current_stage)
 		}
 
-		console.log(current_stage)
-
 	}, []);
 
 	return (

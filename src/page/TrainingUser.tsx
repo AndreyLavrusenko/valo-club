@@ -76,7 +76,6 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                 }
             });
 
-            setTimeSpendAtThisMoment(prevTime)
         }
 
         if (workoutActive) {
@@ -145,6 +144,8 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                     active_stage: res.data[0].active_stage,
                     time_current: res.data[0].time_current
                 });
+
+                setTimeSpendAtThisMoment(workout.time_current - workout.time_start)
 
                 setFirstEnter(true);
             }

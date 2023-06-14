@@ -20,15 +20,35 @@ export const ProgressBar = memo(({max = 10, current, type}: IProps) => {
 			} else if (current >= 100 && current < 110) {
 				setCount(2)
 				setColor("#43CC7B")
-			} else if (current >= 110 && current < 120) {
+
+			} else if (current >= 110 && current < 130) {
 				setCount(3)
 				setColor("#43CC7B")
-			} else if (current >= 120 && current < 130) {
+			} else if (current >= 130 && current < 150) {
 				setCount(4)
 				setColor("#FFDC3E")
+			} else if (current >= 150 && current < 155) {
+				setCount(5)
+				setColor("#FFDC3E")
+			} else if (current >= 155 && current < 160) {
+				setCount(6)
+				setColor("#FF7B3E")
+			} else if (current >= 160 && current < 165) {
+				setCount(7)
+				setColor("#FF7B3E")
+			} else if (current >= 165 && current < 170) {
+				setCount(8)
+				setColor("#FF545A")
+			} else if (current >= 170 && current < 175) {
+				setCount(9)
+				setColor("#FF545A")
+			} else {
+				setCount(10)
+				setColor("#FF545A")
 			}
 		}
-	}, []);
+	}, [current]);
+
 
 	return (
 		<>

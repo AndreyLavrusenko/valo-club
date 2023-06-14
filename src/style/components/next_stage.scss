@@ -8,11 +8,20 @@
 
        @include white-board;
 
-        &:last-child {
-            margin-bottom: 80px;
+
+        &--recovery {
+            border-left: 6px solid $green-color;
         }
 
-        &--recovery {}
+        &--warmup {
+            border-left: 6px solid $blue-color;
+        }
+
+        &--workout {
+            border-left: 6px solid $primary;
+
+            padding: 16px 8px;
+        }
     }
 
     &__header {
@@ -29,6 +38,11 @@
             padding-bottom: 0;
         }
 
+        &--warmup {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
         &--item {
             display: flex;
             align-items: center;
@@ -38,7 +52,7 @@
         p {
             margin-left: 8px;
 
-            color: $gray-color;
+            color: $black-color;
 
             font-weight: 500;
             font-size: 14px;
@@ -70,11 +84,17 @@
         &--divider {
             content: "";
             width: 1px;
-            height: 34px;
+            height: 40px;
 
             display: block;
 
             background-color: $divider-color;
         }
+    }
+
+    &__footer {
+        margin-top: 8px;
+
+        border-top: 1px solid $divider-color;
     }
 }

@@ -7,6 +7,7 @@ import {Workout, WorkoutType} from "../types/workout";
 import {Modal} from "../ui/Modal";
 import {NextStageItem} from "../component/NextStageItem";
 import ProgressBar from "@ramonak/react-progress-bar";
+import {formatTime} from "../helpers/getDate";
 
 type IProps = {
     isTrainer: boolean
@@ -25,6 +26,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
     // Общее время тренировки
     const [timeAllStages, setTimeAllStages] = useState(0);
+    const [timeAllStagesFormated, setTimeAllStagesFormated] = useState("");
 
     // Сколько времени от тренировки прошло на данный момент
     const [timeSpendAtThisMoment, setTimeSpendAtThisMoment] = useState(0);
@@ -74,7 +76,6 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                 }
             });
 
-            setTimeSpendAtThisMoment(prevTime)
         }
 
         if (workoutActive) {
@@ -144,6 +145,8 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                     time_current: res.data[0].time_current
                 });
 
+                setTimeSpendAtThisMoment(workout.time_current - workout.time_start)
+
                 setFirstEnter(true);
             }
         }
@@ -192,6 +195,9 @@ export const TrainingUser = ({isTrainer}: IProps) => {
         }
 
         setTimeAllStages(time);
+
+        const formatedTime = formatTime(time)
+        setTimeAllStagesFormated(formatedTime)
     };
     
 
@@ -248,24 +254,31 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                         workout ?
                                             <>
                                                 <main>
-                                                    {prevStage
-                                                        ? <div style={{marginTop: "16px"}}>
-                                                            <NextStageItem notLastChild={true} element={prevStage} />
-                                                          </div>
-                                                        : null
-                                                    }
 
                                                     {workout.is_start
 
-                                                        ? <ProgressBar
-                                                            className="progressBar"
-                                                            customLabel={((timeSpendAtThisMoment / timeAllStages) * 100).toFixed(0) + '%'}
-                                                            completed={timeSpendAtThisMoment}
-                                                            maxCompleted={timeAllStages}
-                                                            baseBgColor={"#FFEEE7"}
-                                                            bgColor={"#FF7B3E"}
-                                                        />
+                                                        ? <div className="progress-container">
+                                                            <div className="progress-container--header">
+                                                                <div className="status-item--subtitle">Тренировка</div>
+                                                                <p>Общее {timeAllStagesFormated}</p>
+                                                            </div>
+                                                            <ProgressBar
+                                                                className="progressBar"
+                                                                customLabel={((timeSpendAtThisMoment / timeAllStages) * 100).toFixed(0) + '%'}
+                                                                completed={timeSpendAtThisMoment}
+                                                                maxCompleted={timeAllStages}
+                                                                baseBgColor={"#FFEEE7"}
+                                                                bgColor={"#FF7B3E"}
+                                                            />
+                                                        </div>
 
+                                                        : null
+                                                    }
+
+                                                    {prevStage
+                                                        ? <div style={{marginTop: "12px"}}>
+                                                            <NextStageItem element={prevStage} prev={true} />
+                                                          </div>
                                                         : null
                                                     }
 
@@ -304,7 +317,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
                                                             className="start__button"
                                                             onClick={() => setModalActive(true)}
                                                         >
-                                                            Сбросить
+                                                            Завершить тренировку
                                                         </button>
                                                         : null
                                                     }

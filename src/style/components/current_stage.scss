@@ -3,9 +3,28 @@
 
 .current-stage {
     margin-top: 12px;
-    padding: 16px;
+    padding: 8px 16px;
 
     @include white-board;
+
+    &__comment {
+        margin-top: 10px;
+
+        border-top: 1px solid $divider-color;
+
+        &--text {
+            display: flex;
+            align-items: center;
+
+            margin-top: 10px;
+
+            img {
+                margin-right: 8px;
+            }
+
+        }
+    }
+
 
     &__header {
         display: flex;
@@ -20,10 +39,20 @@
             align-items: center;
         }
 
+        &--stage--stat {
+            display: flex;
+            align-items: center;
+        }
+
         &--stage--title {
             padding-right: 8px;
 
-           @include title
+           @include title;
+
+            &-rest {
+                font-size: 24px;
+                margin-left: -54px;
+            }
         }
 
         &--all {

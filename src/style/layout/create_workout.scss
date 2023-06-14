@@ -3,6 +3,7 @@
 
 .create-workout {
     padding: 20px;
+    margin-bottom: 80px;
 
     &__header {
         display: flex;
@@ -45,6 +46,19 @@
             align-items: center;
 
             margin-bottom: 12px;
+
+            &-comment {
+                flex-direction: column;
+
+                textarea {
+                    width: 100%;
+
+                    margin-bottom: 12px;
+                    margin-top: 4px;
+
+                    @include input;
+                }
+            }
 
             &--input {
                 width: 130px;
@@ -125,16 +139,4 @@
         margin-bottom: 12px;
     }
 
-    .draggable__parent {
-        position: relative;
-    }
-
-    .draggable__child {
-        position: absolute;
-        width: 30px;
-        height: 30px;
-
-        //background-color: #1CC3E6;
-
-    }
 }

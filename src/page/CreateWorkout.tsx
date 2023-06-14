@@ -1,13 +1,17 @@
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {StatusItem} from "../ui/StatusItem";
+import React, {useEffect, useState} from "react";
 
 import {workoutAPI} from "../api/api";
 import {WorkoutType} from "../types/workout";
 import {convertFromMinutesToMs, convertFromSecondsToMs} from "../helpers/getDate";
 import {NextStageItem} from "../component/NextStageItem";
+import {CreateWorkoutWarmUp} from "../ui/createWorkout/CreateWorkoutWarmUp";
+import {CreateWorkoutFull} from "../ui/createWorkout/CreateWorkoutFull";
+//@ts-ignore
+import {DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvided} from "react-beautiful-dnd"
 
 import "../style/layout/create_workout.scss";
+
 
 type IProps = {
     isTrainer: boolean
@@ -17,19 +21,23 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
     const [allWorkouts, setAllWorkouts] = useState<WorkoutType[]>([]);
     const [isError, setIsError] = useState(false);
 
+    const [isWarmUpActive, setIsWarmUpActive] = useState(false);
+
     // Смотрит сейчас тренировка или отдых
     const [isRecovery, setIsRecovery] = useState(false);
 
     const [workoutData, setWorkoutData] = useState({
         id: 1,
-        minutes: undefined,
-        seconds: undefined,
-        pulse_1: undefined,
-        pulse_2: undefined,
-        turns_1: undefined,
-        turns_2: undefined,
-        condition: undefined,
+        minutes: "",
+        seconds: "",
+        pulse_1: "",
+        pulse_2: "",
+        turns_1: "",
+        turns_2: "",
+        condition: "",
+        comment: "",
         isRecovery: isRecovery,
+        isWarmUp: false
     });
 
     const navigation = useNavigate();
@@ -43,16 +51,25 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
     }, []);
 
+    useEffect(() => {
+        if (allWorkouts.length === 0) {
+            setIsWarmUpActive(true)
+        } else {
+            setIsWarmUpActive(false)
+        }
+    }, [allWorkouts]);
+
 
     const getWorkoutData = async () => {
         const {data} = await workoutAPI.getWorkout(1);
 
-        if (data[0].workout.length > 1) {
+        if (data[0].workout.length === 0) {
+            setIsWarmUpActive(true);
+        } else if (data[0].workout.length > 1) {
             setAllWorkouts(data[0].workout.reverse());
-        } else {
+        } else if (data[0].workout.length === 1){
             setAllWorkouts(data[0].workout);
         }
-
     };
 
     const onChange = (e: any) => {
@@ -64,45 +81,105 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
         }
     };
 
+    const convertTime = (workoutData: any) => {
+        let timeInMs = 0
+
+        if (workoutData.minutes) {
+            timeInMs += convertFromMinutesToMs(Number(workoutData.minutes));
+        }
+
+        if (workoutData.seconds) {
+            timeInMs += convertFromSecondsToMs(Number(workoutData.seconds));
+        }
+
+        return timeInMs
+    }
+
+    const getId = () => {
+        let id = 1
+
+        if (allWorkouts.length >= 1) {
+            id = allWorkouts.length + 1;
+        }
+
+        return id
+    }
+
+    const clearWorkoutField = () => {
+        setWorkoutData({
+            ...workoutData,
+            minutes: "",
+            seconds: "",
+            pulse_1: "",
+            pulse_2: "",
+            condition: "",
+            comment: "",
+            turns_1: "",
+            turns_2: ""
+        });
+    }
+
+    const addWarmUp = async (e: any) => {
+        e.preventDefault();
+
+
+        if (!workoutData.minutes && !workoutData.seconds) {
+            return setIsError(true);
+        }
+
+        setIsError(false);
+
+        // Получаение id по порядку
+        let id = getId()
+
+        let timeInMs = convertTime(workoutData)
+
+        if (timeInMs && id) {
+
+            const deployArrWorkout = {
+                id,
+                time: timeInMs,
+                isRecovery: false,
+                isWarmUp: true,
+                comment: workoutData.comment,
+            };
+
+            setAllWorkouts([deployArrWorkout, ...allWorkouts]);
+            setIsWarmUpActive(false);
+        }
+    };
+
     const addNewStage = async (e: any) => {
         e.preventDefault();
 
+        // Если восстановление
         if (isRecovery) {
 
             if (!workoutData.minutes && !workoutData.seconds) {
-                return setIsError(true);
+                setIsError(true);
             }
 
             setIsError(false);
 
             // Получаение id по порядку
-            let id = 1;
+            let id = getId()
 
-            if (allWorkouts.length >= 1) {
-                id = allWorkouts.length + 1;
-            }
-
-
-            let timeInMs = 0;
-
-            if (workoutData.minutes) {
-                timeInMs += convertFromMinutesToMs(workoutData.minutes);
-            }
-
-            if (workoutData.seconds) {
-                timeInMs += convertFromSecondsToMs(workoutData.seconds);
-            }
+            let timeInMs = convertTime(workoutData)
 
             if (timeInMs && id) {
 
                 const deployArrWorkout = {
                     id,
                     time: timeInMs,
-                    isRecovery: true
+                    isRecovery: true,
+                    isWarmUp: false,
+                    comment: workoutData.comment,
                 };
 
                 setAllWorkouts([deployArrWorkout, ...allWorkouts]);
+
             }
+
 
         } else {
             // Если этап тренировки и все поля заполнены
@@ -112,28 +189,15 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                 || !workoutData.pulse_1
                 || !workoutData.condition
             ) {
-                return setIsError(true);
+                setIsError(true);
             }
 
             setIsError(false);
 
             // Получаение id по порядку
-            let id = 1;
+            let id = getId()
 
-            if (allWorkouts.length >= 1) {
-                id = allWorkouts.length + 1;
-            }
-
-
-            let timeInMs = 0;
-
-            if (workoutData.minutes) {
-                timeInMs += convertFromMinutesToMs(workoutData.minutes);
-            }
-
-            if (workoutData.seconds) {
-                timeInMs += convertFromSecondsToMs(workoutData.seconds);
-            }
+            let timeInMs = convertTime(workoutData)
 
             if (timeInMs && id) {
 
@@ -145,13 +209,16 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                     turns_1: Number(workoutData.turns_1),
                     turns_2: workoutData.turns_2 ? Number(workoutData.turns_2) : 0,
                     condition: workoutData.condition,
-                    isRecovery: false
+                    comment: workoutData.comment,
+                    isRecovery: false,
+                    isWarmUp: false,
+
                 };
 
                 setAllWorkouts([deployArrWorkout, ...allWorkouts]);
             }
-        }
 
+        }
     };
 
     const onSaveChange = async (e: any) => {
@@ -171,14 +238,41 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
         const deleteCopy = [...allWorkouts].filter((item: WorkoutType) => item.id !== index);
         // Проходит по всем элементам и меняет им id
 
+        const correctArr = setCorrectId(deleteCopy)
+
+        setAllWorkouts(correctArr);
+    };
+
+    const setCorrectId = (data: WorkoutType[]) => {
         let idx = 1;
-        for (let i = deleteCopy.length - 1; i >= 0; i--) {
-            deleteCopy[i].id = idx;
+        for (let i = data.length - 1; i >= 0; i--) {
+            data[i].id = idx;
             idx += 1;
         }
 
-        setAllWorkouts(deleteCopy);
-    };
+        return data
+    }
+
+    const handleDrop = (e: any) => {
+        const {source, destination, type} = e
+
+        if (!destination) return
+
+        if (destination.droppableId === source.droppableId && source.index === destination.index) return;
+
+        if (type === 'group') {
+            const reorderedStore = [...allWorkouts]
+            const sourceIndex = source.index
+            const destinationIndex = destination.index
+
+            const [removedWorkout] = reorderedStore.splice(sourceIndex, 1)
+            reorderedStore.splice(destinationIndex, 0, removedWorkout)
+
+            const correctReorderWorkout = setCorrectId(reorderedStore)
+            setAllWorkouts(correctReorderWorkout)
+        }
+    }
+
 
     return (
         <div className="create-workout">
@@ -187,147 +281,58 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                 <div className="create-workout__header--count">Этапов: {allWorkouts.length}</div>
             </div>
             <div className="create-workout__content">
-                <div className="create-workout__content--title">Выберите значения для этапа</div>
 
-                <input type="checkbox" className="custom-checkbox custom-checkbox--create" name="isChill"
-                       checked={isRecovery} onChange={() => console.log('change')}/>
-                <label htmlFor="isChill" onClick={() => setIsRecovery(!isRecovery)}>
-                    <div style={{marginLeft: '10px'}}>Этап отдыха</div>
-                </label>
-
-                <div className="create-workout__content-wrapper-item">
-                    <StatusItem type={"Время"}/>
-                    <div>
-                        <input
-                            value={workoutData.minutes}
-                            name={"minutes"}
-                            onChange={onChange}
-                            required
-                            max={59}
-                            pattern="[0-9]*"
-                            type="number"
-                            placeholder={"Мин"}
-                            className="create-workout__content-wrapper-item--input create-workout__content-wrapper-item--input-small"
-                        />
-                        <input
-                            value={workoutData.seconds}
-                            name={"seconds"}
-                            onChange={onChange}
-                            required
-                            max={59}
-                            pattern="[0-9]*"
-                            type="number"
-                            placeholder={"Сек"}
-                            className="create-workout__content-wrapper-item--input create-workout__content-wrapper-item--input-small"
-                        />
-                    </div>
-                </div>
                 {
-                    isRecovery
-                        ? null
+                    isWarmUpActive
+                     ? <>
+                            <CreateWorkoutWarmUp
+                                workoutData={workoutData}
+                                onChange={onChange}
+                                addWarmUp={addWarmUp}
+                                isError={isError}/>
+                        </>
                         : <>
-                            <div className="create-workout__content-wrapper-item">
-                                <StatusItem type={"Пульс"}/>
-                                <div>
-                                    <input
-                                        value={workoutData.pulse_1}
-                                        name={"pulse_1"}
-                                        onChange={onChange}
-                                        required
-                                        type="text"
-                                        placeholder={"От"}
-                                        className="create-workout__content-wrapper-item--input create-workout__content-wrapper-item--input-small"
-                                    />
-                                    <input
-                                        value={workoutData.pulse_2}
-                                        name={"pulse_2"}
-                                        onChange={onChange}
-                                        required
-                                        type="number"
-                                        pattern="[0-9]*"
-                                        placeholder={"До"}
-                                        className="create-workout__content-wrapper-item--input create-workout__content-wrapper-item--input-small"
-                                    />
-                                </div>
-
-                            </div>
-                            <div className="create-workout__content-wrapper-item">
-                                <StatusItem type={"Обороты"}/>
-                                <div>
-                                    <input
-                                        value={workoutData.turns_1}
-                                        name={"turns_1"}
-                                        onChange={onChange}
-                                        required
-                                        type="number"
-                                        pattern="[0-9]*"
-                                        placeholder={"От"}
-                                        className="create-workout__content-wrapper-item--input create-workout__content-wrapper-item--input-small"
-                                    />
-                                    <input
-                                        value={workoutData.turns_2}
-                                        name={"turns_2"}
-                                        onChange={onChange}
-                                        type="number"
-                                        pattern="[0-9]*"
-                                        placeholder={"До"}
-                                        className="create-workout__content-wrapper-item--input create-workout__content-wrapper-item--input-small"
-                                    />
-                                </div>
-
-                            </div>
-                            <div className="create-workout__content-wrapper-item">
-                                <StatusItem type={"Условие"}/>
-                                <div>
-                                    <div className="form_radio_btn">
-                                        <input
-                                            value={"sitting"}
-                                            name={"condition"}
-                                            onChange={onChange}
-                                            id="radio-2"
-                                            type="radio"
-                                        />
-                                        <label htmlFor="radio-2">Сидя</label>
-                                    </div>
-                                    <div className="form_radio_btn">
-                                        <input
-                                            value={"standing"}
-                                            name={"condition"}
-                                            onChange={onChange}
-                                            id="radio-3"
-                                            type="radio"
-                                        />
-                                        <label htmlFor="radio-3">Стоя</label>
-                                    </div>
-                                </div>
-                            </div>
+                            <CreateWorkoutFull
+                                 addNewStage={addNewStage}
+                                 isError={isError}
+                                 onChange={onChange}
+                                 workoutData={workoutData}
+                                 isRecovery={isRecovery}
+                                 setIsRecovery={setIsRecovery}
+                            />
                         </>
                 }
-                <button onClick={addNewStage} className="create-workout__content--button">Добавить</button>
-                {isError && <p className="error">Пожалуйста, заполните все поля</p>}
+
+
             </div>
             <div className="create-workout__cards">
-                {
-                    allWorkouts.map((card: WorkoutType) => (
-                        <div
-                            className={"draggable__parent"}
-                            key={card.id}
-                            draggable
-                        >
-                            <div
-                                className={"draggable__child"}
+                <DragDropContext onDragEnd={handleDrop}>
+                    <div>
+                        <Droppable droppableId={"ROOT"} type="group">
+                            {(provided: DroppableProvided) => (
+                                <div {...provided.droppableProps} ref={provided.innerRef}>
+                                    {
+                                        allWorkouts.map((card: WorkoutType, index: number) => (
 
-                            ></div>
-                            <NextStageItem
-                                element={card}
-                                isAdmin={true}
-                                notLastChild={true}
-                                //@ts-ignore
-                                deleteStage={deleteStage}
-                            />
-                        </div>
-                    ))
-                }
+                                            <Draggable draggableId={card.id.toString()} key={card.id} index={index}>
+                                                {(provided: DraggableProvided) => (
+                                                    <div {...provided.dragHandleProps} {...provided.draggableProps} ref={provided.innerRef}>
+                                                        <NextStageItem
+                                                            element={card}
+                                                            key={card.id}
+                                                            isAdmin={true}
+                                                            deleteStage={deleteStage}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))
+                                    }
+                                </div>
+                            )}
+                        </Droppable>
+                    </div>
+                </DragDropContext>
             </div>
             <button onClick={onSaveChange} className="create-workout__footer--button">Сохранить</button>
         </div>

@@ -1,9 +1,9 @@
 import React, {ChangeEvent, useState} from "react";
 import jwtDecode from "jwt-decode";
-import {useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {authAPI} from "../api/api";
 
-import '../style/layout/login.scss'
+import "../style/layout/login.scss";
 
 type IProps = {
     setIsTrainer: Function
@@ -11,15 +11,10 @@ type IProps = {
 
 export const LoginTrainer = ({setIsTrainer}: IProps) => {
     const [login, setLogin] = useState("");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
-
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target) {
-            setLogin(e.target.value);
-        }
-    };
 
     const trainerLogin = async (event: React.FormEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -30,7 +25,7 @@ export const LoginTrainer = ({setIsTrainer}: IProps) => {
                 setError("");
                 if ((jwtDecode(res.token) as any).isTrainer) {
                     window.localStorage.setItem("token", res.token);
-                    setIsTrainer(true)
+                    setIsTrainer(true);
                     navigate("/");
                 }
             } else {
@@ -43,18 +38,26 @@ export const LoginTrainer = ({setIsTrainer}: IProps) => {
     return (
         <>
             <div className="login">
-                <h2 className="login__title">Вход для тренера</h2>
+                <h2 className="login__title">Вход в аккаунт</h2>
                 <form className="login__container">
                     <input
-                        type="number"
+                        type="text"
                         value={login}
-                        pattern="[0-9]*"
-                        onChange={onChange}
+                        onChange={e => setLogin(e.target.value)}
                         className="login__input"
                         required
                         placeholder="Логин для входа"
                     />
+                    <input
+                        type="text"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        className="login__input"
+                        required
+                        placeholder="Пароль для входа"
+                    />
                     <button className="login__button" onClick={trainerLogin}>Вход</button>
+                    <NavLink to={"/registration"}>Еще нет акканута?</NavLink>
                 </form>
                 {error
                     ? <p className="error u-margin-top-l">{error}</p>

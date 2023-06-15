@@ -15,4 +15,26 @@
 
     background-color: $white-color;
     box-shadow: $shadow-reverse;
+
+    &-divider {
+        content: "";
+
+        width: 1px;
+        height: 100%;
+
+        display: block;
+
+        background-color: $divider-color;
+    }
+
+    &-item {
+        display: flex;
+        justify-content: center;
+
+        margin: 0 auto;
+
+        text-decoration: none;
+
+        color: $gray-color;
+    }
 }

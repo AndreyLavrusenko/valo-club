@@ -69,6 +69,22 @@
     border: none;
 }
 
+
+@mixin button-orange-big-outline {
+    padding: 14px 20px;
+
+    color: $primary;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+
+    background: $primary-light;
+    border-radius: 6px;
+    border: none;
+}
+
+
 @mixin title {
     color: $black-color;
 

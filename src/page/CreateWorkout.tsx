@@ -2,6 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 
 import {workoutAPI} from "../api/api";
+import {useAppSelector} from "../hook/redux";
 import {WorkoutType} from "../types/workout";
 import {convertFromMinutesToMs, convertFromSecondsToMs} from "../helpers/getDate";
 import {NextStageItem} from "../component/NextStageItem";
@@ -11,7 +12,8 @@ import {CreateWorkoutFull} from "../ui/createWorkout/CreateWorkoutFull";
 import {DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvided} from "react-beautiful-dnd"
 
 import "../style/layout/create_workout.scss";
-import {useAppSelector} from "../hook/redux";
+
+import play from '../assets/images/play.svg'
 
 
 export const CreateWorkout = () => {
@@ -338,7 +340,11 @@ export const CreateWorkout = () => {
                     </div>
                 </DragDropContext>
             </div>
-            <button onClick={onSaveChange} className="create-workout__footer--button">Сохранить</button>
+
+            <div className="create-workout__footer--buttons">
+                <button onClick={onSaveChange} className="create-workout__footer--button create-workout__footer--button-1">Сохранить</button>
+                <button className="create-workout__footer--button create-workout__footer--button-2">Начать</button>
+            </div>
         </div>
     );
 };

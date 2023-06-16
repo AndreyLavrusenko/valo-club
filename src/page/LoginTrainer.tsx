@@ -4,12 +4,13 @@ import {NavLink, useNavigate} from "react-router-dom";
 import {authAPI} from "../api/api";
 
 import "../style/layout/login.scss";
+import {useAppDispatch} from "../hook/redux";
+import {loginSuccess} from "../redux/reducer/userSlice";
 
-type IProps = {
-    setIsTrainer: Function
-}
 
-export const LoginTrainer = ({setIsTrainer}: IProps) => {
+export const LoginTrainer = () => {
+    const dispatch = useAppDispatch()
+
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -20,12 +21,12 @@ export const LoginTrainer = ({setIsTrainer}: IProps) => {
         event.preventDefault();
 
         try {
-            const res = await authAPI.trainerAuth(login);
+            const res = await authAPI.trainerAuth(login, password);
             if (res.resultCode === 0) {
                 setError("");
-                if ((jwtDecode(res.token) as any).isTrainer) {
+                if (res.token) {
+                    dispatch(loginSuccess())
                     window.localStorage.setItem("token", res.token);
-                    setIsTrainer(true);
                     navigate("/");
                 }
             } else {

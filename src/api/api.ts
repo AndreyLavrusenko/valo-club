@@ -6,10 +6,12 @@ const instance = axios.create({
     baseURL: process.env.REACT_APP_BACK_URL,
 })
 
+const token = localStorage.getItem("token")
+
 export const authAPI = {
-    trainerAuth: async (login: string) => {
+    trainerAuth: async (login: string, password: string) => {
         try {
-            const {data} = await instance.get(`auth/trainer-login`, {headers: {login}})
+            const {data} = await instance.post(`auth/trainer-login`, {login, password})
             return data
         } catch (err) {
             console.log(err)
@@ -19,7 +21,7 @@ export const authAPI = {
 
 
 export const workoutAPI = {
-    getWorkout: async (workout_id: number) => {
+    getWorkout: async (workout_id: string) => {
         try {
             const {data} = await instance.get('workout/get-workout', {headers: {workout_id}})
             return data
@@ -70,7 +72,7 @@ export const workoutAPI = {
         }
     },
 
-    updateWorkout: async (workout: WorkoutType[], workout_id: number) => {
+    updateWorkout: async (workout: WorkoutType[], workout_id: string) => {
         try {
             return await instance.put('workout/update-workout', {workout}, {headers: {workout_id}})
         } catch (err) {
@@ -83,6 +85,15 @@ export const workoutAPI = {
             const {data} = await instance.get('workout/get-update-workout', {headers: {workout_id}})
             return data
         } catch (err) {
+            console.log(err)
+        }
+    },
+
+    getAllWorkouts: async () => {
+        try {
+             const {data} = await instance.get('workout/get-all-user-workout', {headers: {token}})
+            return data
+        } catch(err) {
             console.log(err)
         }
     }

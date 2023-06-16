@@ -1,4 +1,4 @@
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 
 import {workoutAPI} from "../api/api";
@@ -11,13 +11,14 @@ import {CreateWorkoutFull} from "../ui/createWorkout/CreateWorkoutFull";
 import {DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvided} from "react-beautiful-dnd"
 
 import "../style/layout/create_workout.scss";
+import {useAppSelector} from "../hook/redux";
 
 
-type IProps = {
-    isTrainer: boolean
-}
+export const CreateWorkout = () => {
+    const {isAuth} = useAppSelector(state => state.user)
 
-export const CreateWorkout = ({isTrainer}: IProps) => {
+    const { id } = useParams()
+
     const [allWorkouts, setAllWorkouts] = useState<WorkoutType[]>([]);
     const [isError, setIsError] = useState(false);
 
@@ -43,7 +44,8 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
     const navigation = useNavigate();
 
     useEffect(() => {
-        if (!isTrainer) {
+
+        if (!isAuth) {
             navigation("/");
         }
 
@@ -61,14 +63,16 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
 
     const getWorkoutData = async () => {
-        const {data} = await workoutAPI.getWorkout(1);
+        if (id) {
+            const {data} = await workoutAPI.getWorkout(id);
 
-        if (data[0].workout.length === 0) {
-            setIsWarmUpActive(true);
-        } else if (data[0].workout.length > 1) {
-            setAllWorkouts(data[0].workout.reverse());
-        } else if (data[0].workout.length === 1){
-            setAllWorkouts(data[0].workout);
+            if (data[0].workout.length === 0) {
+                setIsWarmUpActive(true);
+            } else if (data[0].workout.length > 1) {
+                setAllWorkouts(data[0].workout.reverse());
+            } else if (data[0].workout.length === 1){
+                setAllWorkouts(data[0].workout);
+            }
         }
     };
 
@@ -226,10 +230,10 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
         const workout = allWorkouts.reverse();
 
-        const res = await workoutAPI.updateWorkout(workout, 1);
+        if (id) {
+            const res = await workoutAPI.updateWorkout(workout, id);
 
-        if (res && res.data.resultCode === 0) {
-            navigation("/");
+            if (res && res.data.resultCode === 0) {}
         }
     };
 

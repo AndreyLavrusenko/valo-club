@@ -154,7 +154,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
     // Получает данные о тренировке и выводит ее
     const getWorkoutData = async () => {
-        const res = await workoutAPI.getWorkout(1);
+        const res = await workoutAPI.getWorkout("1");
 
         if (res.resultCode === 1) {
             setError(res.message);

@@ -5,12 +5,8 @@ import '../style/layout/login.scss'
 import {authAPI} from "../api/api";
 import jwtDecode from "jwt-decode";
 
-type IProps = {
-	setIsTrainer: Function
-}
 
-
-export const RegistrationTrainer = ({setIsTrainer}: IProps) => {
+export const RegistrationTrainer = () => {
 	const [login, setLogin] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
@@ -20,20 +16,20 @@ export const RegistrationTrainer = ({setIsTrainer}: IProps) => {
 	const trainerReg= async (event: React.FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
-		try {
-			const res = await authAPI.trainerAuth(login);
-			if (res.resultCode === 0) {
-				setError("");
-				if ((jwtDecode(res.token) as any).isTrainer) {
-					window.localStorage.setItem("token", res.token);
-					setIsTrainer(true);
-					navigate("/");
-				}
-			} else {
-				setError(res.message);
-			}
-		} catch (err) {
-		}
+		// try {
+		// 	const res = await authAPI.trainerAuth(login);
+		// 	if (res.resultCode === 0) {
+		// 		setError("");
+		// 		if ((jwtDecode(res.token) as any).isTrainer) {
+		// 			window.localStorage.setItem("token", res.token);
+		// 			setIsTrainer(true);
+		// 			navigate("/");
+		// 		}
+		// 	} else {
+		// 		setError(res.message);
+		// 	}
+		// } catch (err) {
+		// }
 	};
 
 	return (

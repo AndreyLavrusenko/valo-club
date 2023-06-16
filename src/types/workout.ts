@@ -21,3 +21,12 @@ export type WorkoutType = {
     isRecovery: boolean,
     isWarmUp: boolean,
 }
+
+
+export type WorkoutCatalogs = {
+    id: string,
+    is_start: number,
+    active_stage: number,
+    workout_name: string,
+
+}

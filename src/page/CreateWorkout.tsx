@@ -238,7 +238,8 @@ export const CreateWorkout = () => {
             const res = await workoutAPI.updateWorkout(workout, id);
 
             if (res && res.data.resultCode === 0) {
-                navigation('/catalog')
+                await workoutAPI.setActiveWorkout(id)
+                navigation('/')
             }
         }
     };
@@ -248,7 +249,10 @@ export const CreateWorkout = () => {
 
         if (id) {
             const res = await workoutAPI.setActiveWorkout(id)
-            console.log(res)
+
+            if (res.resultCode === 0) {
+                navigation('/')
+            }
         }
 
     }

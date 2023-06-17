@@ -9,9 +9,19 @@ const instance = axios.create({
 const token = localStorage.getItem("token")
 
 export const authAPI = {
-    trainerAuth: async (login: string, password: string) => {
+    login: async (login: string, password: string) => {
         try {
             const {data} = await instance.post(`auth/trainer-login`, {login, password})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+
+    register: async (login: string, password: string) => {
+        try {
+            const {data} = await instance.post('auth/trainer-reg', {login, password})
             return data
         } catch (err) {
             console.log(err)
@@ -30,7 +40,7 @@ export const workoutAPI = {
         }
     },
 
-    getWorkoutInterval: async (workout_id: number) => {
+    getWorkoutInterval: async (workout_id: string) => {
         try {
             const {data} = await instance.get('workout/get-workout-info', {headers: {workout_id}})
             return data
@@ -39,7 +49,7 @@ export const workoutAPI = {
         }
     },
 
-    startWorkout: async (workout_id: number) => {
+    startWorkout: async (workout_id: string) => {
         try {
             return await instance.put('workout/start-workout', {}, {headers: {workout_id}})
         } catch (err) {
@@ -47,7 +57,7 @@ export const workoutAPI = {
         }
     },
 
-    resetWorkout: async (workout_id: number) =>  {
+    resetWorkout: async (workout_id: string) =>  {
         try {
             return await instance.put('workout/reset-workout', {}, {headers: {workout_id}})
         } catch (err) {
@@ -55,7 +65,7 @@ export const workoutAPI = {
         }
     },
 
-    goToTheNextStage: async (workout_id: number, current_stage: number) =>  {
+    goToTheNextStage: async (workout_id: string, current_stage: number) =>  {
         try {
             return await instance.put('workout/go-next-stage', {current_stage}, {headers: {workout_id}})
         } catch (err) {
@@ -63,7 +73,7 @@ export const workoutAPI = {
         }
     },
 
-    getTimeStart: async (workout_id: number) => {
+    getTimeStart: async (workout_id: string) => {
         try {
             const {data} = await instance.get('workout/get-start-time', {headers: {workout_id}})
             return data
@@ -80,7 +90,7 @@ export const workoutAPI = {
         }
     },
 
-    getUpdatedWorkout: async (workout_id: number) => {
+    getUpdatedWorkout: async (workout_id: string) => {
         try {
             const {data} = await instance.get('workout/get-update-workout', {headers: {workout_id}})
             return data

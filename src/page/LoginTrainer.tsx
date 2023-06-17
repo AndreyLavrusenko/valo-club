@@ -21,7 +21,7 @@ export const LoginTrainer = () => {
         event.preventDefault();
 
         try {
-            const res = await authAPI.trainerAuth(login, password);
+            const res = await authAPI.login(login, password);
             if (res.resultCode === 0) {
                 setError("");
                 if (res.token) {

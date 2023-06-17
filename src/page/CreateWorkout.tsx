@@ -158,11 +158,12 @@ export const CreateWorkout = () => {
     const addNewStage = async (e: any) => {
         e.preventDefault();
 
+
         // Если восстановление
         if (isRecovery) {
 
             if (!workoutData.minutes && !workoutData.seconds) {
-                setIsError(true);
+                return setIsError(true);
             }
 
             setIsError(false);
@@ -188,6 +189,7 @@ export const CreateWorkout = () => {
 
 
         } else {
+
             // Если этап тренировки и все поля заполнены
             if (
                 (!workoutData.minutes && !workoutData.seconds)
@@ -195,7 +197,7 @@ export const CreateWorkout = () => {
                 || !workoutData.pulse_1
                 || !workoutData.condition
             ) {
-                setIsError(true);
+                return setIsError(true);
             }
 
             setIsError(false);
@@ -235,9 +237,21 @@ export const CreateWorkout = () => {
         if (id) {
             const res = await workoutAPI.updateWorkout(workout, id);
 
-            if (res && res.data.resultCode === 0) {}
+            if (res && res.data.resultCode === 0) {
+                navigation('/catalog')
+            }
         }
     };
+
+    const setWorkoutActive = async (e: any) => {
+        e.preventDefault()
+
+        if (id) {
+            const res = await workoutAPI.setActiveWorkout(id)
+            console.log(res)
+        }
+
+    }
 
     const deleteStage = async (index: number) => {
         // Удаляет копию из массива
@@ -343,7 +357,7 @@ export const CreateWorkout = () => {
 
             <div className="create-workout__footer--buttons">
                 <button onClick={onSaveChange} className="create-workout__footer--button create-workout__footer--button-1">Сохранить</button>
-                <button className="create-workout__footer--button create-workout__footer--button-2">Начать</button>
+                <button onClick={setWorkoutActive} className="create-workout__footer--button create-workout__footer--button-2">Выбрать</button>
             </div>
         </div>
     );

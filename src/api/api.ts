@@ -96,5 +96,32 @@ export const workoutAPI = {
         } catch(err) {
             console.log(err)
         }
+    },
+
+    createNewWorkout: async (workout_name: string) => {
+        try {
+            const {data} = await instance.post('workout/create-workout', {workout_name}, {headers: {token}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    setActiveWorkout: async (workout_id: string) => {
+        try {
+            const {data} = await instance.post('workout/set-active-workout', {workout_id}, {headers: {token}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    getActiveWorkout: async () => {
+        try {
+            const {data} = await instance.get('workout/get-active-workout', {headers: {token}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
     }
 }

@@ -41,3 +41,50 @@
         }
     }
 }
+
+
+
+.popover {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    width: 100vw;
+    height: 100vh;
+
+    transition: .5s;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    background-color: rgba(0,0,0,0.4);
+
+    &.active {
+        opacity: 1;
+
+        pointer-events: all;
+    }
+
+    &__content {
+        width: 100vw;
+        height: 500px;
+
+        padding: 14px 20px;
+        margin-bottom: 50px;
+
+        transition: .5s;
+        transform: scale(.9) translateY(600px);
+
+        background-color: white;
+        border-radius: 12px 12px 0 0;
+
+        &.active {
+            transform: scale(1);
+        }
+    }
+}

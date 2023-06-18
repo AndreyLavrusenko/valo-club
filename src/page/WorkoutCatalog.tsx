@@ -25,7 +25,9 @@ export const WorkoutCatalog = () => {
 		}
 
 		return () => {
-			(nav as HTMLElement).style.color = 'inherit'
+			if (nav) {
+				(nav as HTMLElement).style.color = 'inherit'
+			}
 		}
 	}, []);
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import {Workout, WorkoutType} from "../types/workout";
+import {logger} from "workbox-core/_private";
 
 const instance = axios.create({
     withCredentials: true,
@@ -189,6 +190,37 @@ export const clubAPI = {
         try {
             const {data} = await instance.get('club/get-workout-club', {headers: {token}})
             return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    searchClub: async (search_name: string) => {
+        try {
+            const {data} = await instance.get('club/find-club', {headers: {token, search_name}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    joinToTheClub: async (club_id: string) => {
+        try {
+
+            const {data} = await instance.put('club/join-to-the-club', {club_id}, {headers: {token}})
+            return data
+
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    getAllMyClubs: async () => {
+        try {
+
+            const {data} = await instance.get('club/get-all-my-clubs', {headers: {token}})
+            return data
+
         } catch (err) {
             console.log(err)
         }

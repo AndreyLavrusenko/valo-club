@@ -244,18 +244,6 @@ export const CreateWorkout = () => {
         }
     };
 
-    const setWorkoutActive = async (e: any) => {
-        e.preventDefault()
-
-        if (id) {
-            const res = await workoutAPI.setActiveWorkout(id)
-
-            if (res.resultCode === 0) {
-                navigation('/')
-            }
-        }
-
-    }
 
     const deleteStage = async (index: number) => {
         // Удаляет копию из массива
@@ -360,8 +348,7 @@ export const CreateWorkout = () => {
             </div>
 
             <div className="create-workout__footer--buttons">
-                <button onClick={onSaveChange} className="create-workout__footer--button create-workout__footer--button-1">Сохранить</button>
-                <button onClick={setWorkoutActive} className="create-workout__footer--button create-workout__footer--button-2">Выбрать</button>
+                <button onClick={onSaveChange} className="create-workout__footer--button">Сохранить</button>
             </div>
         </div>
     );

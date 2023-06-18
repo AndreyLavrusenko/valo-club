@@ -14,7 +14,6 @@ export const Profile = () => {
 
     const [createClubModal, setCreateClubModal] = useState<boolean>(false);
 
-    const [isPrivateClub, setIsPrivateClub] = useState<boolean>(false);
     const [clubName, setClubName] = useState<string>("");
 
     const [clubError, setClubError] = useState<string>("");
@@ -46,7 +45,7 @@ export const Profile = () => {
     };
 
     const createClub = async () => {
-        const res = await clubAPI.createClub(clubName, isPrivateClub);
+        const res = await clubAPI.createClub(clubName, false);
 
         if (res.resultCode === 0) {
             console.log("Клуб успешно создан");
@@ -81,20 +80,6 @@ export const Profile = () => {
 
                 <input type="text" placeholder={"Название клуба"} value={clubName}
                        onChange={e => setClubName(e.target.value)}/>
-
-                <input
-                    checked={isPrivateClub}
-                    type="checkbox"
-                    className="custom-checkbox custom-checkbox--create"
-                    name="is_private_club"
-                    onChange={() => console.log("")}
-                />
-                <label
-                    htmlFor="is_private_club"
-                    onClick={() => setIsPrivateClub(prev => !prev)}
-                >
-                    <div>Сделать клуб закрытым?</div>
-                </label>
 
                 <br/>
 

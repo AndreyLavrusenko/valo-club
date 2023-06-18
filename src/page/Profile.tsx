@@ -9,7 +9,7 @@ import {Popover} from "../ui/Popover";
 
 import "../style/layout/profile.scss";
 
-import success from "../assets/images/success.svg";
+import success from "../assets/images/success.png";
 import {Preloader} from "../common/Preloader";
 
 export const Profile = () => {

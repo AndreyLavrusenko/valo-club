@@ -36,5 +36,9 @@
         text-decoration: none;
 
         color: $gray-color;
+
+        &.active {
+            color: $primary;
+        }
     }
 }

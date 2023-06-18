@@ -17,6 +17,18 @@ export const WorkoutCatalog = () => {
 
 	const navigation = useNavigate();
 
+
+	useEffect(() => {
+		const nav = document.querySelector('.nav__footer-item--create')
+		if (nav) {
+			(nav as HTMLElement).style.color = '#FF7B3E'
+		}
+
+		return () => {
+			(nav as HTMLElement).style.color = 'inherit'
+		}
+	}, []);
+
 	useEffect(() => {
 		const getAllWorkouts = async () => {
 			const res = await workoutAPI.getAllWorkouts();
@@ -55,13 +67,13 @@ export const WorkoutCatalog = () => {
 	const setActiveWorkout = async (id: string) => {
 
 		if (id) {
-			const res = await workoutAPI.setActiveWorkout(id)
+			const res = await workoutAPI.setActiveWorkout(id);
 
 			if (res.resultCode === 0) {
-				navigation('/')
+				navigation("/");
 			}
 		}
-	}
+	};
 
 
 	return (

@@ -3,6 +3,7 @@ import {StatusItem} from "../StatusItem";
 import {STATUS_ITEM} from "../../helpers/const";
 import {WorkoutType} from "../../types/workout";
 import comment from "../../assets/images/comment.svg";
+import {Dots} from "./ui/Dots";
 
 type IProps = {
     element: WorkoutType,
@@ -24,11 +25,7 @@ export const NextStageWorkout = ({element, isAdmin, deleteStage, minutes, condit
                         <p>{minutes} </p>
                     </div>
                     {isAdmin &&
-                        <button
-                            onClick={() => deleteStage ? deleteStage(element.id) : null}
-                            className={"next-stage__header--delete"}
-                        >Удалить
-                        </button>
+                        <Dots deleteStage={deleteStage} id={element.id} />
                     }
                 </div>
                 <div className="next-stage__info">

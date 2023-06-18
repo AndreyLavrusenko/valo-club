@@ -3,7 +3,7 @@
 
 .create-workout {
     padding: 20px;
-    margin-bottom: 80px;
+    margin-bottom: 50px;
 
     &__header {
         display: flex;
@@ -127,22 +127,9 @@
     &__footer {
 
         &--button {
-            position: fixed;
-            bottom: 60px;
-
-            width: calc(100% - 40px);
+            width: 100%;
 
             @include button-orange-big;
-
-            &-1 {
-                width: 65%;
-            }
-
-            &-2 {
-                width: 23%;
-
-                right: 20px;
-            }
         }
     }
 

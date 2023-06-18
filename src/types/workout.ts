@@ -39,3 +39,15 @@ export type Club = {
     "members": string,
     "request": string
 }
+
+
+export type User = {
+    name: string,
+    clubs: ClubInfo[]
+}
+
+
+export type ClubInfo = {
+    id: string,
+    name: string
+}

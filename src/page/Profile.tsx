@@ -3,8 +3,8 @@ import {logoutSuccess} from "../redux/reducer/userSlice";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Modal} from "../ui/Modal";
-import {clubAPI} from "../api/api";
-import {Club} from "../types/workout";
+import {authAPI, clubAPI} from "../api/api";
+import {Club, ClubInfo, User} from "../types/workout";
 
 export const Profile = () => {
     const {isAuth} = useAppSelector(state => state.user);
@@ -23,18 +23,28 @@ export const Profile = () => {
 
     const [clubIsCreated, setClubIsCreated] = useState<boolean>(false);
 
+    const [userInfo, setUserInfo] = useState<User | null>(null);
+
     useEffect(() => {
         const getMyClub = async () => {
-            const res = await clubAPI.getMyClub();
+            const club = await clubAPI.getMyClub();
 
-            if (res.resultCode === 0) {
-                setMyClubInfo(res.club);
+            if (club.resultCode === 0) {
+                setMyClubInfo(club.club);
+            }
+
+
+            const profile = await authAPI.getProfileInfo()
+
+            if (profile.resultCode === 0) {
+                setUserInfo(profile.result)
             }
 
             setClubLoading(false);
         };
 
         getMyClub();
+
     }, [clubLoading, clubIsCreated]);
 
 
@@ -49,7 +59,7 @@ export const Profile = () => {
 
         if (res.resultCode === 0) {
             console.log("Клуб успешно создан");
-            setClubIsCreated(prev => !prev)
+            setClubIsCreated(prev => !prev);
 
             setClubError("");
             setCreateClubModal(false);
@@ -63,6 +73,10 @@ export const Profile = () => {
     return (
         <>
 
+            {userInfo ? userInfo.name : null}
+
+            <br/>
+
             {
                 isAuth ? <button onClick={() => setCreateClubModal(true)}>Создать клуб</button> : null
             }
@@ -73,7 +87,17 @@ export const Profile = () => {
 
             <br/>
 
+
             <button>Найти клуб</button>
+
+
+            <h2>Клубы, в которых я состою</h2>
+            {userInfo
+                ? userInfo.clubs.map((club: ClubInfo) => (
+                   <div key={club.id}>{club.name}</div>
+                ))
+                : null
+            }
 
             <Modal active={createClubModal} setActive={setCreateClubModal}>
                 <h3>Создать клуб</h3>

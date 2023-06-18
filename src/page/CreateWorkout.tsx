@@ -9,17 +9,17 @@ import {NextStageItem} from "../component/NextStageItem";
 import {CreateWorkoutWarmUp} from "../ui/createWorkout/CreateWorkoutWarmUp";
 import {CreateWorkoutFull} from "../ui/createWorkout/CreateWorkoutFull";
 //@ts-ignore
-import {DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvided} from "react-beautiful-dnd"
+import {DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvided} from "react-beautiful-dnd";
 
 import "../style/layout/create_workout.scss";
 
-import play from '../assets/images/play.svg'
+import play from "../assets/images/play.svg";
 
 
 export const CreateWorkout = () => {
-    const {isAuth} = useAppSelector(state => state.user)
+    const {isAuth} = useAppSelector(state => state.user);
 
-    const { id } = useParams()
+    const { id } = useParams();
 
     const [allWorkouts, setAllWorkouts] = useState<WorkoutType[]>([]);
     const [isError, setIsError] = useState(false);
@@ -51,16 +51,46 @@ export const CreateWorkout = () => {
             navigation("/");
         }
 
+        const nav = document.querySelector('.nav__footer-item--create')
+        if (nav) {
+            (nav as HTMLElement).style.color = '#FF7B3E'
+        }
+
+        return () => {
+            (nav as HTMLElement).style.color = 'inherit'
+        }
+
         getWorkoutData();
 
     }, []);
 
     useEffect(() => {
         if (allWorkouts.length === 0) {
-            setIsWarmUpActive(true)
+            setIsWarmUpActive(true);
         } else {
-            setIsWarmUpActive(false)
+            setIsWarmUpActive(false);
         }
+    }, [allWorkouts]);
+
+
+    // Сохраняет изменения в тренировке
+    useEffect(() => {
+        const saveWorkoutChange = async () => {
+
+            if (allWorkouts.length > 0) {
+                const workout = allWorkouts.reverse();
+
+                if (id) {
+                    const res = await workoutAPI.updateWorkout(workout, id);
+
+                    if (res && res.data.resultCode === 0) {
+                        await workoutAPI.setActiveWorkout(id);
+                    }
+                }
+            }
+        }
+
+        saveWorkoutChange()
     }, [allWorkouts]);
 
 
@@ -88,7 +118,7 @@ export const CreateWorkout = () => {
     };
 
     const convertTime = (workoutData: any) => {
-        let timeInMs = 0
+        let timeInMs = 0;
 
         if (workoutData.minutes) {
             timeInMs += convertFromMinutesToMs(Number(workoutData.minutes));
@@ -98,18 +128,18 @@ export const CreateWorkout = () => {
             timeInMs += convertFromSecondsToMs(Number(workoutData.seconds));
         }
 
-        return timeInMs
-    }
+        return timeInMs;
+    };
 
     const getId = () => {
-        let id = 1
+        let id = 1;
 
         if (allWorkouts.length >= 1) {
             id = allWorkouts.length + 1;
         }
 
-        return id
-    }
+        return id;
+    };
 
     const clearWorkoutField = () => {
         setWorkoutData({
@@ -123,7 +153,7 @@ export const CreateWorkout = () => {
             turns_1: "",
             turns_2: ""
         });
-    }
+    };
 
     const addWarmUp = async (e: any) => {
         e.preventDefault();
@@ -136,9 +166,9 @@ export const CreateWorkout = () => {
         setIsError(false);
 
         // Получаение id по порядку
-        let id = getId()
+        let id = getId();
 
-        let timeInMs = convertTime(workoutData)
+        let timeInMs = convertTime(workoutData);
 
         if (timeInMs && id) {
 
@@ -169,9 +199,9 @@ export const CreateWorkout = () => {
             setIsError(false);
 
             // Получаение id по порядку
-            let id = getId()
+            let id = getId();
 
-            let timeInMs = convertTime(workoutData)
+            let timeInMs = convertTime(workoutData);
 
             if (timeInMs && id) {
 
@@ -203,9 +233,9 @@ export const CreateWorkout = () => {
             setIsError(false);
 
             // Получаение id по порядку
-            let id = getId()
+            let id = getId();
 
-            let timeInMs = convertTime(workoutData)
+            let timeInMs = convertTime(workoutData);
 
             if (timeInMs && id) {
 
@@ -238,8 +268,8 @@ export const CreateWorkout = () => {
             const res = await workoutAPI.updateWorkout(workout, id);
 
             if (res && res.data.resultCode === 0) {
-                await workoutAPI.setActiveWorkout(id)
-                navigation('/')
+                await workoutAPI.setActiveWorkout(id);
+                navigation("/");
             }
         }
     };
@@ -250,7 +280,7 @@ export const CreateWorkout = () => {
         const deleteCopy = [...allWorkouts].filter((item: WorkoutType) => item.id !== index);
         // Проходит по всем элементам и меняет им id
 
-        const correctArr = setCorrectId(deleteCopy)
+        const correctArr = setCorrectId(deleteCopy);
 
         setAllWorkouts(correctArr);
     };
@@ -262,28 +292,28 @@ export const CreateWorkout = () => {
             idx += 1;
         }
 
-        return data
-    }
+        return data;
+    };
 
     const handleDrop = (e: any) => {
-        const {source, destination, type} = e
+        const {source, destination, type} = e;
 
-        if (!destination) return
+        if (!destination) return;
 
         if (destination.droppableId === source.droppableId && source.index === destination.index) return;
 
-        if (type === 'group') {
-            const reorderedStore = [...allWorkouts]
-            const sourceIndex = source.index
-            const destinationIndex = destination.index
+        if (type === "group") {
+            const reorderedStore = [...allWorkouts];
+            const sourceIndex = source.index;
+            const destinationIndex = destination.index;
 
-            const [removedWorkout] = reorderedStore.splice(sourceIndex, 1)
-            reorderedStore.splice(destinationIndex, 0, removedWorkout)
+            const [removedWorkout] = reorderedStore.splice(sourceIndex, 1);
+            reorderedStore.splice(destinationIndex, 0, removedWorkout);
 
-            const correctReorderWorkout = setCorrectId(reorderedStore)
-            setAllWorkouts(correctReorderWorkout)
+            const correctReorderWorkout = setCorrectId(reorderedStore);
+            setAllWorkouts(correctReorderWorkout);
         }
-    }
+    };
 
 
     return (
@@ -347,9 +377,7 @@ export const CreateWorkout = () => {
                 </DragDropContext>
             </div>
 
-            <div className="create-workout__footer--buttons">
-                <button onClick={onSaveChange} className="create-workout__footer--button">Сохранить</button>
-            </div>
+            <button onClick={onSaveChange} className="create-workout__footer--button">Выбрать тренировку</button>
         </div>
     );
 };

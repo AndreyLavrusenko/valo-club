@@ -135,3 +135,45 @@ export const workoutAPI = {
         }
     }
 }
+
+
+export const clubAPI = {
+
+    createClub: async (club_name: string, privacy: boolean) => {
+        try {
+            const {data} = await instance.post('club/create-club', {club_name, privacy}, {headers: {token}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+
+    getMyClub: async () => {
+        try {
+            const {data} = await instance.get('club/get-created-by-user-club', {headers: {token}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    getAllClubs: async () => {
+        try {
+            const {data} = await instance.get('club/get-all-clubs', {headers: {token}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    getAvailableClubWorkout: async () => {
+        try {
+            const {data} = await instance.get('club/get-workout-club', {headers: {token}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+}

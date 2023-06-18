@@ -28,5 +28,14 @@ export type WorkoutCatalogs = {
     is_start: number,
     active_stage: number,
     workout_name: string,
+}
 
+
+export type Club = {
+    "id": string,
+    "name": string,
+    "owner": string,
+    "privacy": string,
+    "members": string,
+    "request": string
 }

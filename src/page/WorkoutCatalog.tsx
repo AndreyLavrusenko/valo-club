@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {workoutAPI} from "../api/api";
+import {clubAPI, workoutAPI} from "../api/api";
 import {WorkoutCatalogs} from "../types/workout";
 import {Preloader} from "../common/Preloader";
 import {NavLink, useNavigate} from "react-router-dom";
@@ -7,13 +7,15 @@ import {Modal} from "../ui/Modal";
 
 export const WorkoutCatalog = () => {
 	const [allWorkouts, setAllWorkouts] = useState<WorkoutCatalogs[]>([]);
+	const [allClubWorkouts, setAllClubWorkouts] = useState<WorkoutCatalogs[]>([]);
+
 	const [loading, setLoading] = useState(true);
 	const [modalActive, setModalActive] = useState<boolean>(false);
 
 	const [workoutName, setWorkoutName] = useState<string>("");
 
 
-	const navigation = useNavigate()
+	const navigation = useNavigate();
 
 	useEffect(() => {
 		const getAllWorkouts = async () => {
@@ -22,11 +24,21 @@ export const WorkoutCatalog = () => {
 			if (res.resultCode === 0) {
 				setAllWorkouts(res.result);
 			}
+		};
 
-			setLoading(false);
+
+		const getAllAvailableWorkout = async () => {
+			const res = await clubAPI.getAvailableClubWorkout();
+
+			if (res.resultCode === 0) {
+				setAllClubWorkouts(res.result);
+			}
 		};
 
 		getAllWorkouts();
+		getAllAvailableWorkout();
+
+		setLoading(false);
 	}, []);
 
 	const createNewWorkout = async () => {
@@ -34,11 +46,22 @@ export const WorkoutCatalog = () => {
 		const res = await workoutAPI.createNewWorkout(workoutName);
 
 		if (res.resultCode === 0) {
-			await navigation(`/create-workout/${res.workout_id}`)
+			await navigation(`/create-workout/${res.workout_id}`);
 		}
 
-		setModalActive(false)
+		setModalActive(false);
 	};
+
+	const setActiveWorkout = async (id: string) => {
+
+		if (id) {
+			const res = await workoutAPI.setActiveWorkout(id)
+
+			if (res.resultCode === 0) {
+				navigation('/')
+			}
+		}
+	}
 
 
 	return (
@@ -52,6 +75,13 @@ export const WorkoutCatalog = () => {
 								<NavLink to={`/create-workout/${item.id}`}>{item.workout_name}</NavLink>
 							</div>
 						))}
+
+						{allClubWorkouts.map((item: WorkoutCatalogs) => (
+							<div key={item.id} onClick={() => setActiveWorkout(item.id)}>
+								<NavLink to={`/`}>{item.workout_name}</NavLink>
+							</div>
+						))}
+
 					<button onClick={() => setModalActive(true)}>Создать</button>
 
 					<Modal active={modalActive} setActive={setModalActive}>

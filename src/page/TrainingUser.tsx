@@ -164,6 +164,9 @@ export const TrainingUser = ({isTrainer}: IProps) => {
             if (workout_data.current_workout !== null) {
                 setActiveWorkoutId(workout_data.current_workout)
                 await getWorkoutData(workout_data.current_workout)
+            } else {
+                setLoading(false)
+                setNoActiveWorkout(true)
             }
         }
 

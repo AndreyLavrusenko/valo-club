@@ -9,11 +9,8 @@ import {NextStageItem} from "../component/NextStageItem";
 import ProgressBar from "@ramonak/react-progress-bar";
 import {formatTime} from "../helpers/getDate";
 
-type IProps = {
-    isTrainer: boolean
-}
 
-export const TrainingUser = ({isTrainer}: IProps) => {
+export const TrainingUser = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
     const [workout, setWorkout] = useState<Workout | null>(null);
@@ -38,6 +35,23 @@ export const TrainingUser = ({isTrainer}: IProps) => {
     const [isStartButtonPressed, setIsStartButtonPressed] = useState(false);
 
     const [prevStage, setPrevStage] = useState<WorkoutType | null>(null);
+
+    const [isTrainer, setIsTrainer] = useState<boolean>(false);
+
+    // Смотрит кому принадлежит тренировка
+    useEffect(() => {
+        const checkWhoseWorkout = async () => {
+            if (activeWorkoutId) {
+                const res = await workoutAPI.checkWhoseWorkout(activeWorkoutId)
+
+                if (res.resultCode === 0) {
+                    setIsTrainer(res.isTrainer)
+                }
+            }
+        }
+
+        checkWhoseWorkout()
+    }, [activeWorkoutId]);
 
     // Получает данные о тренировке и выводит ее
     useEffect(() => {
@@ -162,11 +176,11 @@ export const TrainingUser = ({isTrainer}: IProps) => {
 
         if (workout_data.resultCode === 0) {
             if (workout_data.current_workout !== null) {
-                setActiveWorkoutId(workout_data.current_workout)
-                await getWorkoutData(workout_data.current_workout)
+                setActiveWorkoutId(workout_data.current_workout);
+                await getWorkoutData(workout_data.current_workout);
             } else {
-                setLoading(false)
-                setNoActiveWorkout(true)
+                setLoading(false);
+                setNoActiveWorkout(true);
             }
         }
 
@@ -190,7 +204,7 @@ export const TrainingUser = ({isTrainer}: IProps) => {
             }
 
         } else {
-            setNoActiveWorkout(true)
+            setNoActiveWorkout(true);
         }
 
         setLoading(false);

@@ -133,6 +133,15 @@ export const workoutAPI = {
         } catch (err) {
             console.log(err)
         }
+    },
+
+    checkWhoseWorkout: async (workout_id: string) => {
+        try {
+            const {data} = await instance.get('workout/check-who-owns-workout', {headers: {token, workout_id}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 

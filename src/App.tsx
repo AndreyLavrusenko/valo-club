@@ -17,8 +17,6 @@ import {WorkoutCatalog} from "./page/WorkoutCatalog";
 function App() {
     const dispatch = useAppDispatch()
 
-    const [isTrainer, setIsTrainer] = useState(true);
-
     const navigation = useNavigate()
 
     useEffect(() => {
@@ -34,7 +32,7 @@ function App() {
         <div>
             <Header />
             <Routes>
-                <Route path="/" element={<TrainingUser isTrainer={isTrainer} />} />
+                <Route path="/" element={<TrainingUser />} />
                 <Route path="/create-workout/:id" element={<CreateWorkout />} />
                 <Route path="/login" element={<LoginTrainer />} />
                 <Route path="/registration" element={<RegistrationTrainer />} />

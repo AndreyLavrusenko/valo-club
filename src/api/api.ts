@@ -26,6 +26,15 @@ export const authAPI = {
         } catch (err) {
             console.log(err)
         }
+    },
+
+    getProfileInfo: async () => {
+        try {
+            const {data} = await instance.get('auth/get-user-info', {headers: {token}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 

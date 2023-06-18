@@ -4,6 +4,7 @@ import {WorkoutType} from "../../types/workout";
 import comment from "../../assets/images/comment.svg";
 import {useEffect, useRef, useState} from "react";
 import {useOutsideAlerter} from "../../hook/useOutside";
+import {Dots} from "./ui/Dots";
 type IProps = {
 	element: WorkoutType,
 	isAdmin?: boolean,
@@ -13,16 +14,6 @@ type IProps = {
 }
 
 export const NextStageWarmUp = ({element, isAdmin, deleteStage, minutes, prev}: IProps) => {
-	const [popupActive, setPopupActive] = useState<boolean>(false);
-
-	const wrapperRef = useRef(null);
-
-	const closePopup = () => {
-		setPopupActive(false)
-	}
-
-	useOutsideAlerter(wrapperRef, closePopup);
-
 
 	return (
 		<>
@@ -34,27 +25,7 @@ export const NextStageWarmUp = ({element, isAdmin, deleteStage, minutes, prev}: 
 						<p>{minutes} </p>
 					</div>
 					{isAdmin &&
-						<div className="dropdown-dots">
-							<div className="header">
-
-								<div className="dropdown" ref={wrapperRef}>
-									<ul className="dropbtn icons btn-right showLeft" onClick={() => setPopupActive(prev => !prev)}>
-										<li></li>
-										<li></li>
-										<li></li>
-									</ul>
-									{
-										popupActive
-											? <div id="myDropdown" className="dropdown-content">
-												<div className={"dropdown-content--item"} >Изменить</div>
-												<div className={"dropdown-content--item"}  onClick={() => deleteStage ? deleteStage(element.id) : null}>Удалить</div>
-											</div>
-											: null
-									}
-
-								</div>
-							</div>
-						</div>
+						<Dots deleteStage={deleteStage} id={element.id} />
 					}
 				</div>
 				{

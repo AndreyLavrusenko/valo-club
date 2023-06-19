@@ -2,6 +2,76 @@
 @import '../base/mixin';
 
 .profile {
+    padding: 20px;
+
+    &__title {
+        @include title;
+
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+    }
+
+    &__subtitle {
+        @include text-gray;
+
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    &__user {
+        padding: 16px;
+
+        @include white-board;
+
+        &-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+                    }
+
+        &-container:not(:last-child) {
+            border-bottom: $divider-bottom;
+
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        &-main {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &__user:not(:last-child) {
+        margin-bottom: 12px;
+    }
+
+    .user {
+        &__left {
+            padding-right: 12px;
+        }
+
+        &__avatar {
+            width: 60px;
+            height: 60px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+            border: 1px solid $primary;
+            color: $primary;
+            background-color: $primary-light;
+
+            font-weight: 600;
+            font-size: 32px;
+            line-height: 38px;
+
+        }
+    }
 
     .profile__popover {
         display: flex;

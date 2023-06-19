@@ -51,16 +51,27 @@ export const CreateWorkout = () => {
             navigation("/");
         }
 
+        getWorkoutData();
+
         const nav = document.querySelector('.nav__footer-item--create')
         if (nav) {
             (nav as HTMLElement).style.color = '#FF7B3E'
         }
 
-        return () => {
-            (nav as HTMLElement).style.color = 'inherit'
+        const navIcon = document.querySelector('.nav__footer-item--create-path')
+        if (navIcon) {
+            (navIcon as HTMLElement).style.fill = '#FF7B3E'
         }
 
-        getWorkoutData();
+        return () => {
+            if (nav) {
+                (nav as HTMLElement).style.color = 'inherit'
+            }
+
+            if (navIcon) {
+                (navIcon as HTMLElement).style.fill = 'currentColor'
+            }
+        }
 
     }, []);
 
@@ -95,6 +106,7 @@ export const CreateWorkout = () => {
 
 
     const getWorkoutData = async () => {
+        console.log('get workout data')
         if (id) {
             const {data} = await workoutAPI.getWorkout(id);
 

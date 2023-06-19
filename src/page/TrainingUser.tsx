@@ -174,15 +174,18 @@ export const TrainingUser = () => {
     const getActiveWorkout = async () => {
         const workout_data = await workoutAPI.getActiveWorkout();
 
-        if (workout_data.resultCode === 0) {
-            if (workout_data.current_workout !== null) {
-                setActiveWorkoutId(workout_data.current_workout);
-                await getWorkoutData(workout_data.current_workout);
-            } else {
-                setLoading(false);
-                setNoActiveWorkout(true);
+        if (workout_data) {
+            if (workout_data.resultCode === 0) {
+                if (workout_data.current_workout !== null) {
+                    setActiveWorkoutId(workout_data.current_workout);
+                    await getWorkoutData(workout_data.current_workout);
+                } else {
+                    setLoading(false);
+                    setNoActiveWorkout(true);
+                }
             }
         }
+
 
     };
 

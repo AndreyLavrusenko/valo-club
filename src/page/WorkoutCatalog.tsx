@@ -25,7 +25,9 @@ export const WorkoutCatalog = () => {
 		}
 
 		return () => {
-			(nav as HTMLElement).style.color = 'inherit'
+			if (nav) {
+				(nav as HTMLElement).style.color = 'inherit'
+			}
 		}
 	}, []);
 
@@ -33,18 +35,24 @@ export const WorkoutCatalog = () => {
 		const getAllWorkouts = async () => {
 			const res = await workoutAPI.getAllWorkouts();
 
-			if (res.resultCode === 0) {
-				setAllWorkouts(res.result);
+			if (res) {
+				if (res.resultCode === 0) {
+					setAllWorkouts(res.result);
+				}
 			}
+
 		};
 
 
 		const getAllAvailableWorkout = async () => {
 			const res = await clubAPI.getAvailableClubWorkout();
 
-			if (res.resultCode === 0) {
-				setAllClubWorkouts(res.result);
+			if (res) {
+				if (res.resultCode === 0) {
+					setAllClubWorkouts(res.result);
+				}
 			}
+
 		};
 
 		getAllWorkouts();

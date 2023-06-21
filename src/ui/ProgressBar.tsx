@@ -20,6 +20,7 @@ export const ProgressBar = memo(({max = 10, current, type}: IProps) => {
 			} else if (current >= 100 && current < 110) {
 				setCount(2)
 				setColor("#43CC7B")
+
 			} else if (current >= 110 && current < 130) {
 				setCount(3)
 				setColor("#43CC7B")
@@ -47,6 +48,7 @@ export const ProgressBar = memo(({max = 10, current, type}: IProps) => {
 			}
 		}
 	}, [current]);
+
 
 	return (
 		<>

@@ -1,3 +1,6 @@
+@import '../base/variable';
+@import '../base/mixin';
+
 .modal {
     position: fixed;
     top: 0;
@@ -87,4 +90,71 @@
             transform: scale(1);
         }
     }
+}
+
+.profile__popover {
+    display: flex;
+    justify-content: center;
+
+    flex-direction: column;
+
+    &--center {
+        align-items: center;
+    }
+}
+
+.popover__title {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+
+    color: $black-color;
+
+    &--success {
+        margin-top: 26px;
+
+        text-align: center;
+    }
+}
+
+.popover__subtitle {
+    margin-top: 6px;
+
+    @include text-gray;
+}
+
+.popover__button {
+    width: 100%;
+
+    text-align: center;
+
+    @include button-orange-big;
+
+    &--success {
+        margin-top: 31px;
+    }
+
+    &--find {
+        margin-top: 12px;
+    }
+
+}
+
+.popover__input {
+    margin-top: 20px;
+    width: 100%;
+
+    @include input;
+
+    &::placeholder {
+        text-align: left;
+    }
+}
+
+.popover__result {
+    height: 300px;
+
+    padding-top: 24px;
+
+    overflow-y: scroll;
 }

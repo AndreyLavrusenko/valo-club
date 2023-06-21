@@ -1,0 +1,41 @@
+@import '../base/variable';
+@import '../base/mixin';
+
+.catalog {
+    padding: 20px;
+
+    &__button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &-item {
+            width: 47%;
+
+            padding: 10px 20px;
+
+            color: $primary;
+
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 16px;
+
+            background: $white-color;
+            border-radius: 6px;
+            border: 1px solid $primary;
+
+            text-align: center;
+        }
+
+        .active {
+            @include button-orange
+        }
+    }
+
+    &__create {
+        @include button-orange;
+
+        margin-top: 16px;
+        width: 100%;
+    }
+}

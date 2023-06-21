@@ -36,6 +36,24 @@ export const authAPI = {
         } catch (err) {
             console.log(err)
         }
+    },
+
+    changeUsername: async (login: string) => {
+        try {
+            const {data} = await instance.put('auth/change-username', {login}, {headers: {token}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    changePassword: async (password: string) => {
+        try {
+            const {data} = await instance.put('auth/change-password', {password}, {headers: {token}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 

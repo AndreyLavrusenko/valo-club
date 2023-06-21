@@ -101,3 +101,22 @@
     font-size: 16px;
     line-height: 19px;
 }
+
+
+@mixin avatar {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    border: 1px solid $primary;
+    color: $primary;
+    background-color: $primary-light;
+
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 38px;
+}

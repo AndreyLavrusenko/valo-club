@@ -1,0 +1,37 @@
+@import '../base/variable';
+@import '../base/mixin';
+
+.workout__item {
+    @include white-board;
+
+    margin-top: 16px;
+    padding: 16px;
+
+    border-radius: 8px;
+    box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.06);
+
+    &-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &--title {
+        width: 92%;
+
+        color: $black-color;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+
+}
+
+.active--workout {
+    background-color: $primary-light;
+    border: 1px solid $primary;
+
+    .workout__item--title {
+        color: $primary;
+    }
+}

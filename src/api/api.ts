@@ -156,6 +156,7 @@ export const workoutAPI = {
 
     getActiveWorkout: async () => {
         try {
+            console.log(token)
             const {data} = await instance.get('workout/get-active-workout', {headers: {token}})
             return data
         } catch (err) {

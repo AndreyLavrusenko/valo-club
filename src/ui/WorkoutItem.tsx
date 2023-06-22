@@ -25,8 +25,8 @@ export const WorkoutItem = ({item, setActiveWorkout, isMyWorkout, workoutActive}
 		}
 	}, []);
 
-	const selectWorkout = (id: string) => {
-		if (isMyWorkout) {
+	const selectWorkout = (id: string, isEdit: boolean) => {
+		if (isEdit) {
 			navigation(`/create-workout/${id}`);
 		} else {
 			setActiveWorkout(id);
@@ -37,14 +37,20 @@ export const WorkoutItem = ({item, setActiveWorkout, isMyWorkout, workoutActive}
 		<>
 			<div
 				className={`workout__item ${active ? 'active--workout' : ''}`}
-				onClick={() => selectWorkout(item.id)}
 			>
-				<div className="workout__item-content">
+				<div className="workout__item-content" onClick={() => selectWorkout(item.id, false)}>
 					<div className="workout__item--title">{item.workout_name}</div>
 					{
 						active ? <img src={orange__arrow} alt=""/> : <img src={gray__arrow} alt=""/>
 					}
 				</div>
+				{
+					isMyWorkout
+						? <div className="workout__item--edit" onClick={() => selectWorkout(item.id, true)}>
+							Изменить
+						</div>
+						: null
+				}
 			</div>
 		</>
 	);

@@ -41,6 +41,7 @@ function App() {
                             <Route path="/login" element={<LoginTrainer/>}/>
                             <Route path="/registration" element={<RegistrationTrainer/>}/>
                             <Route path="/create-workout/:id" element={<CreateWorkout/>}/>
+                            <Route path="/create-workout" element={<CreateWorkout/>}/>
                             <Route path="/profile" element={<Profile/>}/>
                             <Route path="/catalog" element={<WorkoutCatalog/>}/>
                         </Routes>

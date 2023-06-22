@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 
 type IProps = {
 	active: boolean,
-	setActive: (status: boolean) => void,
+	setActive: (status: boolean) => void ,
 	children: React.ReactNode
 }
 

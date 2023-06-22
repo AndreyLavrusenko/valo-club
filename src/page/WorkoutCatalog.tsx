@@ -17,27 +17,13 @@ export const WorkoutCatalog = () => {
     const [loading, setLoading] = useState(true);
     const [modalActive, setModalActive] = useState<boolean>(false);
 
-    const [workoutName, setWorkoutName] = useState<string>("");
+
     const [workoutActive, setWorkoutActive] = useState("");
 
     const [activeSection, setActiveSection] = useState("personal");
 
 
     const navigation = useNavigate();
-
-
-    useEffect(() => {
-        const nav = document.querySelector(".nav__footer-item--create");
-        if (nav) {
-            (nav as HTMLElement).style.color = "#FF7B3E";
-        }
-
-        return () => {
-            if (nav) {
-                (nav as HTMLElement).style.color = "inherit";
-            }
-        };
-    }, []);
 
     useEffect(() => {
         const getAllWorkouts = async () => {
@@ -79,17 +65,6 @@ export const WorkoutCatalog = () => {
 
         setLoading(false);
     }, [loading]);
-
-    const createNewWorkout = async () => {
-
-        const res = await workoutAPI.createNewWorkout(workoutName);
-
-        if (res.resultCode === 0) {
-            await navigation(`/create-workout/${res.workout_id}`);
-        }
-
-        setModalActive(false);
-    };
 
     const setActiveWorkout = async (id: string) => {
 
@@ -152,30 +127,17 @@ export const WorkoutCatalog = () => {
 
                             </div>
 
-                            <button
-                                onClick={() => setModalActive(true)}
-                                className={"catalog__create"}
-                            >
-                                Создать
-                            </button>
+                            {/*<button*/}
+                            {/*    onClick={() => setModalActive(true)}*/}
+                            {/*    className={"catalog__create"}*/}
+                            {/*>*/}
+                            {/*    Создать*/}
+                            {/*</button>*/}
 
                         </div>
 
 
-                        <Popover active={modalActive} setActive={setModalActive}>
-                            <div className="profile__popover profile__popover--center">
-                                <h2 className="popover__title popover__title--find">Введите название тренировки</h2>
-                                <p className="popover__subtitle">Придумайте название для вашей тренировки</p>
-                                <input
-                                    type="text"
-                                    className="popover__input"
-                                    placeholder={"Название тренировки"}
-                                    value={workoutName}
-                                    onChange={e => setWorkoutName(e.target.value)}
-                                />
-                                <button className="popover__button popover__button--find" onClick={createNewWorkout}>Создать</button>
-                            </div>
-                        </Popover>
+
                     </>
             }
         </>

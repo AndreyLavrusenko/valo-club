@@ -391,7 +391,7 @@ export const CreateWorkout = () => {
                     </DragDropContext>
                 </div>
 
-                <button onClick={onSaveChange} className="start__button">Выбрать тренировку</button>
+                <button onClick={onSaveChange} className="create-workout__footer--button">Выбрать тренировку</button>
             </div>
 
 

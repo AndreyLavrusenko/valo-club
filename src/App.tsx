@@ -10,22 +10,26 @@ import {LoginTrainer} from "./page/LoginTrainer";
 import {CreateWorkout} from "./page/CreateWorkout";
 import {RegistrationTrainer} from "./page/RegistrationTrainer";
 import {Profile} from "./page/Profile";
-import {useAppDispatch} from "./hook/redux";
+import {useAppDispatch, useAppSelector} from "./hook/redux";
 import {loginSuccess} from "./redux/reducer/userSlice";
 import {WorkoutCatalog} from "./page/WorkoutCatalog";
 
 function App() {
     const dispatch = useAppDispatch()
+    const {isAuth} = useAppSelector(store => store.user)
 
     const navigation = useNavigate()
+
+    console.log(isAuth)
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
             dispatch(loginSuccess())
+            window.location.reload()
         } else {
             navigation('/login')
         }
-    }, []);
+    }, [isAuth]);
 
 
     return (

@@ -9,7 +9,7 @@ export const NavBar = () => {
 
 	return (
 		<div className="nav__footer">
-			<NavLink to="/" className="nav__footer-item">
+			<NavLink to="/catalog" className="nav__footer-item">
 
 				<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g clipPath="url(#clip0_64_3033)">
@@ -34,7 +34,7 @@ export const NavBar = () => {
 			{
 				isAuth
 					?
-					<NavLink to="/catalog" className="nav__footer-item nav__footer-item--create">
+					<NavLink to="/create-workout" className="nav__footer-item nav__footer-item--create">
 						<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g clipPath="url(#clip0_64_3033)">
 								<mask id="path-1-inside-1_64_3033" fill="white">

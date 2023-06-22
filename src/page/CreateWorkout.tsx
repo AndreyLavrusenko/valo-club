@@ -14,6 +14,7 @@ import {DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvi
 import "../style/layout/create_workout.scss";
 
 import play from "../assets/images/play.svg";
+import {Popover} from "../ui/Popover";
 
 
 export const CreateWorkout = () => {
@@ -25,6 +26,9 @@ export const CreateWorkout = () => {
     const [isError, setIsError] = useState(false);
 
     const [isWarmUpActive, setIsWarmUpActive] = useState(false);
+
+    const [workoutName, setWorkoutName] = useState<string>("");
+    const [modalActive, setModalActive] = useState(false);
 
     // Смотрит сейчас тренировка или отдых
     const [isRecovery, setIsRecovery] = useState(false);
@@ -51,26 +55,11 @@ export const CreateWorkout = () => {
             navigation("/");
         }
 
-        getWorkoutData();
-
-        const nav = document.querySelector('.nav__footer-item--create')
-        if (nav) {
-            (nav as HTMLElement).style.color = '#FF7B3E'
-        }
-
-        const navIcon = document.querySelector('.nav__footer-item--create-path')
-        if (navIcon) {
-            (navIcon as HTMLElement).style.fill = '#FF7B3E'
-        }
-
-        return () => {
-            if (nav) {
-                (nav as HTMLElement).style.color = 'inherit'
-            }
-
-            if (navIcon) {
-                (navIcon as HTMLElement).style.fill = 'currentColor'
-            }
+        if (id) {
+            getWorkoutData();
+            setModalActive(false)
+        } else {
+            setModalActive(true)
         }
 
     }, []);
@@ -99,14 +88,24 @@ export const CreateWorkout = () => {
                     }
                 }
             }
+        };
+
+        saveWorkoutChange();
+    }, [allWorkouts]);
+
+    const createNewWorkout = async () => {
+
+        const res = await workoutAPI.createNewWorkout(workoutName);
+
+        if (res.resultCode === 0) {
+            await navigation(`/create-workout/${res.workout_id}`);
         }
 
-        saveWorkoutChange()
-    }, [allWorkouts]);
+        setModalActive(false);
+    };
 
 
     const getWorkoutData = async () => {
-        console.log('get workout data')
         if (id) {
             const {data} = await workoutAPI.getWorkout(id);
 
@@ -166,6 +165,8 @@ export const CreateWorkout = () => {
             turns_2: ""
         });
     };
+
+    const setModalActiveNone = (status: boolean) => {}
 
     const addWarmUp = async (e: any) => {
         e.preventDefault();
@@ -329,67 +330,85 @@ export const CreateWorkout = () => {
 
 
     return (
-        <div className="create-workout">
-            <div className="create-workout__header">
-                <div className="create-workout__header--title">Создание тренировки</div>
-                <div className="create-workout__header--count">Этапов: {allWorkouts.length}</div>
+        <>
+            <div className="create-workout">
+                <div className="create-workout__header">
+                    <div className="create-workout__header--title">Создание тренировки</div>
+                    <div className="create-workout__header--count">Этапов: {allWorkouts.length}</div>
+                </div>
+                <div className="create-workout__content">
+
+                    {
+                        isWarmUpActive
+                            ? <>
+                                <CreateWorkoutWarmUp
+                                    workoutData={workoutData}
+                                    onChange={onChange}
+                                    addWarmUp={addWarmUp}
+                                    isError={isError}/>
+                            </>
+                            : <>
+                                <CreateWorkoutFull
+                                    addNewStage={addNewStage}
+                                    isError={isError}
+                                    onChange={onChange}
+                                    workoutData={workoutData}
+                                    isRecovery={isRecovery}
+                                    setIsRecovery={setIsRecovery}
+                                />
+                            </>
+                    }
+
+
+                </div>
+                <div className="create-workout__cards">
+                    <DragDropContext onDragEnd={handleDrop}>
+                        <div>
+                            <Droppable droppableId={"ROOT"} type="group">
+                                {(provided: DroppableProvided) => (
+                                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                                        {
+                                            allWorkouts.map((card: WorkoutType, index: number) => (
+
+                                                <Draggable draggableId={card.id.toString()} key={card.id} index={index}>
+                                                    {(provided: DraggableProvided) => (
+                                                        <div {...provided.dragHandleProps} {...provided.draggableProps} ref={provided.innerRef}>
+                                                            <NextStageItem
+                                                                element={card}
+                                                                key={card.id}
+                                                                isAdmin={true}
+                                                                deleteStage={deleteStage}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            ))
+                                        }
+                                    </div>
+                                )}
+                            </Droppable>
+                        </div>
+                    </DragDropContext>
+                </div>
+
+                <button onClick={onSaveChange} className="start__button">Выбрать тренировку</button>
             </div>
-            <div className="create-workout__content">
-
-                {
-                    isWarmUpActive
-                     ? <>
-                            <CreateWorkoutWarmUp
-                                workoutData={workoutData}
-                                onChange={onChange}
-                                addWarmUp={addWarmUp}
-                                isError={isError}/>
-                        </>
-                        : <>
-                            <CreateWorkoutFull
-                                 addNewStage={addNewStage}
-                                 isError={isError}
-                                 onChange={onChange}
-                                 workoutData={workoutData}
-                                 isRecovery={isRecovery}
-                                 setIsRecovery={setIsRecovery}
-                            />
-                        </>
-                }
 
 
-            </div>
-            <div className="create-workout__cards">
-                <DragDropContext onDragEnd={handleDrop}>
-                    <div>
-                        <Droppable droppableId={"ROOT"} type="group">
-                            {(provided: DroppableProvided) => (
-                                <div {...provided.droppableProps} ref={provided.innerRef}>
-                                    {
-                                        allWorkouts.map((card: WorkoutType, index: number) => (
-
-                                            <Draggable draggableId={card.id.toString()} key={card.id} index={index}>
-                                                {(provided: DraggableProvided) => (
-                                                    <div {...provided.dragHandleProps} {...provided.draggableProps} ref={provided.innerRef}>
-                                                        <NextStageItem
-                                                            element={card}
-                                                            key={card.id}
-                                                            isAdmin={true}
-                                                            deleteStage={deleteStage}
-                                                        />
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        ))
-                                    }
-                                </div>
-                            )}
-                        </Droppable>
-                    </div>
-                </DragDropContext>
-            </div>
-
-            <button onClick={onSaveChange} className="create-workout__footer--button">Выбрать тренировку</button>
-        </div>
+            <Popover active={modalActive} setActive={setModalActiveNone}>
+                <div className="profile__popover">
+                    <h2 className="popover__title popover__title--find">Название тренировки</h2>
+                    <p className="popover__subtitle">Придумайте название для вашей тренировки</p>
+                    <input
+                        type="text"
+                        className="popover__input"
+                        placeholder={"Название тренировки"}
+                        value={workoutName}
+                        onChange={e => setWorkoutName(e.target.value)}
+                    />
+                    <button className="popover__button popover__button--find" onClick={createNewWorkout}>Создать</button>
+                </div>
+            </Popover>
+        </>
     );
 };

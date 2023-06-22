@@ -27,7 +27,7 @@ export const RegistrationTrainer = () => {
 				if (res.token) {
 					dispatch(loginSuccess(res.token))
 					window.localStorage.setItem("token", res.token);
-					navigate("/");
+					navigate("/catalog");
 					window.location.reload()
 				}
 			} else {

@@ -50,7 +50,7 @@ export const LoginTrainer = () => {
                         placeholder="Логин для входа"
                     />
                     <input
-                        type="text"
+                        type="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         className="login__input"
@@ -58,7 +58,7 @@ export const LoginTrainer = () => {
                         placeholder="Пароль для входа"
                     />
                     <button className="login__button" onClick={trainerLogin}>Вход</button>
-                    <NavLink to={"/registration"}>Еще нет акканута?</NavLink>
+                    <NavLink to={"/registration"}>Еще нет аккаунта?</NavLink>
                 </form>
                 {error
                     ? <p className="error u-margin-top-l">{error}</p>

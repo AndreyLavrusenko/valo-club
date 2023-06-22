@@ -51,7 +51,7 @@ export const RegistrationTrainer = () => {
 						placeholder="Придумайте логин"
 					/>
 					<input
-						type="text"
+						type="password"
 						value={password}
 						onChange={e => setPassword(e.target.value)}
 						className="login__input"

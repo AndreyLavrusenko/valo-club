@@ -1,23 +1,26 @@
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 
 import {workoutAPI} from "../api/api";
+import {useAppSelector} from "../hook/redux";
 import {WorkoutType} from "../types/workout";
 import {convertFromMinutesToMs, convertFromSecondsToMs} from "../helpers/getDate";
 import {NextStageItem} from "../component/NextStageItem";
 import {CreateWorkoutWarmUp} from "../ui/createWorkout/CreateWorkoutWarmUp";
 import {CreateWorkoutFull} from "../ui/createWorkout/CreateWorkoutFull";
 //@ts-ignore
-import {DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvided} from "react-beautiful-dnd"
+import {DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvided} from "react-beautiful-dnd";
 
 import "../style/layout/create_workout.scss";
 
+import play from "../assets/images/play.svg";
 
-type IProps = {
-    isTrainer: boolean
-}
 
-export const CreateWorkout = ({isTrainer}: IProps) => {
+export const CreateWorkout = () => {
+    const {isAuth} = useAppSelector(state => state.user);
+
+    const { id } = useParams();
+
     const [allWorkouts, setAllWorkouts] = useState<WorkoutType[]>([]);
     const [isError, setIsError] = useState(false);
 
@@ -43,32 +46,77 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
     const navigation = useNavigate();
 
     useEffect(() => {
-        if (!isTrainer) {
+
+        if (!isAuth) {
             navigation("/");
         }
 
         getWorkoutData();
 
+        const nav = document.querySelector('.nav__footer-item--create')
+        if (nav) {
+            (nav as HTMLElement).style.color = '#FF7B3E'
+        }
+
+        const navIcon = document.querySelector('.nav__footer-item--create-path')
+        if (navIcon) {
+            (navIcon as HTMLElement).style.fill = '#FF7B3E'
+        }
+
+        return () => {
+            if (nav) {
+                (nav as HTMLElement).style.color = 'inherit'
+            }
+
+            if (navIcon) {
+                (navIcon as HTMLElement).style.fill = 'currentColor'
+            }
+        }
+
     }, []);
 
     useEffect(() => {
         if (allWorkouts.length === 0) {
-            setIsWarmUpActive(true)
+            setIsWarmUpActive(true);
         } else {
-            setIsWarmUpActive(false)
+            setIsWarmUpActive(false);
         }
     }, [allWorkouts]);
 
 
-    const getWorkoutData = async () => {
-        const {data} = await workoutAPI.getWorkout(1);
+    // Сохраняет изменения в тренировке
+    useEffect(() => {
+        const saveWorkoutChange = async () => {
 
-        if (data[0].workout.length === 0) {
-            setIsWarmUpActive(true);
-        } else if (data[0].workout.length > 1) {
-            setAllWorkouts(data[0].workout.reverse());
-        } else if (data[0].workout.length === 1){
-            setAllWorkouts(data[0].workout);
+            if (allWorkouts.length > 0) {
+                const workout = allWorkouts.reverse();
+
+                if (id) {
+                    const res = await workoutAPI.updateWorkout(workout, id);
+
+                    if (res && res.data.resultCode === 0) {
+                        await workoutAPI.setActiveWorkout(id);
+                    }
+                }
+            }
+        }
+
+        saveWorkoutChange()
+    }, [allWorkouts]);
+
+
+    const getWorkoutData = async () => {
+        console.log('get workout data')
+        if (id) {
+            const {data} = await workoutAPI.getWorkout(id);
+
+            if (data[0].workout.length === 0) {
+                setIsWarmUpActive(true);
+            } else if (data[0].workout.length > 1) {
+                setAllWorkouts(data[0].workout.reverse());
+            } else if (data[0].workout.length === 1){
+                setAllWorkouts(data[0].workout);
+            }
         }
     };
 
@@ -82,7 +130,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
     };
 
     const convertTime = (workoutData: any) => {
-        let timeInMs = 0
+        let timeInMs = 0;
 
         if (workoutData.minutes) {
             timeInMs += convertFromMinutesToMs(Number(workoutData.minutes));
@@ -92,18 +140,18 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
             timeInMs += convertFromSecondsToMs(Number(workoutData.seconds));
         }
 
-        return timeInMs
-    }
+        return timeInMs;
+    };
 
     const getId = () => {
-        let id = 1
+        let id = 1;
 
         if (allWorkouts.length >= 1) {
             id = allWorkouts.length + 1;
         }
 
-        return id
-    }
+        return id;
+    };
 
     const clearWorkoutField = () => {
         setWorkoutData({
@@ -117,7 +165,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
             turns_1: "",
             turns_2: ""
         });
-    }
+    };
 
     const addWarmUp = async (e: any) => {
         e.preventDefault();
@@ -130,9 +178,9 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
         setIsError(false);
 
         // Получаение id по порядку
-        let id = getId()
+        let id = getId();
 
-        let timeInMs = convertTime(workoutData)
+        let timeInMs = convertTime(workoutData);
 
         if (timeInMs && id) {
 
@@ -152,19 +200,20 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
     const addNewStage = async (e: any) => {
         e.preventDefault();
 
+
         // Если восстановление
         if (isRecovery) {
 
             if (!workoutData.minutes && !workoutData.seconds) {
-                setIsError(true);
+                return setIsError(true);
             }
 
             setIsError(false);
 
             // Получаение id по порядку
-            let id = getId()
+            let id = getId();
 
-            let timeInMs = convertTime(workoutData)
+            let timeInMs = convertTime(workoutData);
 
             if (timeInMs && id) {
 
@@ -182,6 +231,7 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
 
         } else {
+
             // Если этап тренировки и все поля заполнены
             if (
                 (!workoutData.minutes && !workoutData.seconds)
@@ -189,15 +239,15 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                 || !workoutData.pulse_1
                 || !workoutData.condition
             ) {
-                setIsError(true);
+                return setIsError(true);
             }
 
             setIsError(false);
 
             // Получаение id по порядку
-            let id = getId()
+            let id = getId();
 
-            let timeInMs = convertTime(workoutData)
+            let timeInMs = convertTime(workoutData);
 
             if (timeInMs && id) {
 
@@ -226,19 +276,23 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
 
         const workout = allWorkouts.reverse();
 
-        const res = await workoutAPI.updateWorkout(workout, 1);
+        if (id) {
+            const res = await workoutAPI.updateWorkout(workout, id);
 
-        if (res && res.data.resultCode === 0) {
-            navigation("/");
+            if (res && res.data.resultCode === 0) {
+                await workoutAPI.setActiveWorkout(id);
+                navigation("/");
+            }
         }
     };
+
 
     const deleteStage = async (index: number) => {
         // Удаляет копию из массива
         const deleteCopy = [...allWorkouts].filter((item: WorkoutType) => item.id !== index);
         // Проходит по всем элементам и меняет им id
 
-        const correctArr = setCorrectId(deleteCopy)
+        const correctArr = setCorrectId(deleteCopy);
 
         setAllWorkouts(correctArr);
     };
@@ -250,28 +304,28 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
             idx += 1;
         }
 
-        return data
-    }
+        return data;
+    };
 
     const handleDrop = (e: any) => {
-        const {source, destination, type} = e
+        const {source, destination, type} = e;
 
-        if (!destination) return
+        if (!destination) return;
 
         if (destination.droppableId === source.droppableId && source.index === destination.index) return;
 
-        if (type === 'group') {
-            const reorderedStore = [...allWorkouts]
-            const sourceIndex = source.index
-            const destinationIndex = destination.index
+        if (type === "group") {
+            const reorderedStore = [...allWorkouts];
+            const sourceIndex = source.index;
+            const destinationIndex = destination.index;
 
-            const [removedWorkout] = reorderedStore.splice(sourceIndex, 1)
-            reorderedStore.splice(destinationIndex, 0, removedWorkout)
+            const [removedWorkout] = reorderedStore.splice(sourceIndex, 1);
+            reorderedStore.splice(destinationIndex, 0, removedWorkout);
 
-            const correctReorderWorkout = setCorrectId(reorderedStore)
-            setAllWorkouts(correctReorderWorkout)
+            const correctReorderWorkout = setCorrectId(reorderedStore);
+            setAllWorkouts(correctReorderWorkout);
         }
-    }
+    };
 
 
     return (
@@ -334,7 +388,8 @@ export const CreateWorkout = ({isTrainer}: IProps) => {
                     </div>
                 </DragDropContext>
             </div>
-            <button onClick={onSaveChange} className="create-workout__footer--button">Сохранить</button>
+
+            <button onClick={onSaveChange} className="create-workout__footer--button">Выбрать тренировку</button>
         </div>
     );
 };

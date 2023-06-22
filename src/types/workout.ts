@@ -21,3 +21,33 @@ export type WorkoutType = {
     isRecovery: boolean,
     isWarmUp: boolean,
 }
+
+
+export type WorkoutCatalogs = {
+    id: string,
+    is_start: number,
+    active_stage: number,
+    workout_name: string,
+}
+
+
+export type Club = {
+    "id": string,
+    "name": string,
+    "owner": string,
+    "privacy": string,
+    "members": string,
+    "request": string
+}
+
+
+export type User = {
+    name: string,
+    clubs: ClubInfo[]
+}
+
+
+export type ClubInfo = {
+    id: string,
+    name: string
+}

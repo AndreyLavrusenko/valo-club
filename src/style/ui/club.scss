@@ -1,0 +1,42 @@
+@import '../base/variable';
+@import '../base/mixin';
+
+.club-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    &__avatar {
+        @include avatar
+    }
+
+    &__content {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+
+        margin-left: 12px;
+    }
+
+    &__name {
+        color: #000;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    &__button {
+        font-size: 14px;
+        font-weight: 500;
+        color: $primary;
+    }
+
+    &:not(:last-child) {
+        padding-bottom: 12px;
+        border-bottom: $divider-bottom;
+    }
+
+    &:not(:first-child) {
+        margin-top: 12px;
+    }
+}

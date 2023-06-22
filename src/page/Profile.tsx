@@ -54,6 +54,7 @@ export const Profile = () => {
 
     const logout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("5593f802");
         dispatch(logoutSuccess());
         navigation("/login");
     };

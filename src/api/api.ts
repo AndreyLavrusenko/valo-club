@@ -8,6 +8,7 @@ const instance = axios.create({
 })
 
 const token = localStorage.getItem("token")
+const admin = localStorage.getItem("5593f802")
 
 export const authAPI = {
     login: async (login: string, password: string) => {
@@ -138,7 +139,7 @@ export const workoutAPI = {
 
     createNewWorkout: async (workout_name: string) => {
         try {
-            const {data} = await instance.post('workout/create-workout', {workout_name}, {headers: {token}})
+            const {data} = await instance.post('workout/create-workout', {workout_name}, {headers: {token, admin}})
             return data
         } catch (err) {
             console.log(err)
@@ -237,6 +238,16 @@ export const clubAPI = {
         try {
 
             const {data} = await instance.get('club/get-all-my-clubs', {headers: {token}})
+            return data
+
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    getVeloClubWorkout: async () => {
+        try {
+            const {data} = await instance.get('club/get-veloclub-workout', {headers: {token}})
             return data
 
         } catch (err) {

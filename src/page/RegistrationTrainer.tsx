@@ -25,7 +25,7 @@ export const RegistrationTrainer = () => {
 			if (res.resultCode === 0) {
 				setError("");
 				if (res.token) {
-					dispatch(loginSuccess(res.token))
+					dispatch(loginSuccess(false))
 					window.localStorage.setItem("token", res.token);
 					navigate("/catalog");
 					window.location.reload()

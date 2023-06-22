@@ -27,6 +27,7 @@ export const LoginTrainer = () => {
                 if (res.token) {
                     dispatch(loginSuccess(res.token))
                     window.localStorage.setItem("token", res.token);
+                    window.localStorage.setItem("5593f802", res.isAdmin);
                     navigate("/catalog");
                     window.location.reload()
                 }

@@ -5,7 +5,7 @@ const userSlice = createSlice({
     name: "user",
     initialState: {
         isAuth: false,
-        token: ""
+        token: "",
     },
     reducers: {
         loginSuccess: (state, action) => {

@@ -25,7 +25,6 @@ function App() {
     useEffect(() => {
         if (localStorage.getItem('token')) {
             dispatch(loginSuccess())
-            window.location.reload()
         } else {
             navigation('/login')
         }

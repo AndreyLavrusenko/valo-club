@@ -6,17 +6,17 @@ import {NavLink, useNavigate} from "react-router-dom";
 import {Modal} from "../ui/Modal";
 
 import "../style/layout/catalog.scss";
-import '../style/components/modal.scss'
+import "../style/components/modal.scss";
 import {WorkoutItem} from "../ui/WorkoutItem";
 import {Popover} from "../ui/Popover";
+import {useAppSelector} from "../hook/redux";
 
 export const WorkoutCatalog = () => {
+    const [isAdmin, setIsAdmin] = useState(false);
     const [allWorkouts, setAllWorkouts] = useState<WorkoutCatalogs[]>([]);
     const [allClubWorkouts, setAllClubWorkouts] = useState<WorkoutCatalogs[]>([]);
 
     const [loading, setLoading] = useState(true);
-    const [modalActive, setModalActive] = useState<boolean>(false);
-
 
     const [workoutActive, setWorkoutActive] = useState("");
 
@@ -42,26 +42,35 @@ export const WorkoutCatalog = () => {
 
             if (res) {
                 if (res.resultCode === 0) {
-                    setWorkoutActive(res.current_workout)
+                    setWorkoutActive(res.current_workout);
                 }
             }
         };
 
-
         const getAllAvailableWorkout = async () => {
-            const res = await clubAPI.getAvailableClubWorkout();
+            const res = await clubAPI.getVeloClubWorkout();
 
             if (res) {
                 if (res.resultCode === 0) {
                     setAllClubWorkouts(res.result);
                 }
             }
-
         };
 
         getAllWorkouts();
         getActiveWorkout();
         getAllAvailableWorkout();
+
+        const res = localStorage.getItem("5593f802")
+        if (res) {
+            if (res === '0') {
+                setIsAdmin(false)
+            } else {
+                setIsAdmin(true)
+            }
+        } else {
+            setIsAdmin(false)
+        }
 
         setLoading(false);
     }, [loading]);
@@ -91,31 +100,34 @@ export const WorkoutCatalog = () => {
                         <div className="catalog">
                             <h2 className="login__title">Тренировки</h2>
 
-                            <div className="catalog__button">
-                                <div
-                                    onClick={() => setSectionActive("personal")}
-                                    className={`catalog__button-item 
+                            {
+                                isAdmin ? null
+                                    : <div className="catalog__button">
+                                        <div
+                                            onClick={() => setSectionActive("personal")}
+                                            className={`catalog__button-item 
 									${activeSection === "personal" ? "active" : null}`}
-                                >
-                                    Личные
-                                </div>
-                                <div
-                                    onClick={() => setSectionActive("club")}
-                                    className={`catalog__button-item 
+                                        >
+                                            Личные
+                                        </div>
+                                        <div
+                                            onClick={() => setSectionActive("club")}
+                                            className={`catalog__button-item 
 									${activeSection === "club" ? "active" : null}`}
-                                >
-                                    Клубные
-                                </div>
-                            </div>
+                                        >
+                                            Клубные
+                                        </div>
+                                    </div>
+                            }
 
                             <div className="catalog__items">
                                 {
-                                    activeSection === 'personal'
+                                    activeSection === "personal"
                                         ?
-                                            allWorkouts.map((item: WorkoutCatalogs) => (
-                                                <WorkoutItem workoutActive={workoutActive} key={item.id} isMyWorkout={true}
-                                                             setActiveWorkout={setActiveWorkout} item={item}/>
-                                            ))
+                                        allWorkouts.map((item: WorkoutCatalogs) => (
+                                            <WorkoutItem workoutActive={workoutActive} key={item.id} isMyWorkout={true}
+                                                         setActiveWorkout={setActiveWorkout} item={item}/>
+                                        ))
                                         :
                                         allClubWorkouts.map((item: WorkoutCatalogs) => (
                                             <WorkoutItem workoutActive={workoutActive} key={item.id} isMyWorkout={false}
@@ -127,15 +139,7 @@ export const WorkoutCatalog = () => {
 
                             </div>
 
-                            {/*<button*/}
-                            {/*    onClick={() => setModalActive(true)}*/}
-                            {/*    className={"catalog__create"}*/}
-                            {/*>*/}
-                            {/*    Создать*/}
-                            {/*</button>*/}
-
                         </div>
-
 
 
                     </>

@@ -25,9 +25,10 @@ export const LoginTrainer = () => {
             if (res.resultCode === 0) {
                 setError("");
                 if (res.token) {
-                    dispatch(loginSuccess())
+                    dispatch(loginSuccess(res.token))
                     window.localStorage.setItem("token", res.token);
                     navigate("/");
+                    window.location.reload()
                 }
             } else {
                 setError(res.message);

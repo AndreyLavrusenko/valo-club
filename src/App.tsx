@@ -20,11 +20,10 @@ function App() {
 
     const navigation = useNavigate()
 
-    console.log(isAuth)
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
-            dispatch(loginSuccess())
+            dispatch(loginSuccess(localStorage.getItem('token')))
         } else {
             navigation('/login')
         }
@@ -33,17 +32,27 @@ function App() {
 
     return (
         <div>
-            <Header />
-            <Routes>
-                <Route path="/" element={<TrainingUser />} />
-                <Route path="/create-workout/:id" element={<CreateWorkout />} />
-                <Route path="/login" element={<LoginTrainer />} />
-                <Route path="/registration" element={<RegistrationTrainer />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/catalog" element={<WorkoutCatalog />} />
-            </Routes>
+            <Header/>
+            <>
+                {
+                    isAuth
+                        ? <Routes>
+                            <Route path="/" element={<TrainingUser/>}/>
+                            <Route path="/login" element={<LoginTrainer/>}/>
+                            <Route path="/registration" element={<RegistrationTrainer/>}/>
+                            <Route path="/create-workout/:id" element={<CreateWorkout/>}/>
+                            <Route path="/profile" element={<Profile/>}/>
+                            <Route path="/catalog" element={<WorkoutCatalog/>}/>
+                        </Routes>
+                        : <Routes>
+                            <Route path="/login" element={<LoginTrainer/>}/>
+                            <Route path="/registration" element={<RegistrationTrainer/>}/>
+                        </Routes>
+                }
 
-            <NavBar />
+            </>
+
+            <NavBar/>
         </div>
     );
 }

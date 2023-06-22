@@ -295,8 +295,8 @@ export const Profile = () => {
                 </div>
 
 
-                <div className="profile__user">
-                    <div className="profile__user-container" onClick={logout}>
+                <div className="profile__user" onClick={logout}>
+                    <div className="profile__user-container" >
                         <div className="profile__user-main">
                             <div className="user__right">
                                 <div className="profile__title">Выход из аккаунта</div>

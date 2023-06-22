@@ -8,9 +8,12 @@ import {Modal} from "../ui/Modal";
 import {NextStageItem} from "../component/NextStageItem";
 import ProgressBar from "@ramonak/react-progress-bar";
 import {formatTime} from "../helpers/getDate";
+import {useAppSelector} from "../hook/redux";
 
 
 export const TrainingUser = () => {
+    const {token} = useAppSelector(state => state.user)
+
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
     const [workout, setWorkout] = useState<Workout | null>(null);

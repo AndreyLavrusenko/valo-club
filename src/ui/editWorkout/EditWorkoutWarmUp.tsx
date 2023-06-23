@@ -1,17 +1,23 @@
 import {StatusItem} from "../StatusItem";
-import {WorkoutType} from "../../types/workout";
 import {useEffect, useState} from "react";
 
 
 type IProps = {
 	workoutData: any,
-	isError: boolean,
 	onChange: (e: any) => void,
-	addWarmUp: (e: any) => void
+	isError: boolean,
+	changeWarmup: (e: any) => void
 }
 
 
-export const CreateWorkoutWarmUp = ({workoutData, isError, onChange, addWarmUp}: IProps) => {
+export const EditWorkoutWarmUp = ({workoutData, isError, changeWarmup, onChange}: IProps) => {
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		workoutData.minutes =  Math.floor(workoutData.time / 60000);
+		workoutData.seconds = ((workoutData.time % 60000) / 1000).toFixed(0)
+		setLoading(false)
+	}, [loading]);
 
 	return (
 		<>
@@ -50,7 +56,7 @@ export const CreateWorkoutWarmUp = ({workoutData, isError, onChange, addWarmUp}:
 			</div>
 
 
-			<button onClick={addWarmUp} className="create-workout__content--button">Добавить</button>
+			<button onClick={changeWarmup} className="create-workout__content--button">Сохранить</button>
 			{isError && <p className="error">Пожалуйста, заполните все поля</p>}
 		</>
 	);

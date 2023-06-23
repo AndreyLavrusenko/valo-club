@@ -25,6 +25,17 @@ export const WorkoutCatalog = () => {
 
     const navigation = useNavigate();
 
+    // Обновляет клубные тренировки
+    useEffect(() => {
+        const intervalCall = setInterval(() => {
+            getAllAvailableWorkout()
+        }, 5000);
+        return () => {
+            clearInterval(intervalCall);
+        };
+    }, []);
+
+
     useEffect(() => {
         const getAllWorkouts = async () => {
             const res = await workoutAPI.getAllWorkouts();
@@ -47,16 +58,6 @@ export const WorkoutCatalog = () => {
             }
         };
 
-        const getAllAvailableWorkout = async () => {
-            const res = await clubAPI.getVeloClubWorkout();
-
-            if (res) {
-                if (res.resultCode === 0) {
-                    setAllClubWorkouts(res.result);
-                }
-            }
-        };
-
         getAllWorkouts();
         getActiveWorkout();
         getAllAvailableWorkout();
@@ -74,6 +75,16 @@ export const WorkoutCatalog = () => {
 
         setLoading(false);
     }, [loading]);
+
+    const getAllAvailableWorkout = async () => {
+        const res = await clubAPI.getVeloClubWorkout();
+
+        if (res) {
+            if (res.resultCode === 0) {
+                setAllClubWorkouts(res.result);
+            }
+        }
+    };
 
     const setActiveWorkout = async (id: string) => {
 

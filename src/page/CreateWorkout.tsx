@@ -12,23 +12,27 @@ import {CreateWorkoutFull} from "../ui/createWorkout/CreateWorkoutFull";
 import {DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvided} from "react-beautiful-dnd";
 
 import "../style/layout/create_workout.scss";
-
-import play from "../assets/images/play.svg";
 import {Popover} from "../ui/Popover";
+import {EditWorkoutWarmUp} from "../ui/editWorkout/EditWorkoutWarmUp";
+import {EditWorkoutFull} from "../ui/editWorkout/EditWorkoutFull";
 
 
 export const CreateWorkout = () => {
     const {isAuth} = useAppSelector(state => state.user);
 
-    const { id } = useParams();
+    const {id} = useParams();
 
     const [allWorkouts, setAllWorkouts] = useState<WorkoutType[]>([]);
     const [isError, setIsError] = useState(false);
+    const [isErrorEdit, setIsErrorEdit] = useState(false);
 
     const [isWarmUpActive, setIsWarmUpActive] = useState(false);
 
     const [workoutName, setWorkoutName] = useState<string>("");
     const [modalActive, setModalActive] = useState(false);
+    const [popoverChange, setPopoverChange] = useState(false);
+
+    const [workoutEdit, setWorkoutEdit] = useState<WorkoutType | null>(null);
 
     // Смотрит сейчас тренировка или отдых
     const [isRecovery, setIsRecovery] = useState(false);
@@ -57,9 +61,9 @@ export const CreateWorkout = () => {
 
         if (id) {
             getWorkoutData();
-            setModalActive(false)
+            setModalActive(false);
         } else {
-            setModalActive(true)
+            setModalActive(true);
         }
 
     }, []);
@@ -113,7 +117,7 @@ export const CreateWorkout = () => {
                 setIsWarmUpActive(true);
             } else if (data[0].workout.length > 1) {
                 setAllWorkouts(data[0].workout.reverse());
-            } else if (data[0].workout.length === 1){
+            } else if (data[0].workout.length === 1) {
                 setAllWorkouts(data[0].workout);
             }
         }
@@ -125,6 +129,17 @@ export const CreateWorkout = () => {
         } else {
             const value = e.target.value;
             setWorkoutData({...workoutData, [e.target.name]: value});
+        }
+    };
+
+    const onChangeEdit = (e: any) => {
+        if (workoutEdit) {
+            if (e.target.type === "radio") {
+                setWorkoutEdit({...workoutEdit, ["condition"]: e.target.value});
+            } else {
+                const value = e.target.value;
+                setWorkoutEdit({...workoutEdit, [e.target.name]: value});
+            }
         }
     };
 
@@ -166,7 +181,8 @@ export const CreateWorkout = () => {
         });
     };
 
-    const setModalActiveNone = (status: boolean) => {}
+    const setModalActiveNone = (status: boolean) => {
+    };
 
     const addWarmUp = async (e: any) => {
         e.preventDefault();
@@ -272,6 +288,52 @@ export const CreateWorkout = () => {
         }
     };
 
+    const changeWarmup = async () => {
+        if (workoutEdit) {
+            if (workoutEdit.isWarmUp || workoutEdit.isRecovery) {
+                // Разминка или отдых
+                if (!workoutEdit.minutes && !workoutEdit.seconds) {
+                    return setIsErrorEdit(true);
+                }
+
+                setIsErrorEdit(false)
+
+                workoutEdit.time = convertTime(workoutEdit)
+                delete workoutEdit.minutes
+                delete workoutEdit.seconds
+
+                const notChangedItem = allWorkouts.filter((item: WorkoutType) => item.id !== workoutEdit.id)
+
+                setAllWorkouts([...notChangedItem, workoutEdit])
+
+                setPopoverChange(false)
+
+            } else {
+                // Полная тренировка
+                if (
+                    (!workoutEdit.minutes && !workoutEdit.seconds)
+                    || !workoutEdit.turns_1
+                    || !workoutEdit.pulse_1
+                    || !workoutEdit.condition
+                ) {
+                    return setIsErrorEdit(true);
+                }
+
+                setIsErrorEdit(false);
+
+                workoutEdit.time = convertTime(workoutEdit)
+                delete workoutEdit.minutes
+                delete workoutEdit.seconds
+
+                const notChangedItem = allWorkouts.filter((item: WorkoutType) => item.id !== workoutEdit.id)
+
+                setAllWorkouts([...notChangedItem, workoutEdit])
+
+                setPopoverChange(false)
+            }
+        }
+    }
+
     const onSaveChange = async (e: any) => {
         e.preventDefault();
 
@@ -296,6 +358,15 @@ export const CreateWorkout = () => {
         const correctArr = setCorrectId(deleteCopy);
 
         setAllWorkouts(correctArr);
+    };
+
+    const changeStage = async (index: number) => {
+        setPopoverChange(true);
+
+        const item = allWorkouts.find((item: WorkoutType) => item.id === index);
+        if (item) {
+            setWorkoutEdit(item)
+        }
     };
 
     const setCorrectId = (data: WorkoutType[]) => {
@@ -372,12 +443,14 @@ export const CreateWorkout = () => {
 
                                                 <Draggable draggableId={card.id.toString()} key={card.id} index={index}>
                                                     {(provided: DraggableProvided) => (
-                                                        <div {...provided.dragHandleProps} {...provided.draggableProps} ref={provided.innerRef}>
+                                                        <div {...provided.dragHandleProps} {...provided.draggableProps}
+                                                             ref={provided.innerRef}>
                                                             <NextStageItem
                                                                 element={card}
                                                                 key={card.id}
                                                                 isAdmin={true}
                                                                 deleteStage={deleteStage}
+                                                                changeStage={changeStage}
                                                             />
                                                         </div>
                                                     )}
@@ -406,7 +479,40 @@ export const CreateWorkout = () => {
                         value={workoutName}
                         onChange={e => setWorkoutName(e.target.value)}
                     />
-                    <button className="popover__button popover__button--find" onClick={createNewWorkout}>Создать</button>
+                    <button className="popover__button popover__button--find" onClick={createNewWorkout}>Создать
+                    </button>
+                </div>
+            </Popover>
+
+            <Popover active={popoverChange} height={"700px"} setActive={setPopoverChange}>
+                <div className="profile__popover">
+                    <h2 className="popover__title popover__title--find">Редактирование тренировки</h2>
+                    {
+                        workoutEdit
+                            ? <>
+                                {
+                                    workoutEdit.isWarmUp || workoutEdit.isRecovery
+                                        // Если разминка или восстановление
+                                        ? <>
+                                            <EditWorkoutWarmUp
+                                                workoutData={workoutEdit}
+                                                onChange={onChangeEdit}
+                                                changeWarmup={changeWarmup}
+                                                isError={isErrorEdit}/>
+                                        </>
+                                        // Если тренировка
+                                        : <>
+                                            <EditWorkoutFull
+                                                workoutData={workoutEdit}
+                                                onChange={onChangeEdit}
+                                                addNewStage={changeWarmup}
+                                                isError={isErrorEdit}
+                                            />
+                                        </>
+                                }
+                            </>
+                            : null
+                    }
                 </div>
             </Popover>
         </>

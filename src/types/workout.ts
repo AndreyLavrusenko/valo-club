@@ -20,6 +20,8 @@ export type WorkoutType = {
     comment?: string,
     isRecovery: boolean,
     isWarmUp: boolean,
+    minutes?: string,
+    seconds?: string
 }
 
 

@@ -7,7 +7,7 @@ import {Workout, WorkoutType} from "../types/workout";
 import {Modal} from "../ui/Modal";
 import {NextStageItem} from "../component/NextStageItem";
 import ProgressBar from "@ramonak/react-progress-bar";
-import {formatTime} from "../helpers/getDate";
+import {formatTime, formatTimeWithHours} from "../helpers/getDate";
 import {useAppSelector} from "../hook/redux";
 
 
@@ -240,7 +240,7 @@ export const TrainingUser = () => {
 
         setTimeAllStages(time);
 
-        const formatedTime = formatTime(time);
+        const formatedTime = formatTimeWithHours(time);
         setTimeAllStagesFormated(formatedTime);
     };
 

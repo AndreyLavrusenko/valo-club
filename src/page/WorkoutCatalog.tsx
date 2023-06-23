@@ -28,7 +28,7 @@ export const WorkoutCatalog = () => {
     // Обновляет клубные тренировки
     useEffect(() => {
         const intervalCall = setInterval(() => {
-            getAllAvailableWorkout()
+            getAllAvailableWorkout();
         }, 5000);
         return () => {
             clearInterval(intervalCall);
@@ -62,15 +62,15 @@ export const WorkoutCatalog = () => {
         getActiveWorkout();
         getAllAvailableWorkout();
 
-        const res = localStorage.getItem("5593f802")
+        const res = localStorage.getItem("5593f802");
         if (res) {
-            if (res === '0') {
-                setIsAdmin(false)
+            if (res === "0") {
+                setIsAdmin(false);
             } else {
-                setIsAdmin(true)
+                setIsAdmin(true);
             }
         } else {
-            setIsAdmin(false)
+            setIsAdmin(false);
         }
 
         setLoading(false);

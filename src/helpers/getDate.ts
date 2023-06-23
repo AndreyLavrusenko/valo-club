@@ -53,6 +53,26 @@ export const formatTime = (time: number) => {
 }
 
 
+export const formatTimeWithHours = (time: number) => {
+    let seconds: number = Math.floor((time / 1000) % 60);
+    let minutes: number = Math.floor((time / 1000 / 60) % 60);
+    let hours: number = Math.floor((time / 1000 / 60 / 60) % 60);
+
+    // @ts-ignore
+    if (hours < 60) hours = '0' + hours
+    // @ts-ignore
+    if (minutes < 10) minutes = '0' + minutes;
+    // @ts-ignore
+    if (seconds < 10) seconds = '0' + seconds;
+
+    if (hours !== 0) {
+        return hours + ':' + minutes + ':' + seconds
+    } else {
+        return minutes + ':' + seconds
+    }
+}
+
+
 export function declOfNum(number: number, words: string[]) {
     return words[(number % 100 > 4 && number % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(number % 10 < 5) ? Math.abs(number) % 10 : 5]];
 }

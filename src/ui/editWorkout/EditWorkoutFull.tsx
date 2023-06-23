@@ -15,9 +15,14 @@ export const EditWorkoutFull = ({workoutData, onChange, addNewStage, isError}: I
     useEffect(() => {
         workoutData.minutes = Math.floor(workoutData.time / 60000);
         workoutData.seconds = ((workoutData.time % 60000) / 1000).toFixed(0)
-        console.log(workoutData)
+
         setLoading(false)
     }, [loading]);
+
+    const addNewStageHandler = (e: any) => {
+        addNewStage(e)
+        setLoading(true)
+    }
 
     return (
         <>
@@ -110,10 +115,10 @@ export const EditWorkoutFull = ({workoutData, onChange, addNewStage, isError}: I
                             name={"condition"}
                             onChange={onChange}
                             checked={workoutData.condition === 'sitting'}
-                            id="radio-2"
+                            id="radio-5"
                             type="radio"
                         />
-                        <label htmlFor="radio-2">Сидя</label>
+                        <label htmlFor="radio-5">Сидя</label>
                     </div>
                     <div className="form_radio_btn">
                         <input
@@ -121,10 +126,10 @@ export const EditWorkoutFull = ({workoutData, onChange, addNewStage, isError}: I
                             name={"condition"}
                             onChange={onChange}
                             checked={workoutData.condition === 'standing'}
-                            id="radio-3"
+                            id="radio-6"
                             type="radio"
                         />
-                        <label htmlFor="radio-3">Стоя</label>
+                        <label htmlFor="radio-6">Стоя</label>
                     </div>
                 </div>
             </div>
@@ -133,7 +138,7 @@ export const EditWorkoutFull = ({workoutData, onChange, addNewStage, isError}: I
                 <div className="status-item--subtitle">Комментарий</div>
                 <textarea value={workoutData.comment} onChange={onChange} name="comment"></textarea>
             </div>
-            <button onClick={addNewStage} className="create-workout__content--button">Добавить</button>
+            <button onClick={addNewStageHandler} className="create-workout__content--button">Добавить</button>
             {isError && <p className="error">Пожалуйста, заполните все поля</p>}
         </>
     )

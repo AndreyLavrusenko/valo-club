@@ -15,6 +15,7 @@ export const EditWorkoutFull = ({workoutData, onChange, addNewStage, isError}: I
     useEffect(() => {
         workoutData.minutes = Math.floor(workoutData.time / 60000);
         workoutData.seconds = ((workoutData.time % 60000) / 1000).toFixed(0)
+        console.log(workoutData)
         setLoading(false)
     }, [loading]);
 
@@ -108,6 +109,7 @@ export const EditWorkoutFull = ({workoutData, onChange, addNewStage, isError}: I
                             value={"sitting"}
                             name={"condition"}
                             onChange={onChange}
+                            checked={workoutData.condition === 'sitting'}
                             id="radio-2"
                             type="radio"
                         />
@@ -118,6 +120,7 @@ export const EditWorkoutFull = ({workoutData, onChange, addNewStage, isError}: I
                             value={"standing"}
                             name={"condition"}
                             onChange={onChange}
+                            checked={workoutData.condition === 'standing'}
                             id="radio-3"
                             type="radio"
                         />

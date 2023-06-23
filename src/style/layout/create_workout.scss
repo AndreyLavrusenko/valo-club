@@ -136,5 +136,33 @@
     .custom-checkbox--create+label {
         margin-bottom: 12px;
     }
+}
+
+.create-workout--modal {
+    .modal__content-create {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        margin-top: 14px;
+
+        &--primary {
+            width: 100%;
+            @include button-orange;
+        }
+
+        &--secondary {
+            width: 100%;
+
+            margin-top: 12px;
+
+            @include button-orange-inline
+        }
+    }
+
+    .modal__content {
+        height: 160px;
+    }
 
 }

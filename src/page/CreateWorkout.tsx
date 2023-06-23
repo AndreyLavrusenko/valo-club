@@ -15,6 +15,7 @@ import "../style/layout/create_workout.scss";
 import {Popover} from "../ui/Popover";
 import {EditWorkoutWarmUp} from "../ui/editWorkout/EditWorkoutWarmUp";
 import {EditWorkoutFull} from "../ui/editWorkout/EditWorkoutFull";
+import {Modal} from "../ui/Modal";
 
 
 export const CreateWorkout = () => {
@@ -31,6 +32,9 @@ export const CreateWorkout = () => {
     const [workoutName, setWorkoutName] = useState<string>("");
     const [modalActive, setModalActive] = useState(false);
     const [popoverChange, setPopoverChange] = useState(false);
+    const [modalConfirmDelete, setModalConfirmDelete] = useState(false);
+
+    const [deleteId, setDeleteId] = useState(0);
 
     const [workoutEdit, setWorkoutEdit] = useState<WorkoutType | null>(null);
 
@@ -82,10 +86,9 @@ export const CreateWorkout = () => {
         const saveWorkoutChange = async () => {
 
             if (allWorkouts.length > 0) {
-                const workout = allWorkouts.reverse();
 
                 if (id) {
-                    const res = await workoutAPI.updateWorkout(workout, id);
+                    const res = await workoutAPI.updateWorkout(allWorkouts, id);
 
                     if (res && res.data.resultCode === 0) {
                         await workoutAPI.setActiveWorkout(id);
@@ -116,7 +119,7 @@ export const CreateWorkout = () => {
             if (data[0].workout.length === 0) {
                 setIsWarmUpActive(true);
             } else if (data[0].workout.length > 1) {
-                setAllWorkouts(data[0].workout.reverse());
+                setAllWorkouts(data[0].workout);
             } else if (data[0].workout.length === 1) {
                 setAllWorkouts(data[0].workout);
             }
@@ -296,17 +299,19 @@ export const CreateWorkout = () => {
                     return setIsErrorEdit(true);
                 }
 
-                setIsErrorEdit(false)
+                setIsErrorEdit(false);
 
-                workoutEdit.time = convertTime(workoutEdit)
-                delete workoutEdit.minutes
-                delete workoutEdit.seconds
+                workoutEdit.time = convertTime(workoutEdit);
+                delete workoutEdit.minutes;
+                delete workoutEdit.seconds;
 
-                const notChangedItem = allWorkouts.filter((item: WorkoutType) => item.id !== workoutEdit.id)
+                const notChangedItem = allWorkouts.filter((item: WorkoutType) => item.id !== workoutEdit.id);
 
-                setAllWorkouts([...notChangedItem, workoutEdit])
+                const sortedById = [...notChangedItem, workoutEdit].sort((a,b) => a.id - b.id);
 
-                setPopoverChange(false)
+                setAllWorkouts(sortedById);
+
+                setPopoverChange(false);
 
             } else {
                 // Полная тренировка
@@ -321,26 +326,28 @@ export const CreateWorkout = () => {
 
                 setIsErrorEdit(false);
 
-                workoutEdit.time = convertTime(workoutEdit)
-                delete workoutEdit.minutes
-                delete workoutEdit.seconds
+                workoutEdit.time = convertTime(workoutEdit);
+                delete workoutEdit.minutes;
+                delete workoutEdit.seconds;
 
-                const notChangedItem = allWorkouts.filter((item: WorkoutType) => item.id !== workoutEdit.id)
+                const notChangedItem = allWorkouts.filter((item: WorkoutType) => item.id !== workoutEdit.id);
 
-                setAllWorkouts([...notChangedItem, workoutEdit])
+                const sortedById = [...notChangedItem, workoutEdit].sort((a,b) => a.id - b.id);
 
-                setPopoverChange(false)
+                setAllWorkouts(sortedById);
+
+                setPopoverChange(false);
             }
         }
-    }
+    };
 
     const onSaveChange = async (e: any) => {
         e.preventDefault();
 
-        const workout = allWorkouts.reverse();
+        // const workout = allWorkouts.reverse();
 
         if (id) {
-            const res = await workoutAPI.updateWorkout(workout, id);
+            const res = await workoutAPI.updateWorkout(allWorkouts, id);
 
             if (res && res.data.resultCode === 0) {
                 await workoutAPI.setActiveWorkout(id);
@@ -358,6 +365,13 @@ export const CreateWorkout = () => {
         const correctArr = setCorrectId(deleteCopy);
 
         setAllWorkouts(correctArr);
+
+        setModalConfirmDelete(false)
+    };
+
+    const deleteStageConfirm = (id: number) => {
+        setModalConfirmDelete(true);
+        setDeleteId(id)
     };
 
     const changeStage = async (index: number) => {
@@ -365,7 +379,7 @@ export const CreateWorkout = () => {
 
         const item = allWorkouts.find((item: WorkoutType) => item.id === index);
         if (item) {
-            setWorkoutEdit(item)
+            setWorkoutEdit(item);
         }
     };
 
@@ -449,7 +463,7 @@ export const CreateWorkout = () => {
                                                                 element={card}
                                                                 key={card.id}
                                                                 isAdmin={true}
-                                                                deleteStage={deleteStage}
+                                                                deleteStage={deleteStageConfirm}
                                                                 changeStage={changeStage}
                                                             />
                                                         </div>
@@ -515,6 +529,18 @@ export const CreateWorkout = () => {
                     }
                 </div>
             </Popover>
+
+            <div className="create-workout--modal">
+                <Modal active={modalConfirmDelete} setActive={setModalConfirmDelete}>
+                    <div className="modal__title">Удалить этап</div>
+                    <div className="modal__content-create">
+                        <button onClick={() => deleteStage(deleteId)} className="modal__content-create--primary">Удалить</button>
+                        <button onClick={() => setModalConfirmDelete(false)} className="modal__content-create--secondary">Отменить</button>
+                    </div>
+
+                </Modal>
+            </div>
+
         </>
     );
 };

@@ -9,12 +9,13 @@ type IProps = {
     element: WorkoutType,
     isAdmin?: boolean,
     deleteStage?: (id: number) => Promise<void>,
+    changeStage?: (id: number) => Promise<void>,
     minutes: string,
     condition: string,
     prev?: boolean
 }
 
-export const NextStageWorkout = ({element, isAdmin, deleteStage, minutes, condition, prev}: IProps) => {
+export const NextStageWorkout = ({element, isAdmin, deleteStage, changeStage, minutes, condition, prev}: IProps) => {
     return (
         <>
             {/*@ts-ignore*/}
@@ -25,7 +26,7 @@ export const NextStageWorkout = ({element, isAdmin, deleteStage, minutes, condit
                         <p>{minutes} </p>
                     </div>
                     {isAdmin &&
-                        <Dots deleteStage={deleteStage} id={element.id} />
+                        <Dots changeStage={changeStage} deleteStage={deleteStage} id={element.id} />
                     }
                 </div>
                 <div className="next-stage__info">

@@ -14,10 +14,11 @@ type IProps = {
     element: WorkoutType,
     isAdmin?: boolean,
     deleteStage?: (id: number) =>  Promise<void>,
+    changeStage?: (id: number) => Promise<void>,
     prev?: boolean,
 }
 
-export const NextStageItem = ({element, isAdmin, deleteStage, prev}: IProps) => {
+export const NextStageItem = ({element, isAdmin, deleteStage, changeStage, prev}: IProps) => {
 
     // @ts-ignore
     const condition = CONDITION_TYPE[element.condition];
@@ -29,7 +30,7 @@ export const NextStageItem = ({element, isAdmin, deleteStage, prev}: IProps) => 
             {element.isRecovery
 
                 // Отдых
-                ? <NextStageRecovery element={element} minutes={minutes} deleteStage={deleteStage}
+                ? <NextStageRecovery element={element} changeStage={changeStage} minutes={minutes} deleteStage={deleteStage}
                                     isAdmin={isAdmin} prev={prev} />
                 : null
             }
@@ -37,7 +38,7 @@ export const NextStageItem = ({element, isAdmin, deleteStage, prev}: IProps) => 
             {element.isWarmUp
 
                 // Разминка
-                ? <NextStageWarmUp element={element} minutes={minutes} deleteStage={deleteStage}
+                ? <NextStageWarmUp element={element} changeStage={changeStage} minutes={minutes} deleteStage={deleteStage}
                                       isAdmin={isAdmin} prev={prev} />
                 : null
             }
@@ -45,7 +46,7 @@ export const NextStageItem = ({element, isAdmin, deleteStage, prev}: IProps) => 
             {!element.isWarmUp && !element.isRecovery
 
                 // Тренировка
-                ? <NextStageWorkout element={element} minutes={minutes} condition={condition} deleteStage={deleteStage}
+                ? <NextStageWorkout element={element} changeStage={changeStage} minutes={minutes} condition={condition} deleteStage={deleteStage}
                                     isAdmin={isAdmin} prev={prev} />
                 : null
             }

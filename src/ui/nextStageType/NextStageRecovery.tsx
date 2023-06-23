@@ -6,7 +6,7 @@ import {Dots} from "./ui/Dots";
 type IProps = {
 	element: WorkoutType,
 	isAdmin?: boolean,
-	deleteStage?: (id: number) => Promise<void>,
+	deleteStage?: (id: number) => void,
 	changeStage?: (id: number) => Promise<void>,
 	minutes: string,
 	prev?: boolean

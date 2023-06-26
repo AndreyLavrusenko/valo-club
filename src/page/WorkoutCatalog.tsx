@@ -91,8 +91,10 @@ export const WorkoutCatalog = () => {
         if (id) {
             const res = await workoutAPI.setActiveWorkout(id);
 
-            if (res.resultCode === 0) {
-                navigation("/");
+            if (res) {
+                if (res.resultCode === 0) {
+                    navigation("/");
+                }
             }
         }
     };

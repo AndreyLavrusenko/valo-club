@@ -40,6 +40,10 @@
     background: $primary;
     border-radius: 6px;
     border: none;
+
+    &:active {
+        background: #d24a0d;
+    }
 }
 
 @mixin button-orange-inline {
@@ -67,6 +71,10 @@
     background: $primary;
     border-radius: 6px;
     border: none;
+
+    &:active {
+        background: #d24a0d;
+    }
 }
 
 

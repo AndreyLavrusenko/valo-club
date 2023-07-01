@@ -74,7 +74,7 @@ export const WorkoutCatalog = () => {
         }
 
         setLoading(false);
-    }, [loading]);
+    }, [loading, activeSection]);
 
     const getAllAvailableWorkout = async () => {
         const res = await clubAPI.getVeloClubWorkout();
@@ -98,6 +98,19 @@ export const WorkoutCatalog = () => {
             }
         }
     };
+
+    const deleteSelectedWorkout = async (workout_id: string) => {
+        if (workout_id) {
+            const res = await workoutAPI.deleteWorkout(workout_id)
+
+            if (res) {
+                if (res.resultCode === 0) {
+                    const workoutWithoutDelete = allWorkouts.filter(item => item.id !== workout_id)
+                    setAllWorkouts(workoutWithoutDelete)
+                }
+            }
+        }
+    }
 
     const setSectionActive = (section: string) => {
         setActiveSection(section);
@@ -139,12 +152,12 @@ export const WorkoutCatalog = () => {
                                         ?
                                         allWorkouts.map((item: WorkoutCatalogs) => (
                                             <WorkoutItem workoutActive={workoutActive} key={item.id} isMyWorkout={true}
-                                                         setActiveWorkout={setActiveWorkout} item={item}/>
+                                                         setActiveWorkout={setActiveWorkout} item={item} deleteSelectedWorkout={deleteSelectedWorkout}/>
                                         ))
                                         :
                                         allClubWorkouts.map((item: WorkoutCatalogs) => (
                                             <WorkoutItem workoutActive={workoutActive} key={item.id} isMyWorkout={false}
-                                                         setActiveWorkout={setActiveWorkout} item={item}/>
+                                                         setActiveWorkout={setActiveWorkout} item={item} deleteSelectedWorkout={deleteSelectedWorkout}/>
                                         ))
 
                                 }

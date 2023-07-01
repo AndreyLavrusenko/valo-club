@@ -55,6 +55,15 @@ export const authAPI = {
         } catch (err) {
             console.log(err)
         }
+    },
+
+    changePasswordUsingLogin: async (login: string, new_password: string) => {
+        try {
+             const {data} = await instance.put('auth/change-password-using-login', {login, new_password})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 
@@ -167,6 +176,15 @@ export const workoutAPI = {
     checkWhoseWorkout: async (workout_id: string) => {
         try {
             const {data} = await instance.get('workout/check-who-owns-workout', {headers: {token, workout_id}})
+            return data
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    deleteWorkout: async (workout_id: string) => {
+        try {
+            const {data} = await instance.delete('workout/delete-workout', {headers: {token, workout_id}})
             return data
         } catch (err) {
             console.log(err)

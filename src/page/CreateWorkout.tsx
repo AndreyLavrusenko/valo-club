@@ -16,6 +16,7 @@ import {Popover} from "../ui/Popover";
 import {EditWorkoutWarmUp} from "../ui/editWorkout/EditWorkoutWarmUp";
 import {EditWorkoutFull} from "../ui/editWorkout/EditWorkoutFull";
 import {Modal} from "../ui/Modal";
+import {all} from "axios";
 
 
 export const CreateWorkout = () => {
@@ -104,11 +105,14 @@ export const CreateWorkout = () => {
 
         const res = await workoutAPI.createNewWorkout(workoutName);
 
-        if (res.resultCode === 0) {
-            await navigation(`/create-workout/${res.workout_id}`);
+        if (res) {
+            if (res.resultCode === 0) {
+                await navigation(`/create-workout/${res.workout_id}`);
+            }
+
+            setModalActive(false);
         }
 
-        setModalActive(false);
     };
 
 
@@ -119,7 +123,7 @@ export const CreateWorkout = () => {
             if (data[0].workout.length === 0) {
                 setIsWarmUpActive(true);
             } else if (data[0].workout.length > 1) {
-                setAllWorkouts(data[0].workout);
+                setAllWorkouts(data[0].workout.reverse());
             } else if (data[0].workout.length === 1) {
                 setAllWorkouts(data[0].workout);
             }
@@ -307,7 +311,7 @@ export const CreateWorkout = () => {
 
                 const notChangedItem = allWorkouts.filter((item: WorkoutType) => item.id !== workoutEdit.id);
 
-                const sortedById = [...notChangedItem, workoutEdit].sort((a,b) => a.id - b.id);
+                const sortedById = [...notChangedItem, workoutEdit]
 
                 setAllWorkouts(sortedById);
 
@@ -332,7 +336,7 @@ export const CreateWorkout = () => {
 
                 const notChangedItem = allWorkouts.filter((item: WorkoutType) => item.id !== workoutEdit.id);
 
-                const sortedById = [...notChangedItem, workoutEdit].sort((a,b) => a.id - b.id);
+                const sortedById = [...notChangedItem, workoutEdit]
 
                 setAllWorkouts(sortedById);
 
@@ -344,10 +348,10 @@ export const CreateWorkout = () => {
     const onSaveChange = async (e: any) => {
         e.preventDefault();
 
-        // const workout = allWorkouts.reverse();
+        const workout = allWorkouts.reverse().sort((a,b) => a.id - b.id)
 
         if (id) {
-            const res = await workoutAPI.updateWorkout(allWorkouts, id);
+            const res = await workoutAPI.updateWorkout(workout, id);
 
             if (res && res.data.resultCode === 0) {
                 await workoutAPI.setActiveWorkout(id);
@@ -362,7 +366,7 @@ export const CreateWorkout = () => {
         const deleteCopy = [...allWorkouts].filter((item: WorkoutType) => item.id !== index);
         // Проходит по всем элементам и меняет им id
 
-        const correctArr = setCorrectId(deleteCopy);
+        const correctArr = setCorrectId(deleteCopy)
 
         setAllWorkouts(correctArr);
 

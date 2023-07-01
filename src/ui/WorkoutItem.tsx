@@ -12,9 +12,10 @@ type IProps = {
 	item: WorkoutCatalogs,
 	setActiveWorkout: (id: string) => void,
 	isMyWorkout: boolean,
-	workoutActive: string
+	workoutActive: string,
+	deleteSelectedWorkout: (workout_id: string) => void
 }
-export const WorkoutItem = ({item, setActiveWorkout, isMyWorkout, workoutActive}: IProps) => {
+export const WorkoutItem = ({item, setActiveWorkout, isMyWorkout, workoutActive, deleteSelectedWorkout}: IProps) => {
 	const [active, setActive] = useState<boolean>(false);
 
 	const navigation = useNavigate();
@@ -33,6 +34,10 @@ export const WorkoutItem = ({item, setActiveWorkout, isMyWorkout, workoutActive}
 		}
 	};
 
+	const deleteWorkoutHandler = (workout_id: string) => {
+		deleteSelectedWorkout(workout_id)
+	}
+
 	return (
 		<>
 			<div
@@ -46,9 +51,12 @@ export const WorkoutItem = ({item, setActiveWorkout, isMyWorkout, workoutActive}
 				</div>
 				{
 					isMyWorkout
-						? <div className="workout__item--edit" onClick={() => selectWorkout(item.id, true)}>
-							Изменить
-						</div>
+						? <>
+							<div className="workout__item--edit">
+								<div onClick={() => selectWorkout(item.id, true)}>Изменить</div>
+								<div onClick={() => deleteWorkoutHandler(item.id)}>Удалить</div>
+							</div>
+						</>
 						: null
 				}
 			</div>

@@ -65,7 +65,8 @@ export const formatTimeWithHours = (time: number) => {
     // @ts-ignore
     if (seconds < 10) seconds = '0' + seconds;
 
-    if (hours !== 0) {
+
+    if (hours.toString() !== '00') {
         return hours + ':' + minutes + ':' + seconds
     } else {
         return minutes + ':' + seconds

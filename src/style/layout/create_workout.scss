@@ -122,11 +122,15 @@
 
     &__cards {
         margin-top: 12px;
+        margin-bottom: 60px;
     }
 
     &__footer {
 
         &--button {
+            position: fixed;
+            bottom: 90px;
+
             width: 100%;
 
             @include button-orange-big;

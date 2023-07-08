@@ -10,6 +10,7 @@ export type Workout = {
 
 
 export type WorkoutType = {
+    uniq: string,
     id: number,
     time: number,
     pulse_1?: string,

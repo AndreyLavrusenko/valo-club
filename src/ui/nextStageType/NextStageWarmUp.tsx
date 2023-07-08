@@ -8,12 +8,13 @@ import {Dots} from "./ui/Dots";
 type IProps = {
 	element: WorkoutType,
 	isAdmin?: boolean,
-	deleteStage?: (id: number) => Promise<void>,
+	deleteStage?: (id: number) => void,
+	changeStage?: (id: number) => Promise<void>,
 	minutes: string,
 	prev?: boolean
 }
 
-export const NextStageWarmUp = ({element, isAdmin, deleteStage, minutes, prev}: IProps) => {
+export const NextStageWarmUp = ({element, isAdmin, deleteStage, changeStage, minutes, prev}: IProps) => {
 
 	return (
 		<>
@@ -25,7 +26,7 @@ export const NextStageWarmUp = ({element, isAdmin, deleteStage, minutes, prev}: 
 						<p>{minutes} </p>
 					</div>
 					{isAdmin &&
-						<Dots deleteStage={deleteStage} id={element.id} />
+						<Dots changeStage={changeStage} deleteStage={deleteStage} id={element.id} />
 					}
 				</div>
 				{

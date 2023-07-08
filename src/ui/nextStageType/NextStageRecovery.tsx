@@ -6,11 +6,12 @@ import {Dots} from "./ui/Dots";
 type IProps = {
 	element: WorkoutType,
 	isAdmin?: boolean,
-	deleteStage?: (id: number) => Promise<void>,
+	deleteStage?: (id: number) => void,
+	changeStage?: (id: number) => Promise<void>,
 	minutes: string,
 	prev?: boolean
 }
-export const NextStageRecovery = ({element, isAdmin, deleteStage, minutes, prev}: IProps) => {
+export const NextStageRecovery = ({element, isAdmin, deleteStage, changeStage, minutes, prev}: IProps) => {
 	return (
 		<>
 			{/*@ts-ignore*/}
@@ -21,7 +22,7 @@ export const NextStageRecovery = ({element, isAdmin, deleteStage, minutes, prev}
 						<p>{minutes} </p>
 					</div>
 					{isAdmin &&
-						<Dots deleteStage={deleteStage} id={element.id} />
+						<Dots deleteStage={deleteStage} changeStage={changeStage} id={element.id} />
 					}
 				</div>
 				{

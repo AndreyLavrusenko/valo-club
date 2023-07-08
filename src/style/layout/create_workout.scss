@@ -3,7 +3,7 @@
 
 .create-workout {
     padding: 20px;
-    margin-bottom: 50px;
+    margin-bottom: 75px;
 
     &__header {
         display: flex;
@@ -24,7 +24,13 @@
     &__content {
         padding: 12px 16px;
 
+        overflow-x: scroll;
+
         @include white-board;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
 
         &--title {
             margin-bottom: 12px;
@@ -122,12 +128,16 @@
 
     &__cards {
         margin-top: 12px;
+        margin-bottom: 60px;
     }
 
     &__footer {
 
         &--button {
-            width: 100%;
+            position: fixed;
+            bottom: 90px;
+
+            width: calc(100vw - 40px);
 
             @include button-orange-big;
         }
@@ -135,6 +145,54 @@
 
     .custom-checkbox--create+label {
         margin-bottom: 12px;
+    }
+}
+
+.create-workout--modal {
+    .modal__content-create {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        margin-top: 14px;
+
+        &--primary {
+            width: 100%;
+            @include button-orange;
+        }
+
+        &--secondary {
+            width: 100%;
+
+            margin-top: 12px;
+
+            @include button-orange-inline
+        }
+    }
+
+    .modal__content {
+        height: 160px;
+    }
+
+}
+
+.create-workout__content {
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    tr th {
+        font-size: 18px;
+        padding: 12px;
+        border: 1px solid #eeeeee;
+        text-align: left;
+        background-color: rgba(217, 221, 146, 0.2);
+    }
+
+    .input-comment {
+        width: 400px;
     }
 
 }

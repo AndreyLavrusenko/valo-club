@@ -10,6 +10,7 @@ export type Workout = {
 
 
 export type WorkoutType = {
+    uniq: string,
     id: number,
     time: number,
     pulse_1?: string,
@@ -20,6 +21,8 @@ export type WorkoutType = {
     comment?: string,
     isRecovery: boolean,
     isWarmUp: boolean,
+    minutes?: string,
+    seconds?: string
 }
 
 

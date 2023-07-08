@@ -25,9 +25,10 @@ export const RegistrationTrainer = () => {
 			if (res.resultCode === 0) {
 				setError("");
 				if (res.token) {
-					dispatch(loginSuccess())
+					dispatch(loginSuccess(false))
 					window.localStorage.setItem("token", res.token);
-					navigate("/");
+					navigate("/catalog");
+					window.location.reload()
 				}
 			} else {
 				setError(res.message);
@@ -51,7 +52,7 @@ export const RegistrationTrainer = () => {
 						placeholder="Придумайте логин"
 					/>
 					<input
-						type="text"
+						type="password"
 						value={password}
 						onChange={e => setPassword(e.target.value)}
 						className="login__input"

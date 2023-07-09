@@ -167,11 +167,11 @@ export const CreateWorkoutTable = () => {
     };
 
     const onChangeInput = (e: any, uniq: string) => {
-        const {name, value, id, type, checked} = e.target;
+        const {name, value, type, checked} = e.target;
 
         if (type === "radio") {
             const editData = workoutData.map((item) => {
-                    return item.uniq === uniq && name ? {...item, [id]: value} : item;
+                    return item.uniq === uniq && name ? {...item, 'condition': value} : item;
                 }
             );
 
@@ -331,16 +331,26 @@ export const CreateWorkoutTable = () => {
                                                                 </td>
                                                                 <td>
                                                                     <div className={"table-img"}>
-                                                                        <input type="checkbox" className="custom-checkbox custom-checkbox--create" id={`isWarmUp-${item.id}`} name={`isWarmUp`}
-                                                                               checked={item.isWarmUp} onClick={(e) => onChangeInput(e, item.uniq)}/>
-                                                                        <label style={{marginBottom: 0}} htmlFor={`isWarmUp-${item.id}`} ></label>
+                                                                        <input type="checkbox"
+                                                                               className="custom-checkbox custom-checkbox--create"
+                                                                               id={`isWarmUp-${item.id}`}
+                                                                               name={`isWarmUp`}
+                                                                               checked={item.isWarmUp}
+                                                                               onClick={(e) => onChangeInput(e, item.uniq)}/>
+                                                                        <label style={{marginBottom: 0}}
+                                                                               htmlFor={`isWarmUp-${item.id}`}></label>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <div className={"table-img"}>
-                                                                        <input type="checkbox" className="custom-checkbox custom-checkbox--create" id={`isRecovery-${item.id}`} name={`isRecovery`}
-                                                                               checked={item.isRecovery} onClick={(e) => onChangeInput(e, item.uniq)}/>
-                                                                        <label style={{marginBottom: 0}} htmlFor={`isRecovery-${item.id}`} ></label>
+                                                                        <input type="checkbox"
+                                                                               className="custom-checkbox custom-checkbox--create"
+                                                                               id={`isRecovery-${item.id}`}
+                                                                               name={`isRecovery`}
+                                                                               checked={item.isRecovery}
+                                                                               onClick={(e) => onChangeInput(e, item.uniq)}/>
+                                                                        <label style={{marginBottom: 0}}
+                                                                               htmlFor={`isRecovery-${item.id}`}></label>
                                                                     </div>
                                                                 </td>
                                                                 <td>
@@ -379,16 +389,16 @@ export const CreateWorkoutTable = () => {
                                                                             disabled={item.isRecovery || item.isWarmUp}
                                                                         />
 
-                                                                       <input
-                                                                           name="pulse_2"
-                                                                           type="text"
-                                                                           value={item.pulse_2}
-                                                                           onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                           placeholder="Пульс 2"
-                                                                           className="create-workout__content-wrapper-item--input"
-                                                                           disabled={item.isRecovery || item.isWarmUp}
-                                                                       />
-                                                                   </div>
+                                                                        <input
+                                                                            name="pulse_2"
+                                                                            type="text"
+                                                                            value={item.pulse_2}
+                                                                            onChange={(e) => onChangeInput(e, item.uniq)}
+                                                                            placeholder="Пульс 2"
+                                                                            className="create-workout__content-wrapper-item--input"
+                                                                            disabled={item.isRecovery || item.isWarmUp}
+                                                                        />
+                                                                    </div>
                                                                 </td>
                                                                 <td>
                                                                     <div style={{display: "flex"}}>
@@ -416,7 +426,8 @@ export const CreateWorkoutTable = () => {
                                                                 </td>
                                                                 <td>
                                                                     <div style={{display: "flex"}}>
-                                                                        <div className="form_radio_btn" style={{marginRight: '0px'}}>
+                                                                        <div className="form_radio_btn"
+                                                                             style={{marginRight: '0px'}}>
                                                                             <input
                                                                                 value={"sitting"}
                                                                                 name={`condition-${item.id}`}
@@ -426,7 +437,8 @@ export const CreateWorkoutTable = () => {
                                                                                 disabled={item.isRecovery || item.isWarmUp}
                                                                                 type="radio"
                                                                             />
-                                                                            <label htmlFor={`sitting-${item.id}`}>Сидя</label>
+                                                                            <label
+                                                                                htmlFor={`sitting-${item.id}`}>Сидя</label>
                                                                         </div>
 
                                                                         <div className="form_radio_btn">
@@ -439,7 +451,8 @@ export const CreateWorkoutTable = () => {
                                                                                 disabled={item.isRecovery || item.isWarmUp}
                                                                                 type="radio"
                                                                             />
-                                                                            <label htmlFor={`standing-${item.id}`}>Стоя</label>
+                                                                            <label
+                                                                                htmlFor={`standing-${item.id}`}>Стоя</label>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -456,12 +469,15 @@ export const CreateWorkoutTable = () => {
                                                                 </td>
                                                                 <td>
                                                                     <div className={"table-img"}>
-                                                                        <img onClick={() => confirmBeforeDelete(item.uniq)} src={trash} alt=""/>
+                                                                        <img
+                                                                            onClick={() => confirmBeforeDelete(item.uniq)}
+                                                                            src={trash} alt=""/>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <div className={"table-img"}>
-                                                                        <img onClick={() => cloneStage(item.uniq)} src={clone} alt=""/>
+                                                                        <img onClick={() => cloneStage(item.uniq)}
+                                                                             src={clone} alt=""/>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -479,7 +495,10 @@ export const CreateWorkoutTable = () => {
 
                 </div>
 
-                <button onClick={addNewStage} className={"create-workout__content--button create-workout__content--button-add"}>Добавить новый этап</button>
+                <button onClick={addNewStage}
+                        className={"create-workout__content--button create-workout__content--button-add"}>Добавить новый
+                    этап
+                </button>
 
                 <button onClick={onSaveChange} className="create-workout__footer--button">Сохранить тренировку</button>
             </div>

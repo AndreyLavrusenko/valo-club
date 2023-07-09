@@ -67,11 +67,17 @@
             }
 
             &--input {
-                width: 130px;
+                width: 80px;
 
                 text-align: center;
 
                 @include input;
+
+                padding: 8px;
+
+                border-radius: 0;
+                border: none;
+                border-bottom: 1px solid $gray-light-color;
 
                 &-small {
                     width: 59px;
@@ -136,6 +142,7 @@
         &--button {
             position: fixed;
             bottom: 90px;
+            left: 20px;
 
             width: calc(100vw - 40px);
 
@@ -184,15 +191,91 @@
     }
 
     tr th {
-        font-size: 18px;
-        padding: 12px;
+        font-size: 14px;
+        padding: 8px;
         border: 1px solid #eeeeee;
         text-align: left;
         background-color: rgba(217, 221, 146, 0.2);
+    }
+
+    th {
+        text-align: center !important;
     }
 
     .input-comment {
         width: 400px;
     }
 
+    .input-number {
+        width: 40px;
+
+        background: inherit;
+        border: none;
+
+        text-align: center;
+    }
+
+    .table-img {
+        height: 36px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .custom-checkbox + label::before {
+        width: 22px;
+        height: 22px;
+    }
+
+
+    .form_radio_btn {
+        display: inline-block;
+
+        &:not(:last-child) {
+            margin-right: 12px;
+        }
+    }
+
+    .form_radio_btn input[type=radio] {
+        display: none;
+    }
+
+    .form_radio_btn label {
+        display: inline-block;
+
+        width: 59px;
+
+        cursor: pointer;
+
+        padding: 10px;
+
+        border: none;
+        border-bottom: 1px solid #DDDDDD;
+
+        user-select: none;
+
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 15px;
+
+        color: $gray-color;
+
+        text-align: center;
+    }
+
+    /* Checked */
+    .form_radio_btn input[type=radio]:checked + label {
+        background: $primary-light;
+        color: $primary;
+    }
+
+}
+
+.create-workout__content--button-add {
+    margin-top: 12px;
+}
+
+.create-workout--modal-small .modal__content {
+    height: 110px;
 }

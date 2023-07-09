@@ -12,6 +12,10 @@ import "../style/layout/create_workout.scss";
 import {Popover} from "../ui/Popover";
 import {Modal} from "../ui/Modal";
 
+import trash from '../assets/images/trash.svg'
+import drag from '../assets/images/menu.svg'
+import clone from '../assets/images/3square.svg'
+
 
 export const CreateWorkoutTable = () => {
     const {isAuth} = useAppSelector(state => state.user);
@@ -20,6 +24,7 @@ export const CreateWorkoutTable = () => {
 
     const [workoutName, setWorkoutName] = useState<string>("");
     const [modalActive, setModalActive] = useState(false);
+    const [modalNotOk, setModalNotOk] = useState(false);
     const [modalConfirmDelete, setModalConfirmDelete] = useState(false);
 
     const [deleteId, setDeleteId] = useState("");
@@ -90,7 +95,21 @@ export const CreateWorkoutTable = () => {
     const onSaveChange = async (e: any) => {
         e.preventDefault();
 
-        if (id) {
+        // Проверка на заполнение времени
+        let isOk = true;
+
+        workoutData.forEach(item => {
+            if (!item.minutes && !item.seconds) {
+                isOk = false;
+            }
+        });
+
+        if (!isOk) {
+            return setModalNotOk(true)
+        }
+
+
+        if (id && isOk) {
             const res = await workoutAPI.updateWorkout(workoutData, id);
 
             if (res && res.data.resultCode === 0) {
@@ -118,6 +137,7 @@ export const CreateWorkoutTable = () => {
 
             const correctReorderWorkout = setCorrectId(reorderedStore);
             setWorkoutData(correctReorderWorkout);
+
             await saveWorkoutChange();
         }
     };
@@ -138,13 +158,13 @@ export const CreateWorkoutTable = () => {
 
     const setCorrectTime = (editData: WorkoutType[]) => {
         for (let i = 0; i < editData.length; i++) {
-            const current = editData[i]
+            const current = editData[i];
 
-            current.time = convertTime(current)
+            current.time = convertTime(current);
         }
 
-        return editData
-    }
+        return editData;
+    };
 
     const onChangeInput = (e: any, uniq: string) => {
         const {name, value, id, type, checked} = e.target;
@@ -177,7 +197,7 @@ export const CreateWorkoutTable = () => {
         });
 
 
-        const correctTime = setCorrectTime(editData)
+        const correctTime = setCorrectTime(editData);
         setWorkoutData(correctTime);
 
         return;
@@ -185,9 +205,9 @@ export const CreateWorkoutTable = () => {
 
 
     const confirmBeforeDelete = (uniq: string) => {
-        setModalConfirmDelete(true)
-        setDeleteId(uniq)
-    }
+        setModalConfirmDelete(true);
+        setDeleteId(uniq);
+    };
 
     const deleteStage = async (uniq: string) => {
         const deleteData = workoutData.filter(item => {
@@ -197,7 +217,7 @@ export const CreateWorkoutTable = () => {
         const withCorrectId = setCorrectId(deleteData);
         setWorkoutData(withCorrectId);
 
-        setModalConfirmDelete(false)
+        setModalConfirmDelete(false);
 
         await saveWorkoutChange();
     };
@@ -276,19 +296,18 @@ export const CreateWorkoutTable = () => {
                                         <table>
                                             <thead>
                                             <tr>
-                                                <th>№</th>
-                                                <th>Разминка</th>
+                                                <th></th>
+                                                <th className={"number-th"}>№</th>
+                                                <th>Разм</th>
                                                 <th>Отдых</th>
                                                 <th>Минуты</th>
                                                 <th>Секунды</th>
-                                                <th className={"comment-th"}>Комментарий</th>
                                                 <th>Пульс</th>
-                                                <th>Пульс 2</th>
                                                 <th>Обороты</th>
-                                                <th>Обороты 2</th>
                                                 <th>Положение</th>
+                                                <th className={"comment-th"}>Комментарий</th>
                                                 <th>Удаление</th>
-                                                <th>Дублировать</th>
+                                                <th>Повтор</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -300,128 +319,150 @@ export const CreateWorkoutTable = () => {
                                                         {(provided: DraggableProvided) => (
                                                             <tr {...provided.dragHandleProps} {...provided.draggableProps}
                                                                 ref={provided.innerRef} key={item.uniq}>
+                                                                <td className={"table-img"}>
+                                                                    <img src={drag} alt=""/>
+                                                                </td>
                                                                 <td>
                                                                     <input
                                                                         disabled
+                                                                        className={"input-number"}
                                                                         value={item.id}
                                                                     />
                                                                 </td>
                                                                 <td>
-                                                                    <input
-                                                                        name="isWarmUp"
-                                                                        checked={item.isWarmUp}
-                                                                        type="checkbox"
-                                                                        onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                        placeholder="Разминка"
-                                                                    />
+                                                                    <div className={"table-img"}>
+                                                                        <input type="checkbox" className="custom-checkbox custom-checkbox--create" id={`isWarmUp-${item.id}`} name={`isWarmUp`}
+                                                                               checked={item.isWarmUp} onClick={(e) => onChangeInput(e, item.uniq)}/>
+                                                                        <label style={{marginBottom: 0}} htmlFor={`isWarmUp-${item.id}`} ></label>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
-                                                                    <input
-                                                                        name="isRecovery"
-                                                                        checked={item.isRecovery}
-                                                                        type="checkbox"
-                                                                        onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                        placeholder="Отдых"
-                                                                    />
+                                                                    <div className={"table-img"}>
+                                                                        <input type="checkbox" className="custom-checkbox custom-checkbox--create" id={`isRecovery-${item.id}`} name={`isRecovery`}
+                                                                               checked={item.isRecovery} onClick={(e) => onChangeInput(e, item.uniq)}/>
+                                                                        <label style={{marginBottom: 0}} htmlFor={`isRecovery-${item.id}`} ></label>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
                                                                     <input
                                                                         name="minutes"
                                                                         value={item.minutes}
-                                                                        type="text"
+                                                                        pattern="[0-9]*"
+                                                                        type="number"
                                                                         required
                                                                         onChange={(e) => onChangeInput(e, item.uniq)}
                                                                         placeholder="Минуты"
+                                                                        className="create-workout__content-wrapper-item--input"
                                                                     />
                                                                 </td>
                                                                 <td>
                                                                     <input
                                                                         name="seconds"
                                                                         value={item.seconds}
-                                                                        type="text"
+                                                                        pattern="[0-9]*"
+                                                                        type="number"
                                                                         onChange={(e) => onChangeInput(e, item.uniq)}
                                                                         placeholder="Секунды"
+                                                                        className="create-workout__content-wrapper-item--input"
                                                                     />
+                                                                </td>
+                                                                <td>
+                                                                    <div style={{display: "flex"}}>
+                                                                        <input
+                                                                            name="pulse_1"
+                                                                            pattern="[0-9]*"
+                                                                            type="number"
+                                                                            value={item.pulse_1}
+                                                                            onChange={(e) => onChangeInput(e, item.uniq)}
+                                                                            placeholder="Пульс"
+                                                                            className="create-workout__content-wrapper-item--input"
+                                                                            disabled={item.isRecovery || item.isWarmUp}
+                                                                        />
+
+                                                                       <input
+                                                                           name="pulse_2"
+                                                                           type="text"
+                                                                           value={item.pulse_2}
+                                                                           onChange={(e) => onChangeInput(e, item.uniq)}
+                                                                           placeholder="Пульс 2"
+                                                                           className="create-workout__content-wrapper-item--input"
+                                                                           disabled={item.isRecovery || item.isWarmUp}
+                                                                       />
+                                                                   </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div style={{display: "flex"}}>
+                                                                        <input
+                                                                            name="turns_1"
+                                                                            pattern="[0-9]*"
+                                                                            type="number"
+                                                                            value={item.turns_1}
+                                                                            onChange={(e) => onChangeInput(e, item.uniq)}
+                                                                            placeholder="Обороты"
+                                                                            className="create-workout__content-wrapper-item--input"
+                                                                            disabled={item.isRecovery || item.isWarmUp}
+                                                                        />
+                                                                        <input
+                                                                            name="turns_2"
+                                                                            pattern="[0-9]*"
+                                                                            type="number"
+                                                                            value={item.turns_2}
+                                                                            onChange={(e) => onChangeInput(e, item.uniq)}
+                                                                            placeholder="Обороты 2"
+                                                                            className="create-workout__content-wrapper-item--input"
+                                                                            disabled={item.isRecovery || item.isWarmUp}
+                                                                        />
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div style={{display: "flex"}}>
+                                                                        <div className="form_radio_btn" style={{marginRight: '0px'}}>
+                                                                            <input
+                                                                                value={"sitting"}
+                                                                                name={`condition-${item.id}`}
+                                                                                onChange={(e) => onChangeInput(e, item.uniq)}
+                                                                                id={`sitting-${item.id}`}
+                                                                                checked={item.condition === "sitting"}
+                                                                                disabled={item.isRecovery || item.isWarmUp}
+                                                                                type="radio"
+                                                                            />
+                                                                            <label htmlFor={`sitting-${item.id}`}>Сидя</label>
+                                                                        </div>
+
+                                                                        <div className="form_radio_btn">
+                                                                            <input
+                                                                                value={"standing"}
+                                                                                name={`condition-${item.id}`}
+                                                                                onChange={(e) => onChangeInput(e, item.uniq)}
+                                                                                id={`standing-${item.id}`}
+                                                                                checked={item.condition === "standing"}
+                                                                                disabled={item.isRecovery || item.isWarmUp}
+                                                                                type="radio"
+                                                                            />
+                                                                            <label htmlFor={`standing-${item.id}`}>Стоя</label>
+                                                                        </div>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
                                                                     <input
                                                                         name="comment"
                                                                         type="text"
                                                                         value={item.comment}
-                                                                        className={"input-comment"}
+                                                                        style={{textAlign: "left"}}
+                                                                        className={"input-comment create-workout__content-wrapper-item--input"}
                                                                         onChange={(e) => onChangeInput(e, item.uniq)}
                                                                         placeholder="Комментарий"
                                                                     />
                                                                 </td>
                                                                 <td>
-                                                                    <input
-                                                                        name="pulse_1"
-                                                                        type="text"
-                                                                        value={item.pulse_1}
-                                                                        onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                        placeholder="Пульс"
-                                                                        disabled={item.isRecovery || item.isWarmUp}
-                                                                    />
+                                                                    <div className={"table-img"}>
+                                                                        <img onClick={() => confirmBeforeDelete(item.uniq)} src={trash} alt=""/>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
-                                                                    <input
-                                                                        name="pulse_2"
-                                                                        type="text"
-                                                                        value={item.pulse_2}
-                                                                        onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                        placeholder="Пульс 2"
-                                                                        disabled={item.isRecovery || item.isWarmUp}
-                                                                    />
-                                                                </td>
-                                                                <td>
-                                                                    <input
-                                                                        name="turns_1"
-                                                                        type="text"
-                                                                        value={item.turns_1}
-                                                                        onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                        placeholder="Обороты"
-                                                                        disabled={item.isRecovery || item.isWarmUp}
-                                                                    />
-                                                                </td>
-                                                                <td>
-                                                                    <input
-                                                                        name="turns_2"
-                                                                        type="text"
-                                                                        value={item.turns_2}
-                                                                        onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                        placeholder="Обороты 2"
-                                                                        disabled={item.isRecovery || item.isWarmUp}
-                                                                    />
-                                                                </td>
-                                                                <td>
-                                                                    <input
-                                                                        value={"sitting"}
-                                                                        name={`condition-${item.id}`}
-                                                                        onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                        checked={item.condition === "sitting"}
-                                                                        id={`condition`}
-                                                                        disabled={item.isRecovery || item.isWarmUp}
-                                                                        type="radio"
-                                                                    />
-                                                                    <input
-                                                                        value={"standing"}
-                                                                        name={`condition-${item.id}`}
-                                                                        onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                        checked={item.condition === "standing"}
-                                                                        id={`condition`}
-                                                                        disabled={item.isRecovery || item.isWarmUp}
-                                                                        type="radio"
-                                                                    />
-                                                                </td>
-                                                                <td>
-                                                                    <button
-                                                                        onClick={() => confirmBeforeDelete(item.uniq)}>Удалить
-                                                                    </button>
-                                                                </td>
-                                                                <td>
-                                                                    <button
-                                                                        onClick={() => cloneStage(item.uniq)}>Дублировать
-                                                                    </button>
+                                                                    <div className={"table-img"}>
+                                                                        <img onClick={() => cloneStage(item.uniq)} src={clone} alt=""/>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         )}
@@ -436,9 +477,9 @@ export const CreateWorkoutTable = () => {
                         </>
                     </DragDropContext>
 
-                    <button onClick={addNewStage}>Добавить новый этап</button>
-
                 </div>
+
+                <button onClick={addNewStage} className={"create-workout__content--button create-workout__content--button-add"}>Добавить новый этап</button>
 
                 <button onClick={onSaveChange} className="create-workout__footer--button">Сохранить тренировку</button>
             </div>
@@ -470,6 +511,18 @@ export const CreateWorkoutTable = () => {
                         </button>
                         <button onClick={() => setModalConfirmDelete(false)}
                                 className="modal__content-create--secondary">Отменить
+                        </button>
+                    </div>
+
+                </Modal>
+            </div>
+
+            <div className="create-workout--modal create-workout--modal-small">
+                <Modal active={modalNotOk} setActive={setModalNotOk}>
+                    <div className="modal__title">Не заполнено поле время</div>
+                    <div className="modal__content-create">
+                        <button onClick={() => setModalNotOk(false)}
+                                className="modal__content-create--primary">Понятно
                         </button>
                     </div>
 

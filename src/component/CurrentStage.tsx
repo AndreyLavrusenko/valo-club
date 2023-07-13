@@ -4,10 +4,11 @@ import {TimerCountDown} from "../ui/TimerCountDown";
 import {StatusItem} from "../ui/StatusItem";
 import {CONDITION_TYPE, STATUS_ITEM} from "../helpers/const";
 import {WorkoutType} from "../types/workout";
-import {memo, useEffect, useRef, useState} from "react";
+import React, {memo, useEffect, useRef, useState} from "react";
 import {convertFromMsToSeconds} from "../helpers/getDate";
 import comment from "../assets/images/comment.svg";
 import preloader from "../assets/images/preloader.svg";
+import Chart from "react-apexcharts";
 import {ProgressBar} from "../ui/ProgressBar";
 
 
@@ -15,13 +16,40 @@ type IProps = {
 	activeWorkout: WorkoutType,
 	allStagesCount: number,
 	timeStagePast: number,
-	goToTheNextStage: (current_stage: number) => {}
+	goToTheNextStage: (current_stage: number) => {},
+	pulse: string[],
+	time: number[],
 }
 
-export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast, goToTheNextStage}: IProps) => {
+export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast, goToTheNextStage, pulse, time}: IProps) => {
 	const [timer, setTimer] = useState(timeStagePast);
 	const [isTimerCorrectAfterReload, setIsTimerCorrectAfterReload] = useState(false);
 	const timerId = useRef();
+	const [options, setOptions] = useState({
+		chart: {
+			id: "basic-bar",
+		},
+		dataLabels: {
+			enabled: false
+		},
+		xaxis: {
+			categories: time,
+		},
+		stroke: {
+			curve: 'smooth',
+			width: 1
+		},
+		fill: {
+			type:'solid',
+			opacity: [0.35, 1],
+		},
+	});
+	const [series, setSeries] = useState([
+		{
+			type: 'area',
+			data: pulse as unknown as ApexAxisChartSeries | ApexNonAxisChartSeries | undefined
+		}
+	]);
 
 	useEffect(() => {
 		(timerId.current as any) = setInterval(() => {
@@ -107,6 +135,14 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 							: null
 					}
 
+				</div>
+				<div className="current-state__chart">
+					{/*@ts-ignore*/}
+					<Chart
+						options={options}
+						series={series}
+						type="line"
+					/>
 				</div>
 			</div>
 

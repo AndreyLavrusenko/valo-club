@@ -39,19 +39,24 @@ export const TrainingUser = () => {
 
     const [isTrainer, setIsTrainer] = useState<boolean>(false);
 
+    //Пуль для графика
+    const [pulse, setPulse] = useState<string[]>([]);
+    const [time, setTime] = useState<number[]>([]);
+    const [pulseLoading, setPulseLoading] = useState(false);
+
     // Смотрит кому принадлежит тренировка
     useEffect(() => {
         const checkWhoseWorkout = async () => {
             if (activeWorkoutId) {
-                const res = await workoutAPI.checkWhoseWorkout(activeWorkoutId)
+                const res = await workoutAPI.checkWhoseWorkout(activeWorkoutId);
 
                 if (res.resultCode === 0) {
-                    setIsTrainer(res.isTrainer)
+                    setIsTrainer(res.isTrainer);
                 }
             }
-        }
+        };
 
-        checkWhoseWorkout()
+        checkWhoseWorkout();
     }, [activeWorkoutId]);
 
     // Получает данные о тренировке и выводит ее
@@ -70,6 +75,37 @@ export const TrainingUser = () => {
             clearInterval(intervalCall);
         };
     }, [workout]);
+
+    useEffect(() => {
+        if (workout) {
+            // Получаю пульс для графика
+            const workout_pulse = [];
+            const workout_time = [];
+            let allTime = 0
+
+            for (let i = 0; i < workout.workout.length; i++) {
+                const current = workout.workout[i];
+
+                if (current.pulse_2) {
+                    workout_pulse.push(workout.workout[i].pulse_2);
+                } else {
+                    workout_pulse.push(workout.workout[i].pulse_1);
+                }
+
+                if (current.minutes) {
+                    allTime += Number(current.minutes)
+
+                    workout_time.push(allTime)
+                }
+            }
+
+            setPulseLoading(true);
+
+            // @ts-ignore
+            setPulse(workout_pulse);
+            setTime(workout_time);
+        }
+    }, [workout?.is_start, pulseLoading]);
 
 
     // Если была нажата кнопка сброса, то переводит в исходное состояние
@@ -329,12 +365,12 @@ export const TrainingUser = () => {
                                                                     : null
                                                                 }
 
-                                                                {prevStage
-                                                                    ? <div style={{marginTop: "12px"}}>
-                                                                        <NextStageItem element={prevStage} prev={true}/>
-                                                                    </div>
-                                                                    : null
-                                                                }
+                                                                {/*{prevStage*/}
+                                                                {/*    ? <div style={{marginTop: "12px"}}>*/}
+                                                                {/*        <NextStageItem element={prevStage} prev={true}/>*/}
+                                                                {/*    </div>*/}
+                                                                {/*    : null*/}
+                                                                {/*}*/}
 
                                                                 {
                                                                     activeWorkout && workout.active_stage && workout.is_start && timeStagePast
@@ -344,6 +380,8 @@ export const TrainingUser = () => {
                                                                             activeWorkout={activeWorkout}
                                                                             timeStagePast={timeStagePast}
                                                                             goToTheNextStage={goToTheNextStage}
+                                                                            pulse={pulse}
+                                                                            time={time}
                                                                         />
 
                                                                         : null

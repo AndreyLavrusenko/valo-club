@@ -296,8 +296,8 @@ export const CreateWorkoutTable = () => {
                                         <table>
                                             <thead>
                                             <tr>
-                                                <th></th>
                                                 <th className={"number-th"}>№</th>
+                                                <th></th>
                                                 <th>Разм</th>
                                                 <th>Отдых</th>
                                                 <th>Минуты</th>
@@ -319,15 +319,15 @@ export const CreateWorkoutTable = () => {
                                                         {(provided: DraggableProvided) => (
                                                             <tr {...provided.dragHandleProps} {...provided.draggableProps}
                                                                 ref={provided.innerRef} key={item.uniq}>
-                                                                <td className={"table-img"}>
-                                                                    <img src={drag} alt=""/>
-                                                                </td>
-                                                                <td>
+                                                                <td className={"table__fix"}>
                                                                     <input
                                                                         disabled
                                                                         className={"input-number"}
                                                                         value={item.id}
                                                                     />
+                                                                </td>
+                                                                <td className={"table-img"}>
+                                                                    <img src={drag} alt=""/>
                                                                 </td>
                                                                 <td>
                                                                     <div className={"table-img"}>

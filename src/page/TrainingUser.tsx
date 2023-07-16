@@ -5,11 +5,12 @@ import {workoutAPI} from "../api/api";
 import {Preloader} from "../common/Preloader";
 import {Workout, WorkoutType} from "../types/workout";
 import {Modal} from "../ui/Modal";
-import {NextStageItem} from "../component/NextStageItem";
 import ProgressBar from "@ramonak/react-progress-bar";
 import {formatTime, formatTimeWithHours} from "../helpers/getDate";
-import {useAppSelector} from "../hook/redux";
-
+import start_video from "../assets/images/emoji/start.mp4";
+import hard_video from "../assets/images/emoji/hard.mp4";
+import chill_video from "../assets/images/emoji/chill.mp4";
+import end_video from "../assets/images/emoji/end.mp4";
 
 export const TrainingUser = () => {
     const [error, setError] = useState("");
@@ -44,6 +45,11 @@ export const TrainingUser = () => {
     const [time, setTime] = useState<number[]>([]);
     const [pulseLoading, setPulseLoading] = useState(false);
 
+    const [isWorkoutStartVideo, setIsWorkoutStartVideo] = useState(false);
+    const [isWorkoutHardVideo, setIsWorkoutHardVideo] = useState(false);
+    const [isWorkoutChillVideo, setIsWorkoutChillVideo] = useState(false);
+    const [isWorkoutEndVideo, setIsWorkoutEndVideo] = useState(false);
+
     // Смотрит кому принадлежит тренировка
     useEffect(() => {
         const checkWhoseWorkout = async () => {
@@ -68,7 +74,7 @@ export const TrainingUser = () => {
     useEffect(() => {
         const intervalCall = setInterval(() => {
             getDataAboutWorkout();
-            // Делает запроса каждые несколько секунд и сверяет обновилась ли тренировка или нет
+            // Делает запроса каждые несколько секунд и сверяет обновиться ли тренировка или нет
             getUpdatedWorkout();
         }, 1500);
         return () => {
@@ -81,7 +87,7 @@ export const TrainingUser = () => {
             // Получаю пульс для графика
             const workout_pulse = [];
             const workout_time = [];
-            let allTime = 0
+            let allTime = 0;
 
             for (let i = 0; i < workout.workout.length; i++) {
                 const current = workout.workout[i];
@@ -93,7 +99,7 @@ export const TrainingUser = () => {
                     } else {
                         // Превращает строку в число
                         //@ts-ignore
-                        workout_pulse.push(current.pulse_2.match(/\d+/)[0])
+                        workout_pulse.push(current.pulse_2.match(/\d+/)[0]);
                     }
                 } else {
                     // Если нет пульса 2, то закидываю пульс 1
@@ -101,9 +107,9 @@ export const TrainingUser = () => {
                 }
 
                 if (current.minutes) {
-                    allTime += Number(current.minutes)
+                    allTime += Number(current.minutes);
 
-                    workout_time.push(allTime)
+                    workout_time.push(allTime);
                 }
             }
 
@@ -146,7 +152,7 @@ export const TrainingUser = () => {
                 setPrevStage(prevWorkout);
             }
 
-            // Функция которая вернет время старта с бэка
+            // Функция, которая вернет время старта с бэка
             getTimeStart();
             // Записывает данные для текущего этапа
             setActiveWorkout(workoutActive);
@@ -160,7 +166,7 @@ export const TrainingUser = () => {
     }, [workout?.active_stage, workout?.time_start, workout?.is_start]);
 
 
-    // Получает данные о идущей тренировки при первом запуске приложения
+    // Получает данные об идущей тренировки при первом запуске приложения
     useEffect(() => {
         const workoutActive = workout?.workout.find((item: WorkoutType) => item.id === workout?.active_stage);
 
@@ -291,7 +297,6 @@ export const TrainingUser = () => {
 
     // Получает время начала тренировки
     const getTimeStart = async () => {
-
         if (activeWorkoutId) {
             const res = await workoutAPI.getTimeStart(activeWorkoutId);
 
@@ -307,6 +312,15 @@ export const TrainingUser = () => {
         setIsStartButtonPressed(true);
         if (activeWorkoutId) {
             await workoutAPI.startWorkout(activeWorkoutId);
+            // Добавление гифки в начале тренировки
+            setTimeout(() => {
+                setIsWorkoutStartVideo(true);
+
+                // Скрывает анимацию через 6 секунд
+                setTimeout(() => {
+                    setIsWorkoutStartVideo(false);
+                }, 6000);
+            }, 6000);
         }
     };
 
@@ -328,6 +342,74 @@ export const TrainingUser = () => {
                     getWorkoutData(activeWorkoutId);
                 } else {
                     setWorkout({...workout, active_stage: res.data.active_stage});
+
+                    // Получаю пульс и если он больше 165 то показываю гиф
+                    const activeStage = workout.workout.find(item => item.id === res.data.active_stage);
+
+                    if (activeStage) {
+                        // Если это обычный этап тренировки
+                        if (!activeStage.isRecovery) {
+                            if (activeStage.pulse_2) {
+                                // Если это число, то сразу записываю в массив
+                                if (!isNaN(activeStage.pulse_2)) {
+                                    if (activeStage.pulse_2 >= 165 && !isWorkoutStartVideo) {
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo(true)
+
+                                            setTimeout(() => {
+                                                setIsWorkoutHardVideo(false)
+                                            }, 6000)
+                                        }, 6000)
+                                    }
+                                } else {
+                                    // Превращает строку в число
+                                    //@ts-ignore
+                                    const pulse2Number = activeStage.pulse_2.match(/\d+/)[0];
+                                    if (pulse2Number >= 165 && !isWorkoutStartVideo) {
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo(true)
+
+                                            setTimeout(() => {
+                                                setIsWorkoutHardVideo(false)
+                                            }, 6000)
+                                        }, 6000)
+                                    }
+                                }
+                            } else {
+                                // Если нет пульса 2, то закидываю пульс 1
+                                if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 165 && !isWorkoutStartVideo) {
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo(true)
+
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo(false)
+                                        }, 6000)
+                                    }, 6000)
+                                }
+                            }
+                        } else {
+                            // Если это этап восстановления
+                            setTimeout(() => {
+                                setIsWorkoutChillVideo(true)
+
+                                setTimeout(() => {
+                                    setIsWorkoutChillVideo(false)
+                                }, 6000)
+                            }, 6000)
+                        }
+
+                        if (activeStage.id === allStagesCount) {
+                            // Если это этап восстановления
+                            setTimeout(() => {
+                                setIsWorkoutEndVideo(true)
+
+                                setTimeout(() => {
+                                    setIsWorkoutEndVideo(false)
+                                }, 6000)
+
+                            }, activeStage.time - 10000)
+                        }
+                    }
                 }
             }
         }
@@ -353,6 +435,35 @@ export const TrainingUser = () => {
                                                         <>
                                                             <main>
 
+                                                                {isWorkoutStartVideo ?
+                                                                    <video className={"video"} autoPlay={true} loop muted>
+                                                                        <source src={start_video} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
+                                                                {isWorkoutHardVideo ?
+                                                                    <video className={"video"} autoPlay={true} loop muted>
+                                                                        <source src={hard_video} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
+                                                                {isWorkoutChillVideo ?
+                                                                    <video className={"video"} autoPlay={true} loop muted>
+                                                                        <source src={chill_video} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
+                                                                {isWorkoutEndVideo ?
+                                                                    <video className={"video"} autoPlay={true} loop muted>
+                                                                        <source src={end_video} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
+
                                                                 {workout.is_start
 
                                                                     ? <div className="progress-container">
@@ -372,13 +483,6 @@ export const TrainingUser = () => {
 
                                                                     : null
                                                                 }
-
-                                                                {/*{prevStage*/}
-                                                                {/*    ? <div style={{marginTop: "12px"}}>*/}
-                                                                {/*        <NextStageItem element={prevStage} prev={true}/>*/}
-                                                                {/*    </div>*/}
-                                                                {/*    : null*/}
-                                                                {/*}*/}
 
                                                                 {
                                                                     activeWorkout && workout.active_stage && workout.is_start && timeStagePast

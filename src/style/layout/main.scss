@@ -24,6 +24,18 @@ main {
     }
 }
 
+.video {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 60%;
+    height: auto;
+
+    z-index: 1000;
+}
+
 .progress-container {
     display: flex;
     flex-direction: column;

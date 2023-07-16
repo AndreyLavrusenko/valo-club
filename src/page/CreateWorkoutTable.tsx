@@ -396,7 +396,6 @@ export const CreateWorkoutTable = () => {
                                                                             onChange={(e) => onChangeInput(e, item.uniq)}
                                                                             placeholder="Пульс 2"
                                                                             className="create-workout__content-wrapper-item--input"
-                                                                            disabled={item.isRecovery || item.isWarmUp}
                                                                         />
                                                                     </div>
                                                                 </td>

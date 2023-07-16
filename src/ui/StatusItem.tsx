@@ -50,9 +50,18 @@ export const StatusItem = memo(({type, data}: IProps) => {
 		}
 	}, []);
 
-	const dataSecond = Array.isArray(data) ? data[1] ? " - " + data[1] : "" : "";
-	const dataType = Array.isArray(data) ? data[0] + "" + dataSecond : data;
 
+	const first = Array.isArray(data) ? data[0] ? data[0] : "" : "";
+	const second = Array.isArray(data) ? data[1] ? data[1] : "" : "";
+
+	let result = ""
+	if (first && second) {
+		result += first + ' - ' + second
+	} else if (first && !second) {
+		result += first
+	} else if (!first && second) {
+		result += second
+	}
 
 	return (
 		<div className="status-item">
@@ -63,7 +72,7 @@ export const StatusItem = memo(({type, data}: IProps) => {
 				<div className={data ? "status-item--title" : "status-item--subtitle"}>{title}</div>
 			</div>
 			<div className="status-item--main">
-				{data && <div className="status-item--subtitle">{time ? time : dataType}</div>}
+				{data && <div className="status-item--subtitle">{time ? time : result}</div>}
 			</div>
 		</div>
 	);

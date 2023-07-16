@@ -28,7 +28,7 @@ export const WorkoutItem = ({item, setActiveWorkout, isMyWorkout, workoutActive,
 
 	const selectWorkout = (id: string, isEdit: boolean) => {
 		if (isEdit) {
-			navigation(`/create-workout/${id}`);
+			navigation(`/create-workout-table/${id}`);
 		} else {
 			setActiveWorkout(id);
 		}

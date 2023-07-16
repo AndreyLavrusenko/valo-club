@@ -13,6 +13,7 @@ import {Profile} from "./page/Profile";
 import {useAppDispatch, useAppSelector} from "./hook/redux";
 import {loginSuccess} from "./redux/reducer/userSlice";
 import {WorkoutCatalog} from "./page/WorkoutCatalog";
+import {CreateWorkoutTable} from "./page/CreateWorkoutTable";
 
 function App() {
     const dispatch = useAppDispatch()
@@ -42,6 +43,8 @@ function App() {
                             <Route path="/registration" element={<RegistrationTrainer/>}/>
                             <Route path="/create-workout/:id" element={<CreateWorkout/>}/>
                             <Route path="/create-workout" element={<CreateWorkout/>}/>
+                            <Route path="/create-workout-table" element={<CreateWorkoutTable/>}/>
+                            <Route path="/create-workout-table/:id" element={<CreateWorkoutTable/>}/>
                             <Route path="/profile" element={<Profile/>}/>
                             <Route path="/catalog" element={<WorkoutCatalog/>}/>
                         </Routes>

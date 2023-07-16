@@ -87,8 +87,16 @@ export const TrainingUser = () => {
                 const current = workout.workout[i];
 
                 if (current.pulse_2) {
-                    workout_pulse.push(workout.workout[i].pulse_2);
+                    // Если это число, то сразу записываю в массив
+                    if (!isNaN(current.pulse_2)) {
+                        workout_pulse.push(workout.workout[i].pulse_2);
+                    } else {
+                        // Превращает строку в число
+                        //@ts-ignore
+                        workout_pulse.push(current.pulse_2.match(/\d+/)[0])
+                    }
                 } else {
+                    // Если нет пульса 2, то закидываю пульс 1
                     workout_pulse.push(workout.workout[i].pulse_1);
                 }
 

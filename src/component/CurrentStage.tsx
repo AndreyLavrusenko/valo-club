@@ -28,6 +28,7 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 	const [options, setOptions] = useState({
 		chart: {
 			id: "basic-bar",
+			type: 'area'
 		},
 		dataLabels: {
 			enabled: false
@@ -36,19 +37,20 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 			categories: time,
 		},
 		stroke: {
-			curve: 'smooth',
+			curve: "smooth",
 			width: 1
 		},
 		fill: {
-			type:'solid',
+			type:"solid",
 			opacity: [0.35, 1],
 		},
 	});
 	const [series, setSeries] = useState([
 		{
-			type: 'area',
+			type: "area",
+			name: "area-1",
 			data: pulse as unknown as ApexAxisChartSeries | ApexNonAxisChartSeries | undefined
-		}
+		},
 	]);
 
 	useEffect(() => {
@@ -141,6 +143,7 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 					<Chart
 						options={options}
 						series={series}
+						height={250}
 						type="line"
 					/>
 				</div>

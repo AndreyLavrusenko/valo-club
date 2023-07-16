@@ -37,7 +37,7 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 			categories: time,
 		},
 		stroke: {
-			curve: "smooth",
+			curve: "stepline",
 			width: 1
 		},
 		fill: {

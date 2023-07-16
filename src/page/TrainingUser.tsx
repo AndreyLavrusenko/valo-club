@@ -86,7 +86,9 @@ export const TrainingUser = () => {
         if (workout) {
             // Получаю пульс для графика
             const workout_pulse = [];
-            const workout_time = [];
+            const workout_time = [0];
+
+            let lastElem = null;
             let allTime = 0;
 
             for (let i = 0; i < workout.workout.length; i++) {
@@ -96,28 +98,36 @@ export const TrainingUser = () => {
                     // Если это число, то сразу записываю в массив
                     if (!isNaN(current.pulse_2)) {
                         workout_pulse.push(workout.workout[i].pulse_2);
+                        lastElem = workout.workout[i].pulse_2
                     } else {
                         // Превращает строку в число
                         //@ts-ignore
                         workout_pulse.push(current.pulse_2.match(/\d+/)[0]);
+                        //@ts-ignore
+                        lastElem = current.pulse_2.match(/\d+/)[0]
                     }
                 } else {
                     // Если нет пульса 2, то закидываю пульс 1
                     workout_pulse.push(workout.workout[i].pulse_1);
+                    lastElem = workout.workout[i].pulse_1
                 }
 
                 if (current.minutes) {
                     allTime += Number(current.minutes);
-
                     workout_time.push(allTime);
                 }
             }
 
             setPulseLoading(true);
 
+            workout_pulse.push(lastElem)
+
             // @ts-ignore
             setPulse(workout_pulse);
             setTime(workout_time);
+
+            console.log(workout_time)
+            console.log(workout_pulse)
         }
     }, [workout?.is_start, pulseLoading]);
 
@@ -436,28 +446,28 @@ export const TrainingUser = () => {
                                                             <main>
 
                                                                 {isWorkoutStartVideo ?
-                                                                    <video className={"video"} autoPlay={true} loop muted>
+                                                                    <video className={"video"} playsInline={true} autoPlay={true} loop muted>
                                                                         <source src={start_video} type="video/mp4"/>
                                                                     </video>
                                                                     : null
                                                                 }
 
                                                                 {isWorkoutHardVideo ?
-                                                                    <video className={"video"} autoPlay={true} loop muted>
+                                                                    <video className={"video"} playsInline={true} autoPlay={true} loop muted>
                                                                         <source src={hard_video} type="video/mp4"/>
                                                                     </video>
                                                                     : null
                                                                 }
 
                                                                 {isWorkoutChillVideo ?
-                                                                    <video className={"video"} autoPlay={true} loop muted>
+                                                                    <video className={"video"} playsInline={true} autoPlay={true} loop muted>
                                                                         <source src={chill_video} type="video/mp4"/>
                                                                     </video>
                                                                     : null
                                                                 }
 
                                                                 {isWorkoutEndVideo ?
-                                                                    <video className={"video"} autoPlay={true} loop muted>
+                                                                    <video className={"video"} playsInline={true} autoPlay={true} loop muted>
                                                                         <source src={end_video} type="video/mp4"/>
                                                                     </video>
                                                                     : null

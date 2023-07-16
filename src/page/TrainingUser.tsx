@@ -122,12 +122,13 @@ export const TrainingUser = () => {
 
             workout_pulse.push(lastElem)
 
+            workout_time.pop()
+            //@ts-ignore
+            workout_time.push(Number(timeAllStagesFormated.match(/\d+/)[0]))
+
             // @ts-ignore
             setPulse(workout_pulse);
             setTime(workout_time);
-
-            console.log(workout_time)
-            console.log(workout_pulse)
         }
     }, [workout?.is_start, pulseLoading]);
 

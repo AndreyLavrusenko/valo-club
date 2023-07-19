@@ -3,7 +3,7 @@
 
 .create-workout {
     padding: 20px;
-    margin-bottom: 75px;
+    margin-bottom: 120px;
 
     &__header {
         display: flex;
@@ -83,6 +83,10 @@
                     &:not(:last-child) {
                         margin-right: 12px;
                     }
+                }
+
+                &::placeholder {
+                    font-size: 12px;
                 }
             }
 
@@ -193,7 +197,8 @@
         padding: 8px;
         border: 1px solid #eeeeee;
         text-align: left;
-        background-color: rgba(217, 221, 146, 0.2);
+        background-color: $primary-light;
+        color: $primary;
     }
 
     th {

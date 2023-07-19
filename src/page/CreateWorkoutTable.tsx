@@ -247,16 +247,17 @@ export const CreateWorkoutTable = () => {
             "uniq": Date.now().toString(),
             "id": getId(),
             "time": 0,
-            "pulse_1": "0",
-            "pulse_2": 0,
-            "turns_1": 0,
-            "turns_2": 0,
+            "pulse_1": "",
+            "pulse_2": null,
+            "turns_1": null,
+            "turns_2": null,
             "condition": "sitting",
             "comment": "",
             "isRecovery": false,
             "isWarmUp": false
         };
 
+        // @ts-ignore
         setWorkoutData([...workoutData, obj]);
 
         await saveWorkoutChange();
@@ -361,7 +362,7 @@ export const CreateWorkoutTable = () => {
                                                                         type="number"
                                                                         required
                                                                         onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                        placeholder="Минуты"
+                                                                        placeholder="Мин"
                                                                         className="create-workout__content-wrapper-item--input"
                                                                     />
                                                                 </td>
@@ -372,7 +373,7 @@ export const CreateWorkoutTable = () => {
                                                                         pattern="[0-9]*"
                                                                         type="number"
                                                                         onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                        placeholder="Секунды"
+                                                                        placeholder="Сек"
                                                                         className="create-workout__content-wrapper-item--input"
                                                                     />
                                                                 </td>
@@ -384,7 +385,7 @@ export const CreateWorkoutTable = () => {
                                                                             type="number"
                                                                             value={item.pulse_1}
                                                                             onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                            placeholder="Пульс"
+                                                                            placeholder="От"
                                                                             className="create-workout__content-wrapper-item--input"
                                                                             disabled={item.isRecovery || item.isWarmUp}
                                                                         />
@@ -394,7 +395,7 @@ export const CreateWorkoutTable = () => {
                                                                             type="text"
                                                                             value={item.pulse_2}
                                                                             onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                            placeholder="Пульс 2"
+                                                                            placeholder="До"
                                                                             className="create-workout__content-wrapper-item--input"
                                                                         />
                                                                     </div>
@@ -407,7 +408,7 @@ export const CreateWorkoutTable = () => {
                                                                             type="number"
                                                                             value={item.turns_1}
                                                                             onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                            placeholder="Обороты"
+                                                                            placeholder="От"
                                                                             className="create-workout__content-wrapper-item--input"
                                                                             disabled={item.isRecovery || item.isWarmUp}
                                                                         />
@@ -417,7 +418,7 @@ export const CreateWorkoutTable = () => {
                                                                             type="number"
                                                                             value={item.turns_2}
                                                                             onChange={(e) => onChangeInput(e, item.uniq)}
-                                                                            placeholder="Обороты 2"
+                                                                            placeholder="До"
                                                                             className="create-workout__content-wrapper-item--input"
                                                                             disabled={item.isRecovery || item.isWarmUp}
                                                                         />

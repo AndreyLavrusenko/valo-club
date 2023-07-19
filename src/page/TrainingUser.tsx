@@ -446,33 +446,33 @@ export const TrainingUser = () => {
                                                         <>
                                                             <main>
 
-                                                                {isWorkoutStartVideo ?
-                                                                    <video className={"video"} playsInline={true} autoPlay={true} loop muted>
-                                                                        <source src={start_video} type="video/mp4"/>
-                                                                    </video>
-                                                                    : null
-                                                                }
+                                                                {/*{isWorkoutStartVideo ?*/}
+                                                                {/*    <video className={"video"} playsInline={true} autoPlay={true} loop muted>*/}
+                                                                {/*        <source src={start_video} type="video/mp4"/>*/}
+                                                                {/*    </video>*/}
+                                                                {/*    : null*/}
+                                                                {/*}*/}
 
-                                                                {isWorkoutHardVideo ?
-                                                                    <video className={"video"} playsInline={true} autoPlay={true} loop muted>
-                                                                        <source src={hard_video} type="video/mp4"/>
-                                                                    </video>
-                                                                    : null
-                                                                }
+                                                                {/*{isWorkoutHardVideo ?*/}
+                                                                {/*    <video className={"video"} playsInline={true} autoPlay={true} loop muted>*/}
+                                                                {/*        <source src={hard_video} type="video/mp4"/>*/}
+                                                                {/*    </video>*/}
+                                                                {/*    : null*/}
+                                                                {/*}*/}
 
-                                                                {isWorkoutChillVideo ?
-                                                                    <video className={"video"} playsInline={true} autoPlay={true} loop muted>
-                                                                        <source src={chill_video} type="video/mp4"/>
-                                                                    </video>
-                                                                    : null
-                                                                }
+                                                                {/*{isWorkoutChillVideo ?*/}
+                                                                {/*    <video className={"video"} playsInline={true} autoPlay={true} loop muted>*/}
+                                                                {/*        <source src={chill_video} type="video/mp4"/>*/}
+                                                                {/*    </video>*/}
+                                                                {/*    : null*/}
+                                                                {/*}*/}
 
-                                                                {isWorkoutEndVideo ?
-                                                                    <video className={"video"} playsInline={true} autoPlay={true} loop muted>
-                                                                        <source src={end_video} type="video/mp4"/>
-                                                                    </video>
-                                                                    : null
-                                                                }
+                                                                {/*{isWorkoutEndVideo ?*/}
+                                                                {/*    <video className={"video"} playsInline={true} autoPlay={true} loop muted>*/}
+                                                                {/*        <source src={end_video} type="video/mp4"/>*/}
+                                                                {/*    </video>*/}
+                                                                {/*    : null*/}
+                                                                {/*}*/}
 
 
                                                                 {workout.is_start

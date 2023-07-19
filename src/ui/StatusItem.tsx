@@ -61,6 +61,8 @@ export const StatusItem = memo(({type, data}: IProps) => {
 		result += first
 	} else if (!first && second) {
 		result += second
+	} else {
+		result = data as string
 	}
 
 	return (

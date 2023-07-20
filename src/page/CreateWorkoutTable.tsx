@@ -361,7 +361,14 @@ export const CreateWorkoutTable = () => {
                                                                         pattern="[0-9]*"
                                                                         type="number"
                                                                         required
-                                                                        onChange={(e) => onChangeInput(e, item.uniq)}
+                                                                        onChange={(e) => {
+                                                                            if (e.target.value.length < 4) {
+                                                                                onChangeInput(e, item.uniq)
+                                                                            } else {
+                                                                                e.target.value = String(999)
+                                                                                onChangeInput(e, item.uniq)
+                                                                            }
+                                                                        }}
                                                                         placeholder="Мин"
                                                                         className="create-workout__content-wrapper-item--input"
                                                                     />
@@ -372,7 +379,14 @@ export const CreateWorkoutTable = () => {
                                                                         value={item.seconds}
                                                                         pattern="[0-9]*"
                                                                         type="number"
-                                                                        onChange={(e) => onChangeInput(e, item.uniq)}
+                                                                        onChange={(e) => {
+                                                                            if (Number(e.target.value) <= 60) {
+                                                                                onChangeInput(e, item.uniq)
+                                                                            } else {
+                                                                                e.target.value = String(60)
+                                                                                onChangeInput(e, item.uniq)
+                                                                            }
+                                                                        }}
                                                                         placeholder="Сек"
                                                                         className="create-workout__content-wrapper-item--input"
                                                                     />

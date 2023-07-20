@@ -115,12 +115,29 @@ export const TrainingUser = () => {
                 if (current.minutes) {
                     allTime += Number(current.minutes);
                     workout_time.push(allTime);
+                } else if (current.seconds) {
+                    allTime += 0.5
+                    workout_time.push(allTime);
                 }
             }
 
             setPulseLoading(true);
 
             workout_pulse.push(lastElem)
+
+            for (let j = 0; j < workout_pulse.length; j++) {
+                if (workout_pulse[j] === '') {
+                    let currentIndex = j
+
+                    if (workout_pulse[currentIndex - 1]) {
+                        workout_pulse[j] = workout_pulse[currentIndex - 1]
+                    } else if (workout_pulse[currentIndex + 1]) {
+                        workout_pulse[j] = workout_pulse[currentIndex + 1]
+                    } else {
+                        workout_pulse[j] = '140'
+                    }
+                }
+            }
 
             workout_time.pop()
             //@ts-ignore

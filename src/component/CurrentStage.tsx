@@ -53,6 +53,9 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 		},
 	]);
 
+	console.log(pulse)
+	console.log(time)
+
 	useEffect(() => {
 		(timerId.current as any) = setInterval(() => {
 			setTimer(prev => prev - 1000);

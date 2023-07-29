@@ -182,6 +182,8 @@
 
     .modal__content {
         height: 160px;
+
+        z-index: 300;
     }
 
 }
@@ -207,6 +209,10 @@
 
     .input-comment {
         width: 300px;
+
+        margin-top: 2px;
+
+        font-size: 14px;
     }
 
     .table__fix {
@@ -247,7 +253,7 @@
         }
     }
 
-    .form_radio_btn input[type=radio] {
+    .form_radio_btn input {
         display: none;
     }
 
@@ -275,12 +281,13 @@
     }
 
     /* Checked */
-    .form_radio_btn input[type=radio]:checked + label {
+    .form_radio_btn input:checked + label {
         background: $primary-light;
         color: $primary;
     }
 
 }
+
 
 .create-workout__content--button-add {
     margin-top: 12px;
@@ -288,4 +295,32 @@
 
 .create-workout--modal-small .modal__content {
     height: 110px;
+}
+
+.input-min {
+    width: 34px;
+
+    padding: 8px 3px;
+}
+
+.input-three {
+    width: 42px;
+
+    padding: 8px 5px;
+}
+
+.table__fix {
+    display: flex;
+    align-items: center;
+
+    height: 36px;
+
+    .input-number {
+        width: 10px;
+        margin-left: 4px;
+    }
+}
+
+.border {
+    border-left: 1px solid $primary-light;
 }

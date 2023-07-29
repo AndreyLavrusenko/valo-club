@@ -3,12 +3,14 @@
 
 .current-stage {
     margin-top: 12px;
-    padding: 8px 16px;
+    padding: 8px 0;
 
     @include white-board;
 
     &__comment {
         margin-top: 10px;
+
+        padding: 0 16px;
 
         border-top: 1px solid $divider-color;
 
@@ -32,7 +34,8 @@
         justify-content: space-between;
 
         border-bottom: $divider-bottom;
-        padding-bottom: 8px;
+
+        padding: 0 16px 8px 16px;
 
         &--stage--count {
             display: flex;
@@ -58,6 +61,11 @@
         &--all {
             @include text-gray
         }
+
+        &--divider {
+            padding-left: 12px;
+            border-left: 1px solid #E0E0E0;
+        }
     }
 
     &__content {
@@ -66,7 +74,9 @@
         &--wrapper {
             display: flex;
             align-items: center;
-            justify-content: space-around
+            justify-content: space-around;
+
+            padding: 0 16px;
         }
 
         &--items {
@@ -83,6 +93,14 @@
             }
         }
     }
+
+    &__chart {
+        position: relative;
+
+        width: 100%;
+        height: 240px;
+
+    }
 }
 
 #apexchartsbasic-bar {
@@ -91,6 +109,10 @@
 
 #apexchartsbasic-bar svg {
     width: 100% !important;
+}
+
+.apexcharts-xaxis-tick {
+    display: none;
 }
 
 .apexcharts-toolbar {

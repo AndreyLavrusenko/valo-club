@@ -111,6 +111,9 @@ export const CreateWorkoutTable = () => {
         workoutData.filter(item => {
             if (item.id === 1) {
                 item.isWarmUp = true
+                item.isRecovery = false
+            } else {
+                item.isWarmUp = false
             }
         })
 

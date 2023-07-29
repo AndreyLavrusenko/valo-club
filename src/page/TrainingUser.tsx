@@ -14,6 +14,7 @@ import hard_video165 from "../assets/images/emoji/hard165.mp4";
 import hard_video155 from "../assets/images/emoji/hard155.mp4";
 import chill_video from "../assets/images/emoji/chill.mp4";
 import end_video from "../assets/images/emoji/end.mp4";
+import end_first_video from "../assets/images/emoji/end_first.mp4";
 
 export const TrainingUser = () => {
     const [error, setError] = useState("");
@@ -55,6 +56,7 @@ export const TrainingUser = () => {
     const [isWorkoutHardVideo170, setIsWorkoutHardVideo170] = useState(false);
     const [isWorkoutChillVideo, setIsWorkoutChillVideo] = useState(false);
     const [isWorkoutEndVideo, setIsWorkoutEndVideo] = useState(false);
+    const [isWorkoutEndFirstVideo, setIsWorkoutEndFirstVideo] = useState(false);
 
     // Смотрит кому принадлежит тренировка
     useEffect(() => {
@@ -118,14 +120,8 @@ export const TrainingUser = () => {
                     lastElem = workout.workout[i].pulse_1
                 }
 
-
-                if (current.minutes) {
-                    allTime += Number(current.minutes);
-                    workout_time.push(allTime);
-                } else if (current.seconds) {
-                    allTime += 0.5
-                    workout_time.push(allTime);
-                }
+                allTime += Number(current.time);
+                workout_time.push(allTime)
             }
 
             setPulseLoading(true);
@@ -141,12 +137,12 @@ export const TrainingUser = () => {
                     } else if (workout_pulse[currentIndex + 1]) {
                         workout_pulse[j] = workout_pulse[currentIndex + 1]
                     } else {
-                        workout_pulse[j] = '140'
+                        workout_pulse[j] = '120'
                     }
                 }
             }
 
-            workout_time.pop()
+            // workout_time.pop()
             //@ts-ignore
             workout_time.push(Number(timeAllStagesFormated.match(/\d+/)[0]))
 
@@ -248,7 +244,7 @@ export const TrainingUser = () => {
                         time_current: res.data[0].time_current
                     });
 
-                    setTimeSpendAtThisMoment(workout.time_current - workout.time_start);
+                    setTimeSpendAtThisMoment((workout.time_current - workout.time_start));
 
                     setFirstEnter(true);
                 }
@@ -397,6 +393,8 @@ export const TrainingUser = () => {
                                             }, 6000)
                                         }, 6000)
 
+                                        return
+
                                     } else if (activeStage.pulse_2 >= 165 && activeStage.pulse_2 < 170 && !isWorkoutStartVideo) {
                                         setTimeout(() => {
                                             setIsWorkoutHardVideo165(true)
@@ -405,6 +403,8 @@ export const TrainingUser = () => {
                                                 setIsWorkoutHardVideo165(false)
                                             }, 6000)
                                         }, 6000)
+
+                                        return
 
                                     } else if (activeStage.pulse_2 >= 160 && activeStage.pulse_2 < 165 && !isWorkoutStartVideo) {
                                         setTimeout(() => {
@@ -415,6 +415,8 @@ export const TrainingUser = () => {
                                             }, 6000)
                                         }, 6000)
 
+                                        return
+
                                     } else if (activeStage.pulse_2 >= 155 && activeStage.pulse_2 < 160 && !isWorkoutStartVideo) {
                                         setTimeout(() => {
                                             setIsWorkoutHardVideo155(true)
@@ -423,6 +425,8 @@ export const TrainingUser = () => {
                                                 setIsWorkoutHardVideo155(false)
                                             }, 6000)
                                         }, 6000)
+
+                                        return
                                     }
 
                                 } else {
@@ -439,6 +443,8 @@ export const TrainingUser = () => {
                                             }, 6000)
                                         }, 6000)
 
+                                        return
+
                                     } else if (pulse2Number >= 165 && pulse2Number < 170 && !isWorkoutStartVideo) {
                                         setTimeout(() => {
                                             setIsWorkoutHardVideo165(true)
@@ -447,6 +453,8 @@ export const TrainingUser = () => {
                                                 setIsWorkoutHardVideo165(false)
                                             }, 6000)
                                         }, 6000)
+
+                                        return
 
                                     } else if (pulse2Number >= 160 && pulse2Number < 165 && !isWorkoutStartVideo) {
                                         setTimeout(() => {
@@ -457,6 +465,8 @@ export const TrainingUser = () => {
                                             }, 6000)
                                         }, 6000)
 
+                                        return
+
                                     } else if (pulse2Number >= 155 && pulse2Number < 160 && !isWorkoutStartVideo) {
                                         setTimeout(() => {
                                             setIsWorkoutHardVideo155(true)
@@ -465,6 +475,8 @@ export const TrainingUser = () => {
                                                 setIsWorkoutHardVideo155(false)
                                             }, 6000)
                                         }, 6000)
+
+                                        return
                                     }
                                 }
                             } else {
@@ -478,6 +490,8 @@ export const TrainingUser = () => {
                                         }, 6000)
                                     }, 6000)
 
+                                    return
+
                                 } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 165 && Number(activeStage.pulse_1) < 170 && !isWorkoutStartVideo) {
                                     setTimeout(() => {
                                         setIsWorkoutHardVideo165(true)
@@ -486,6 +500,8 @@ export const TrainingUser = () => {
                                             setIsWorkoutHardVideo165(false)
                                         }, 6000)
                                     }, 6000)
+
+                                    return
 
                                 } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 160 && Number(activeStage.pulse_1) < 165 && !isWorkoutStartVideo) {
                                     setTimeout(() => {
@@ -496,6 +512,8 @@ export const TrainingUser = () => {
                                         }, 6000)
                                     }, 6000)
 
+                                    return
+
                                 } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 155 && Number(activeStage.pulse_1) < 160 && !isWorkoutStartVideo) {
                                     setTimeout(() => {
                                         setIsWorkoutHardVideo155(true)
@@ -504,6 +522,8 @@ export const TrainingUser = () => {
                                             setIsWorkoutHardVideo155(false)
                                         }, 6000)
                                     }, 6000)
+
+                                    return
                                 }
                             }
                         } else {
@@ -518,7 +538,15 @@ export const TrainingUser = () => {
                         }
 
                         if (activeStage.id === allStagesCount) {
-                            // Если это этап восстановления
+                            setTimeout(() => {
+                                setIsWorkoutEndFirstVideo(true)
+
+                                setTimeout(() => {
+                                    setIsWorkoutEndFirstVideo(false)
+                                }, 6000)
+                            }, 6000)
+
+                            // Если это последний этап
                             setTimeout(() => {
                                 setIsWorkoutEndVideo(true)
 
@@ -607,6 +635,14 @@ export const TrainingUser = () => {
                                                                     <video className={"video video_chill"} playsInline={true}
                                                                            autoPlay={true} loop muted>
                                                                         <source src={end_video} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
+                                                                {isWorkoutEndFirstVideo ?
+                                                                    <video className={"video video_chill"} playsInline={true}
+                                                                           autoPlay={true} loop muted>
+                                                                        <source src={end_first_video} type="video/mp4"/>
                                                                     </video>
                                                                     : null
                                                                 }

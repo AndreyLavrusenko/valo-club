@@ -6,13 +6,23 @@ main {
 }
 
 .progressBar {
-    width: 100%;
+    position: absolute;
+
+    top: 187px;
+
+    width: calc(100% - 55px);
+
+    margin-left: 45px;
+
+    z-index: 2;
 
     & > div {
-        height: 14px !important;
+        height: 26px !important;
+        border-radius: 0 !important;
+        z-index: 3;
 
         div {
-            height: 14px !important;
+            height: 26px !important;
 
             span {
                 position: relative;
@@ -25,7 +35,7 @@ main {
 }
 
 .video {
-    position: absolute;
+    position: fixed;
     top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -33,7 +43,18 @@ main {
     width: calc(100% - 40px);
     height: auto;
 
+    border-radius: 4px;
+
     z-index: 1000;
+}
+
+.video_chill {
+    top: 80%;
+    left: 69%;
+
+    width: 220px;
+
+    z-index: 1;
 }
 
 .progress-container {

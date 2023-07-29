@@ -8,7 +8,10 @@ import {Modal} from "../ui/Modal";
 import ProgressBar from "@ramonak/react-progress-bar";
 import {formatTime, formatTimeWithHours} from "../helpers/getDate";
 import start_video from "../assets/images/emoji/start.mp4";
-import hard_video from "../assets/images/emoji/hard.mp4";
+import hard_video170 from "../assets/images/emoji/hard170.mp4";
+import hard_video160 from "../assets/images/emoji/hard160.mp4";
+import hard_video165 from "../assets/images/emoji/hard165.mp4";
+import hard_video155 from "../assets/images/emoji/hard155.mp4";
 import chill_video from "../assets/images/emoji/chill.mp4";
 import end_video from "../assets/images/emoji/end.mp4";
 
@@ -46,7 +49,10 @@ export const TrainingUser = () => {
     const [pulseLoading, setPulseLoading] = useState(false);
 
     const [isWorkoutStartVideo, setIsWorkoutStartVideo] = useState(false);
-    const [isWorkoutHardVideo, setIsWorkoutHardVideo] = useState(false);
+    const [isWorkoutHardVideo155, setIsWorkoutHardVideo155] = useState(false);
+    const [isWorkoutHardVideo165, setIsWorkoutHardVideo165] = useState(false);
+    const [isWorkoutHardVideo160, setIsWorkoutHardVideo160] = useState(false);
+    const [isWorkoutHardVideo170, setIsWorkoutHardVideo170] = useState(false);
     const [isWorkoutChillVideo, setIsWorkoutChillVideo] = useState(false);
     const [isWorkoutEndVideo, setIsWorkoutEndVideo] = useState(false);
 
@@ -111,6 +117,7 @@ export const TrainingUser = () => {
                     workout_pulse.push(workout.workout[i].pulse_1);
                     lastElem = workout.workout[i].pulse_1
                 }
+
 
                 if (current.minutes) {
                     allTime += Number(current.minutes);
@@ -380,37 +387,121 @@ export const TrainingUser = () => {
                             if (activeStage.pulse_2) {
                                 // Если это число, то сразу записываю в массив
                                 if (!isNaN(activeStage.pulse_2)) {
-                                    if (activeStage.pulse_2 >= 165 && !isWorkoutStartVideo) {
+
+                                    if (activeStage.pulse_2 >= 170 && !isWorkoutStartVideo) {
                                         setTimeout(() => {
-                                            setIsWorkoutHardVideo(true)
+                                            setIsWorkoutHardVideo170(true)
 
                                             setTimeout(() => {
-                                                setIsWorkoutHardVideo(false)
+                                                setIsWorkoutHardVideo170(false)
+                                            }, 6000)
+                                        }, 6000)
+
+                                    } else if (activeStage.pulse_2 >= 165 && activeStage.pulse_2 < 170 && !isWorkoutStartVideo) {
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo165(true)
+
+                                            setTimeout(() => {
+                                                setIsWorkoutHardVideo165(false)
+                                            }, 6000)
+                                        }, 6000)
+
+                                    } else if (activeStage.pulse_2 >= 160 && activeStage.pulse_2 < 165 && !isWorkoutStartVideo) {
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo160(true)
+
+                                            setTimeout(() => {
+                                                setIsWorkoutHardVideo160(false)
+                                            }, 6000)
+                                        }, 6000)
+
+                                    } else if (activeStage.pulse_2 >= 155 && activeStage.pulse_2 < 160 && !isWorkoutStartVideo) {
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo155(true)
+
+                                            setTimeout(() => {
+                                                setIsWorkoutHardVideo155(false)
                                             }, 6000)
                                         }, 6000)
                                     }
+
                                 } else {
                                     // Превращает строку в число
                                     //@ts-ignore
                                     const pulse2Number = activeStage.pulse_2.match(/\d+/)[0];
-                                    if (pulse2Number >= 165 && !isWorkoutStartVideo) {
+
+                                    if (pulse2Number >= 170 && !isWorkoutStartVideo) {
                                         setTimeout(() => {
-                                            setIsWorkoutHardVideo(true)
+                                            setIsWorkoutHardVideo170(true)
 
                                             setTimeout(() => {
-                                                setIsWorkoutHardVideo(false)
+                                                setIsWorkoutHardVideo170(false)
+                                            }, 6000)
+                                        }, 6000)
+
+                                    } else if (pulse2Number >= 165 && pulse2Number < 170 && !isWorkoutStartVideo) {
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo165(true)
+
+                                            setTimeout(() => {
+                                                setIsWorkoutHardVideo165(false)
+                                            }, 6000)
+                                        }, 6000)
+
+                                    } else if (pulse2Number >= 160 && pulse2Number < 165 && !isWorkoutStartVideo) {
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo160(true)
+
+                                            setTimeout(() => {
+                                                setIsWorkoutHardVideo160(false)
+                                            }, 6000)
+                                        }, 6000)
+
+                                    } else if (pulse2Number >= 155 && pulse2Number < 160 && !isWorkoutStartVideo) {
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo155(true)
+
+                                            setTimeout(() => {
+                                                setIsWorkoutHardVideo155(false)
                                             }, 6000)
                                         }, 6000)
                                     }
                                 }
                             } else {
                                 // Если нет пульса 2, то закидываю пульс 1
-                                if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 165 && !isWorkoutStartVideo) {
+                                if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 170 && !isWorkoutStartVideo) {
                                     setTimeout(() => {
-                                        setIsWorkoutHardVideo(true)
+                                        setIsWorkoutHardVideo170(true)
 
                                         setTimeout(() => {
-                                            setIsWorkoutHardVideo(false)
+                                            setIsWorkoutHardVideo170(false)
+                                        }, 6000)
+                                    }, 6000)
+
+                                } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 165 && Number(activeStage.pulse_1) < 170 && !isWorkoutStartVideo) {
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo165(true)
+
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo165(false)
+                                        }, 6000)
+                                    }, 6000)
+
+                                } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 160 && Number(activeStage.pulse_1) < 165 && !isWorkoutStartVideo) {
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo160(true)
+
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo160(false)
+                                        }, 6000)
+                                    }, 6000)
+
+                                } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 155 && Number(activeStage.pulse_1) < 160 && !isWorkoutStartVideo) {
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo155(true)
+
+                                        setTimeout(() => {
+                                            setIsWorkoutHardVideo155(false)
                                         }, 6000)
                                     }, 6000)
                                 }
@@ -463,54 +554,63 @@ export const TrainingUser = () => {
                                                         <>
                                                             <main>
 
-                                                                {/*{isWorkoutStartVideo ?*/}
-                                                                {/*    <video className={"video"} playsInline={true} autoPlay={true} loop muted>*/}
-                                                                {/*        <source src={start_video} type="video/mp4"/>*/}
-                                                                {/*    </video>*/}
-                                                                {/*    : null*/}
-                                                                {/*}*/}
-
-                                                                {/*{isWorkoutHardVideo ?*/}
-                                                                {/*    <video className={"video"} playsInline={true} autoPlay={true} loop muted>*/}
-                                                                {/*        <source src={hard_video} type="video/mp4"/>*/}
-                                                                {/*    </video>*/}
-                                                                {/*    : null*/}
-                                                                {/*}*/}
-
-                                                                {/*{isWorkoutChillVideo ?*/}
-                                                                {/*    <video className={"video"} playsInline={true} autoPlay={true} loop muted>*/}
-                                                                {/*        <source src={chill_video} type="video/mp4"/>*/}
-                                                                {/*    </video>*/}
-                                                                {/*    : null*/}
-                                                                {/*}*/}
-
-                                                                {/*{isWorkoutEndVideo ?*/}
-                                                                {/*    <video className={"video"} playsInline={true} autoPlay={true} loop muted>*/}
-                                                                {/*        <source src={end_video} type="video/mp4"/>*/}
-                                                                {/*    </video>*/}
-                                                                {/*    : null*/}
-                                                                {/*}*/}
-
-
-                                                                {workout.is_start
-
-                                                                    ? <div className="progress-container">
-                                                                        <div className="progress-container--header">
-                                                                            <div className="status-item--subtitle">Тренировка</div>
-                                                                            <p>Общее {timeAllStagesFormated}</p>
-                                                                        </div>
-                                                                        <ProgressBar
-                                                                            className="progressBar"
-                                                                            customLabel={((timeSpendAtThisMoment / timeAllStages) * 100).toFixed(0) + "%"}
-                                                                            completed={timeSpendAtThisMoment}
-                                                                            maxCompleted={timeAllStages}
-                                                                            baseBgColor={"#FFEEE7"}
-                                                                            bgColor={"#FF7B3E"}
-                                                                        />
-                                                                    </div>
-
+                                                                {isWorkoutStartVideo ?
+                                                                    <video className={"video video_chill"} playsInline={true}
+                                                                           autoPlay={true}
+                                                                           loop muted>
+                                                                        <source src={start_video} type="video/mp4"/>
+                                                                    </video>
                                                                     : null
                                                                 }
+
+                                                                {isWorkoutHardVideo170 ?
+                                                                    <video className={"video video_chill"} playsInline={true}
+                                                                           autoPlay={true} loop muted>
+                                                                        <source src={hard_video170} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
+                                                                {isWorkoutHardVideo165 ?
+                                                                    <video className={"video video_chill"} playsInline={true}
+                                                                           autoPlay={true} loop muted>
+                                                                        <source src={hard_video165} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
+                                                                {isWorkoutHardVideo160 ?
+                                                                    <video className={"video video_chill"} playsInline={true}
+                                                                           autoPlay={true} loop muted>
+                                                                        <source src={hard_video160} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
+                                                                {isWorkoutHardVideo155 ?
+                                                                    <video className={"video video_chill"} playsInline={true}
+                                                                           autoPlay={true} loop muted>
+                                                                        <source src={hard_video155} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
+                                                                {isWorkoutChillVideo ?
+                                                                    <video className={"video video_chill"} playsInline={true}
+                                                                           autoPlay={true} loop muted>
+                                                                        <source src={chill_video} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
+                                                                {isWorkoutEndVideo ?
+                                                                    <video className={"video video_chill"} playsInline={true}
+                                                                           autoPlay={true} loop muted>
+                                                                        <source src={end_video} type="video/mp4"/>
+                                                                    </video>
+                                                                    : null
+                                                                }
+
 
                                                                 {
                                                                     activeWorkout && workout.active_stage && workout.is_start && timeStagePast
@@ -518,10 +618,13 @@ export const TrainingUser = () => {
                                                                         ? <CurrentStage
                                                                             allStagesCount={allStagesCount}
                                                                             activeWorkout={activeWorkout}
+                                                                            timeAllStagesFormated={timeAllStagesFormated}
                                                                             timeStagePast={timeStagePast}
                                                                             goToTheNextStage={goToTheNextStage}
                                                                             pulse={pulse}
                                                                             time={time}
+                                                                            timeSpendAtThisMoment={timeSpendAtThisMoment}
+                                                                            timeAllStages={timeAllStages}
                                                                         />
 
                                                                         : null

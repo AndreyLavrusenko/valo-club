@@ -168,7 +168,7 @@ export const CurrentStage = memo(({activeWorkout, allStagesCount, timeStagePast,
 
 					<ProgressBar
 						className="progressBar"
-						customLabel={((timeSpendAtThisMoment / timeAllStages) * 100).toFixed(0) + "%"}
+						customLabel={(((timeSpendAtThisMoment / timeAllStages) * 100)).toFixed(0) + "%"}
 						completed={timeSpendAtThisMoment}
 						maxCompleted={timeAllStages}
 						baseBgColor={"#FFEEE7"}

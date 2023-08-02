@@ -8,7 +8,7 @@ main {
 .progressBar {
     position: absolute;
 
-    top: 187px;
+    top: 200px;
 
     width: calc(100% - 55px);
 
@@ -17,7 +17,7 @@ main {
     z-index: 2;
 
     & > div {
-        height: 26px !important;
+        height: 15px !important;
         border-radius: 0 !important;
         z-index: 3;
 

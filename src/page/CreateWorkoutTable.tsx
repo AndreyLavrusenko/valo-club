@@ -321,6 +321,7 @@ export const CreateWorkoutTable = () => {
                                             <thead>
                                             <tr>
                                                 <th className={"number-th"}>№</th>
+                                                <th>Повтор</th>
                                                 <th>Отдых</th>
                                                 <th>М</th>
                                                 <th>С</th>
@@ -329,7 +330,6 @@ export const CreateWorkoutTable = () => {
                                                 <th>Тип</th>
                                                 <th className={"comment-th"}>Комментарий</th>
                                                 <th>Удаление</th>
-                                                <th>Повтор</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -349,21 +349,12 @@ export const CreateWorkoutTable = () => {
                                                                         value={item.id}
                                                                     />
                                                                 </td>
-                                                                {/*<td className={"table-img"}>*/}
-                                                                {/*    <img src={drag} alt=""/>*/}
-                                                                {/*</td>*/}
-                                                                {/*<td>*/}
-                                                                {/*    <div className={"table-img"}>*/}
-                                                                {/*        <input type="checkbox"*/}
-                                                                {/*               className="custom-checkbox custom-checkbox--create"*/}
-                                                                {/*               id={`isWarmUp-${item.id}`}*/}
-                                                                {/*               name={`isWarmUp`}*/}
-                                                                {/*               checked={item.isWarmUp}*/}
-                                                                {/*               onClick={(e) => onChangeInput(e, item.uniq)}/>*/}
-                                                                {/*        <label style={{marginBottom: 0}}*/}
-                                                                {/*               htmlFor={`isWarmUp-${item.id}`}></label>*/}
-                                                                {/*    </div>*/}
-                                                                {/*</td>*/}
+                                                                <td>
+                                                                    <div className={"table-img"}>
+                                                                        <img onClick={() => cloneStage(item.uniq)}
+                                                                             src={clone} alt=""/>
+                                                                    </div>
+                                                                </td>
                                                                 <td>
                                                                     <div className={"table-img"}>
                                                                         <input type="checkbox"
@@ -492,12 +483,6 @@ export const CreateWorkoutTable = () => {
                                                                         <img
                                                                             onClick={() => confirmBeforeDelete(item.uniq)}
                                                                             src={trash} alt=""/>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className={"table-img"}>
-                                                                        <img onClick={() => cloneStage(item.uniq)}
-                                                                             src={clone} alt=""/>
                                                                     </div>
                                                                 </td>
                                                             </tr>

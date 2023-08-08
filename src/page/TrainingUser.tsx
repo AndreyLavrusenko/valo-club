@@ -149,6 +149,19 @@ export const TrainingUser = () => {
             // @ts-ignore
             setPulse(workout_pulse);
             setTime(workout_time);
+
+            if (workout.is_start) {
+                // Добавление гифки в начале тренировки
+                setTimeout(() => {
+                    setIsWorkoutStartVideo(true);
+
+                    // Скрывает анимацию через 6 секунд
+                    setTimeout(() => {
+                        setIsWorkoutStartVideo(false);
+                    }, 6000);
+                }, 6000);
+            }
+
         }
     }, [workout?.is_start, pulseLoading]);
 
@@ -191,6 +204,190 @@ export const TrainingUser = () => {
             if (workout?.time_start) {
                 // Получает оставшееся время текущего этапа
                 setTimeStagePast((workout.time_start - workout.time_current) + workoutActive.time + prevTime);
+            }
+
+            // Получаю пульс и если он больше 165 то показываю гиф
+            const activeStage = workoutActive
+
+            if (activeStage) {
+                // Если это обычный этап тренировки
+                if (!activeStage.isRecovery) {
+                    if (activeStage.pulse_2) {
+                        // Если это число, то сразу записываю в массив
+                        if (!isNaN(activeStage.pulse_2)) {
+
+                            if (activeStage.pulse_2 >= 170 && !isWorkoutStartVideo) {
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo170(true)
+
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo170(false)
+                                    }, 6000)
+                                }, 6000)
+
+                                return
+
+                            } else if (activeStage.pulse_2 >= 165 && activeStage.pulse_2 < 170 && !isWorkoutStartVideo) {
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo165(true)
+
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo165(false)
+                                    }, 6000)
+                                }, 6000)
+
+                                return
+
+                            } else if (activeStage.pulse_2 >= 160 && activeStage.pulse_2 < 165 && !isWorkoutStartVideo) {
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo160(true)
+
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo160(false)
+                                    }, 6000)
+                                }, 6000)
+
+                                return
+
+                            } else if (activeStage.pulse_2 >= 155 && activeStage.pulse_2 < 160 && !isWorkoutStartVideo) {
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo155(true)
+
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo155(false)
+                                    }, 6000)
+                                }, 6000)
+
+                                return
+                            }
+
+                        } else {
+                            // Превращает строку в число
+                            //@ts-ignore
+                            const pulse2Number = activeStage.pulse_2.match(/\d+/)[0];
+
+                            if (pulse2Number >= 170 && !isWorkoutStartVideo) {
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo170(true)
+
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo170(false)
+                                    }, 6000)
+                                }, 6000)
+
+                                return
+
+                            } else if (pulse2Number >= 165 && pulse2Number < 170 && !isWorkoutStartVideo) {
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo165(true)
+
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo165(false)
+                                    }, 6000)
+                                }, 6000)
+
+                                return
+
+                            } else if (pulse2Number >= 160 && pulse2Number < 165 && !isWorkoutStartVideo) {
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo160(true)
+
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo160(false)
+                                    }, 6000)
+                                }, 6000)
+
+                                return
+
+                            } else if (pulse2Number >= 155 && pulse2Number < 160 && !isWorkoutStartVideo) {
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo155(true)
+
+                                    setTimeout(() => {
+                                        setIsWorkoutHardVideo155(false)
+                                    }, 6000)
+                                }, 6000)
+
+                                return
+                            }
+                        }
+                    } else {
+                        // Если нет пульса 2, то закидываю пульс 1
+                        if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 170 && !isWorkoutStartVideo) {
+                            setTimeout(() => {
+                                setIsWorkoutHardVideo170(true)
+
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo170(false)
+                                }, 6000)
+                            }, 6000)
+
+                            return
+
+                        } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 165 && Number(activeStage.pulse_1) < 170 && !isWorkoutStartVideo) {
+                            setTimeout(() => {
+                                setIsWorkoutHardVideo165(true)
+
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo165(false)
+                                }, 6000)
+                            }, 6000)
+
+                            return
+
+                        } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 160 && Number(activeStage.pulse_1) < 165 && !isWorkoutStartVideo) {
+                            setTimeout(() => {
+                                setIsWorkoutHardVideo160(true)
+
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo160(false)
+                                }, 6000)
+                            }, 6000)
+
+                            return
+
+                        } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 155 && Number(activeStage.pulse_1) < 160 && !isWorkoutStartVideo) {
+                            setTimeout(() => {
+                                setIsWorkoutHardVideo155(true)
+
+                                setTimeout(() => {
+                                    setIsWorkoutHardVideo155(false)
+                                }, 6000)
+                            }, 6000)
+
+                            return
+                        }
+                    }
+                } else {
+                    // Если это этап восстановления
+                    setTimeout(() => {
+                        setIsWorkoutChillVideo(true)
+
+                        setTimeout(() => {
+                            setIsWorkoutChillVideo(false)
+                        }, 6000)
+                    }, 6000)
+                }
+
+                if (activeStage.id === allStagesCount) {
+                    setTimeout(() => {
+                        setIsWorkoutEndFirstVideo(true)
+
+                        setTimeout(() => {
+                            setIsWorkoutEndFirstVideo(false)
+                        }, 6000)
+                    }, 6000)
+
+                    // Если это последний этап
+                    setTimeout(() => {
+                        setIsWorkoutEndVideo(true)
+
+                        setTimeout(() => {
+                            setIsWorkoutEndVideo(false)
+                        }, 6000)
+
+                    }, activeStage.time - 10000)
+                }
             }
         }
 
@@ -343,15 +540,6 @@ export const TrainingUser = () => {
         setIsStartButtonPressed(true);
         if (activeWorkoutId) {
             await workoutAPI.startWorkout(activeWorkoutId);
-            // Добавление гифки в начале тренировки
-            setTimeout(() => {
-                setIsWorkoutStartVideo(true);
-
-                // Скрывает анимацию через 6 секунд
-                setTimeout(() => {
-                    setIsWorkoutStartVideo(false);
-                }, 6000);
-            }, 6000);
         }
     };
 
@@ -373,190 +561,6 @@ export const TrainingUser = () => {
                     getWorkoutData(activeWorkoutId);
                 } else {
                     setWorkout({...workout, active_stage: res.data.active_stage});
-
-                    // Получаю пульс и если он больше 165 то показываю гиф
-                    const activeStage = workout.workout.find(item => item.id === res.data.active_stage);
-
-                    if (activeStage) {
-                        // Если это обычный этап тренировки
-                        if (!activeStage.isRecovery) {
-                            if (activeStage.pulse_2) {
-                                // Если это число, то сразу записываю в массив
-                                if (!isNaN(activeStage.pulse_2)) {
-
-                                    if (activeStage.pulse_2 >= 170 && !isWorkoutStartVideo) {
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo170(true)
-
-                                            setTimeout(() => {
-                                                setIsWorkoutHardVideo170(false)
-                                            }, 6000)
-                                        }, 6000)
-
-                                        return
-
-                                    } else if (activeStage.pulse_2 >= 165 && activeStage.pulse_2 < 170 && !isWorkoutStartVideo) {
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo165(true)
-
-                                            setTimeout(() => {
-                                                setIsWorkoutHardVideo165(false)
-                                            }, 6000)
-                                        }, 6000)
-
-                                        return
-
-                                    } else if (activeStage.pulse_2 >= 160 && activeStage.pulse_2 < 165 && !isWorkoutStartVideo) {
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo160(true)
-
-                                            setTimeout(() => {
-                                                setIsWorkoutHardVideo160(false)
-                                            }, 6000)
-                                        }, 6000)
-
-                                        return
-
-                                    } else if (activeStage.pulse_2 >= 155 && activeStage.pulse_2 < 160 && !isWorkoutStartVideo) {
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo155(true)
-
-                                            setTimeout(() => {
-                                                setIsWorkoutHardVideo155(false)
-                                            }, 6000)
-                                        }, 6000)
-
-                                        return
-                                    }
-
-                                } else {
-                                    // Превращает строку в число
-                                    //@ts-ignore
-                                    const pulse2Number = activeStage.pulse_2.match(/\d+/)[0];
-
-                                    if (pulse2Number >= 170 && !isWorkoutStartVideo) {
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo170(true)
-
-                                            setTimeout(() => {
-                                                setIsWorkoutHardVideo170(false)
-                                            }, 6000)
-                                        }, 6000)
-
-                                        return
-
-                                    } else if (pulse2Number >= 165 && pulse2Number < 170 && !isWorkoutStartVideo) {
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo165(true)
-
-                                            setTimeout(() => {
-                                                setIsWorkoutHardVideo165(false)
-                                            }, 6000)
-                                        }, 6000)
-
-                                        return
-
-                                    } else if (pulse2Number >= 160 && pulse2Number < 165 && !isWorkoutStartVideo) {
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo160(true)
-
-                                            setTimeout(() => {
-                                                setIsWorkoutHardVideo160(false)
-                                            }, 6000)
-                                        }, 6000)
-
-                                        return
-
-                                    } else if (pulse2Number >= 155 && pulse2Number < 160 && !isWorkoutStartVideo) {
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo155(true)
-
-                                            setTimeout(() => {
-                                                setIsWorkoutHardVideo155(false)
-                                            }, 6000)
-                                        }, 6000)
-
-                                        return
-                                    }
-                                }
-                            } else {
-                                // Если нет пульса 2, то закидываю пульс 1
-                                if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 170 && !isWorkoutStartVideo) {
-                                    setTimeout(() => {
-                                        setIsWorkoutHardVideo170(true)
-
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo170(false)
-                                        }, 6000)
-                                    }, 6000)
-
-                                    return
-
-                                } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 165 && Number(activeStage.pulse_1) < 170 && !isWorkoutStartVideo) {
-                                    setTimeout(() => {
-                                        setIsWorkoutHardVideo165(true)
-
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo165(false)
-                                        }, 6000)
-                                    }, 6000)
-
-                                    return
-
-                                } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 160 && Number(activeStage.pulse_1) < 165 && !isWorkoutStartVideo) {
-                                    setTimeout(() => {
-                                        setIsWorkoutHardVideo160(true)
-
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo160(false)
-                                        }, 6000)
-                                    }, 6000)
-
-                                    return
-
-                                } else if (activeStage.pulse_1 && Number(activeStage.pulse_1) >= 155 && Number(activeStage.pulse_1) < 160 && !isWorkoutStartVideo) {
-                                    setTimeout(() => {
-                                        setIsWorkoutHardVideo155(true)
-
-                                        setTimeout(() => {
-                                            setIsWorkoutHardVideo155(false)
-                                        }, 6000)
-                                    }, 6000)
-
-                                    return
-                                }
-                            }
-                        } else {
-                            // Если это этап восстановления
-                            setTimeout(() => {
-                                setIsWorkoutChillVideo(true)
-
-                                setTimeout(() => {
-                                    setIsWorkoutChillVideo(false)
-                                }, 6000)
-                            }, 6000)
-                        }
-
-                        if (activeStage.id === allStagesCount) {
-                            setTimeout(() => {
-                                setIsWorkoutEndFirstVideo(true)
-
-                                setTimeout(() => {
-                                    setIsWorkoutEndFirstVideo(false)
-                                }, 6000)
-                            }, 6000)
-
-                            // Если это последний этап
-                            setTimeout(() => {
-                                setIsWorkoutEndVideo(true)
-
-                                setTimeout(() => {
-                                    setIsWorkoutEndVideo(false)
-                                }, 6000)
-
-                            }, activeStage.time - 10000)
-                        }
-                    }
                 }
             }
         }

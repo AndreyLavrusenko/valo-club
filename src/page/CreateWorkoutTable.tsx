@@ -320,14 +320,14 @@ export const CreateWorkoutTable = () => {
                                         <table>
                                             <thead>
                                             <tr>
-                                                <th className={"number-th"}>№</th>
-                                                <th>Повтор</th>
-                                                <th>Отдых</th>
-                                                <th>М</th>
-                                                <th>С</th>
-                                                <th>Пульс</th>
-                                                <th>Обороты</th>
-                                                <th>Тип</th>
+                                                <th className={"number-th"} style={{width: "40px"}}>№</th>
+                                                <th>Повт</th>
+                                                <th style={{width: "60px"}}>Отдых</th>
+                                                <th style={{width: "33px"}}>М</th>
+                                                <th style={{width: "34px"}}>С</th>
+                                                <th style={{width: "85px"}}>Пульс</th>
+                                                <th style={{width: "85px"}}>Обороты</th>
+                                                <th style={{width: "59px"}}>Тип</th>
                                                 <th className={"comment-th"}>Комментарий</th>
                                                 <th>Удаление</th>
                                             </tr>
@@ -341,7 +341,7 @@ export const CreateWorkoutTable = () => {
                                                         {(provided: DraggableProvided) => (
                                                             <tr {...provided.dragHandleProps} {...provided.draggableProps}
                                                                 ref={provided.innerRef} key={item.uniq}>
-                                                                <td className={"table__fix"}>
+                                                                <td style={{width: '40px'}} className={"table__fix"}>
                                                                     <img style={{width: '14px'}} src={drag} alt=""/>
                                                                     <input
                                                                         disabled
@@ -349,13 +349,13 @@ export const CreateWorkoutTable = () => {
                                                                         value={item.id}
                                                                     />
                                                                 </td>
-                                                                <td>
+                                                                <td style={{width: "50.5px"}}>
                                                                     <div className={"table-img"}>
                                                                         <img onClick={() => cloneStage(item.uniq)}
                                                                              src={clone} alt=""/>
                                                                     </div>
                                                                 </td>
-                                                                <td>
+                                                                <td style={{width: "61px"}}>
                                                                     <div className={"table-img"}>
                                                                         <input type="checkbox"
                                                                                className="custom-checkbox custom-checkbox--create"

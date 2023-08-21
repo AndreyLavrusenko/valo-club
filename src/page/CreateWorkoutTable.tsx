@@ -328,8 +328,8 @@ export const CreateWorkoutTable = () => {
                                                 <th style={{width: "85px"}}>Пульс</th>
                                                 <th style={{width: "85px"}}>Обороты</th>
                                                 <th style={{width: "59px"}}>Тип</th>
-                                                <th className={"comment-th"}>Комментарий</th>
-                                                <th>Удаление</th>
+                                                <th style={{width: "350px"}} className={"comment-th"}>Комментарий</th>
+                                                <th>Удалить</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -479,7 +479,7 @@ export const CreateWorkoutTable = () => {
                                                                     />
                                                                 </td>
                                                                 <td>
-                                                                    <div className={"table-img"}>
+                                                                    <div className={"table-img"} style={{marginLeft: '22px'}}>
                                                                         <img
                                                                             onClick={() => confirmBeforeDelete(item.uniq)}
                                                                             src={trash} alt=""/>

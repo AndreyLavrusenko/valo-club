@@ -71,7 +71,7 @@ export const authAPI = {
 export const workoutAPI = {
     getWorkout: async (workout_id: string) => {
         try {
-            const {data} = await instance.get('workout/get-workout', {headers: {workout_id}})
+            const {data} = await instance.get('workout/get-workout', {headers: {workout_id, "Content-Type": 'application/json'}})
             return data
         } catch (err) {
             console.log(err)

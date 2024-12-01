@@ -4,6 +4,9 @@ import {logger} from "workbox-core/_private";
 
 const instance = axios.create({
     withCredentials: true,
+    headers: {
+        'Content-Type': "application/json"
+    },
     baseURL: process.env.REACT_APP_BACK_URL,
 })
 

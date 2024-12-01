@@ -3,12 +3,40 @@ export const convertFromMsToMinutes = (time: number) => {
     return Math.floor((time / 1000 / 60) % 60)
 }
 
+
+export const millisToMinutesAndSeconds = (time: number) => {
+    const minutes = Number(Math.floor(time / 60000))
+    const seconds = Number(((time % 60000) / 1000).toFixed(0));
+
+    let resultString = ''
+
+    // Если только минуты
+    if (minutes > 0 && seconds === 0) {
+        resultString += minutes + ' мин'
+    }
+
+    // Если есть и минуты и секнуды
+    if (minutes > 0 && seconds > 0) {
+        resultString += minutes + ':' + seconds + ' мин'
+    }
+
+    if (minutes === 0 && seconds > 0) {
+        resultString += seconds + ' сек'
+    }
+
+    return resultString
+}
+
 export const convertFromMsToSeconds = (time: number) => {
     return Math.floor(time / 1000)
 }
 
 export const convertFromMinutesToMs = (time: number) => {
     return Math.floor(time * 1000 * 60)
+}
+
+export const convertFromSecondsToMs = (time: number) => {
+    return Math.floor(time * 1000)
 }
 
 
@@ -22,6 +50,27 @@ export const formatTime = (time: number) => {
     if (seconds < 10) seconds = '0' + seconds;
 
     return minutes + ':' + seconds
+}
+
+
+export const formatTimeWithHours = (time: number) => {
+    let seconds: number = Math.floor((time / 1000) % 60);
+    let minutes: number = Math.floor((time / 1000 / 60) % 60);
+    let hours: number = Math.floor((time / 1000 / 60 / 60) % 60);
+
+    // @ts-ignore
+    if (hours < 60) hours = '0' + hours
+    // @ts-ignore
+    if (minutes < 10) minutes = '0' + minutes;
+    // @ts-ignore
+    if (seconds < 10) seconds = '0' + seconds;
+
+
+    if (hours.toString() !== '00') {
+        return hours + ':' + minutes + ':' + seconds
+    } else {
+        return minutes + ':' + seconds
+    }
 }
 
 

@@ -21,6 +21,11 @@
 
         text-align: center;
     }
+
+    &:focus {
+        outline: none !important;
+        border-color: $primary;
+    }
 }
 
 @mixin button-orange {
@@ -34,6 +39,23 @@
 
     background: $primary;
     border-radius: 6px;
+    border: none;
+
+    &:active {
+        background: #d24a0d;
+    }
+}
+
+@mixin button-orange-inline {
+    padding: 10px 20px;
+
+    color: $primary;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+
+    background: inherit;
     border: none;
 }
 
@@ -49,7 +71,27 @@
     background: $primary;
     border-radius: 6px;
     border: none;
+
+    &:active {
+        background: #d24a0d;
+    }
 }
+
+
+@mixin button-orange-big-outline {
+    padding: 14px 20px;
+
+    color: $primary;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+
+    background: $primary-light;
+    border-radius: 6px;
+    border: none;
+}
+
 
 @mixin title {
     color: $black-color;
@@ -66,4 +108,23 @@
     font-weight: 500;
     font-size: 16px;
     line-height: 19px;
+}
+
+
+@mixin avatar {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    border: 1px solid $primary;
+    color: $primary;
+    background-color: $primary-light;
+
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 38px;
 }

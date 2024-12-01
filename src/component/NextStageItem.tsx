@@ -3,46 +3,56 @@ import {CurrentStageItem} from "../ui/CurrentStageItem";
 import {CONDITION_TYPE, STATUS_ITEM} from "../helpers/const";
 import {StatusItem} from "../ui/StatusItem";
 import {WorkoutType} from "../types/workout";
-import {convertFromMsToMinutes, declOfNum} from "../helpers/getDate";
+import {convertFromMsToMinutes, declOfNum, millisToMinutesAndSeconds} from "../helpers/getDate";
 import {useEffect} from "react";
+import {NextStageRecovery} from "../ui/nextStageType/NextStageRecovery";
+import {NextStageWorkout} from "../ui/nextStageType/NextStageWorkout";
+import {NextStageWarmUp} from "../ui/nextStageType/NextStageWarmUp";
 
 
 type IProps = {
-	element: WorkoutType,
-	isAdmin?: boolean,
-	deleteStage?: (id: number) => number
+    element: WorkoutType,
+    isAdmin?: boolean,
+    deleteStage?: (id: number) => void,
+    changeStage?: (id: number) => Promise<void>,
+    prev?: boolean,
 }
 
-export const NextStageItem = ({element, isAdmin, deleteStage}: IProps) => {
+export const NextStageItem = ({element, isAdmin, deleteStage, changeStage, prev}: IProps) => {
 
-	// @ts-ignore
-	const condition = CONDITION_TYPE[element.condition];
+    // @ts-ignore
+    const condition = CONDITION_TYPE[element.condition];
 
-	const minutes = convertFromMsToMinutes(element.time);
-	const minutesWord = declOfNum(minutes, ["минута", "минуты", "минут"]);
+    const minutes = millisToMinutesAndSeconds(element.time);
 
-	return (
-		<div className="next-stage__item">
-			<div className="next-stage__header">
-				<div className="next-stage__header--item">
-					<CurrentStageItem current_stage={`${element.id} этап`} />
-					<p>{minutes} {minutesWord} </p>
-				</div>
-				{isAdmin &&
-					<button
-						onClick={() => deleteStage ? deleteStage(element.id) : null}
-						className={"next-stage__header--delete"}
-					>Удалить
-					</button>
-				}
-			</div>
-			<div className="next-stage__info">
-				<StatusItem type={STATUS_ITEM.pulse} data={element.pulse} />
-				<div className="next-stage__info--divider"></div>
-				<StatusItem type={STATUS_ITEM.turns} data={element.turns} />
-				<div className="next-stage__info--divider"></div>
-				<StatusItem type={STATUS_ITEM.condition} data={condition} />
-			</div>
-		</div>
-	);
+    return (
+        <>
+            {element.isRecovery
+
+                // Отдых
+                ? <NextStageRecovery element={element} changeStage={changeStage} minutes={minutes} deleteStage={deleteStage}
+                                    isAdmin={isAdmin} prev={prev} />
+                : null
+            }
+
+            {element.isWarmUp
+
+                // Разминка
+                ? <NextStageWarmUp element={element} changeStage={changeStage} minutes={minutes} deleteStage={deleteStage}
+                                      isAdmin={isAdmin} prev={prev} />
+                : null
+            }
+
+            {!element.isWarmUp && !element.isRecovery
+
+                // Тренировка
+                ? <NextStageWorkout element={element} changeStage={changeStage} minutes={minutes} condition={condition} deleteStage={deleteStage}
+                                    isAdmin={isAdmin} prev={prev} />
+                : null
+            }
+
+
+
+        </>
+    );
 };

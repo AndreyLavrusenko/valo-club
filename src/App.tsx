@@ -5,30 +5,58 @@ import "./style/layout/main.scss";
 import {TrainingUser} from "./page/TrainingUser";
 import {Header} from "./component/Header";
 import {NavBar} from "./component/NavBar";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import {LoginTrainer} from "./page/LoginTrainer";
 import {CreateWorkout} from "./page/CreateWorkout";
+import {RegistrationTrainer} from "./page/RegistrationTrainer";
+import {Profile} from "./page/Profile";
+import {useAppDispatch, useAppSelector} from "./hook/redux";
+import {loginSuccess} from "./redux/reducer/userSlice";
+import {WorkoutCatalog} from "./page/WorkoutCatalog";
+import {CreateWorkoutTable} from "./page/CreateWorkoutTable";
 
 function App() {
-    const [isTrainer, setIsTrainer] = useState(false);
+    const dispatch = useAppDispatch()
+    const {isAuth} = useAppSelector(store => store.user)
+
+    const navigation = useNavigate()
+
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
-            setIsTrainer(true)
+            dispatch(loginSuccess(localStorage.getItem('token')))
+        } else {
+            navigation('/login')
         }
-    }, []);
+    }, [isAuth]);
 
 
     return (
         <div>
-            <Header isTrainer={isTrainer} setIsTrainer={setIsTrainer}/>
-            <Routes>
-                <Route path="/" element={<TrainingUser isTrainer={isTrainer} />} />
-                <Route path="/create-workout" element={<CreateWorkout isTrainer={isTrainer} />} />
-                <Route path="/login" element={<LoginTrainer setIsTrainer={setIsTrainer} />} />
-            </Routes>
+            <Header/>
+            <>
+                {
+                    isAuth
+                        ? <Routes>
+                            <Route path="/" element={<TrainingUser/>}/>
+                            <Route path="/login" element={<LoginTrainer/>}/>
+                            <Route path="/registration" element={<RegistrationTrainer/>}/>
+                            <Route path="/create-workout/:id" element={<CreateWorkout/>}/>
+                            <Route path="/create-workout" element={<CreateWorkout/>}/>
+                            <Route path="/create-workout-table" element={<CreateWorkoutTable/>}/>
+                            <Route path="/create-workout-table/:id" element={<CreateWorkoutTable/>}/>
+                            <Route path="/profile" element={<Profile/>}/>
+                            <Route path="/catalog" element={<WorkoutCatalog/>}/>
+                        </Routes>
+                        : <Routes>
+                            <Route path="/login" element={<LoginTrainer/>}/>
+                            <Route path="/registration" element={<RegistrationTrainer/>}/>
+                        </Routes>
+                }
 
-            {/*<NavBar />*/}
+            </>
+
+            <NavBar/>
         </div>
     );
 }

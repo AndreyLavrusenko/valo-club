@@ -1,8 +1,8 @@
 // Set this to true for production
-var doCache = true;
+var doCache = false;
 
 // Name our cache
-var CACHE_NAME = 'my-pwa-cache-v1.2';
+var CACHE_NAME = 'my-pwa-cache-v1.3';
 
 // Delete old caches that are not our current one!
 self.addEventListener("activate", event => {

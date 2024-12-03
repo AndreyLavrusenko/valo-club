@@ -1,6 +1,5 @@
 import axios from "axios";
 import {Workout, WorkoutType} from "../types/workout";
-import {logger} from "workbox-core/_private";
 
 const instance = axios.create({
     withCredentials: true,
@@ -83,7 +82,7 @@ export const workoutAPI = {
 
     getWorkoutInterval: async (workout_id: string) => {
         try {
-            const {data} = await instance.get('workout/get-workout-info', {headers: {workout_id}})
+            const {data} = await instance.get(`workout/get-workout-info?workout_id=${workout_id}`)
             return data
         } catch (err) {
             console.log(err)
@@ -92,7 +91,7 @@ export const workoutAPI = {
 
     startWorkout: async (workout_id: string) => {
         try {
-            return await instance.put('workout/start-workout', {}, {headers: {workout_id}})
+            return await instance.put(`workout/start-workout?workout_id=${workout_id}`, {})
         } catch (err) {
             console.log(err)
         }
@@ -100,7 +99,7 @@ export const workoutAPI = {
 
     resetWorkout: async (workout_id: string) =>  {
         try {
-            return await instance.put('workout/reset-workout', {}, {headers: {workout_id}})
+            return await instance.put(`workout/reset-workout?workout_id=${workout_id}`, {})
         } catch (err) {
             console.log(err)
         }
@@ -108,7 +107,7 @@ export const workoutAPI = {
 
     goToTheNextStage: async (workout_id: string, current_stage: number) =>  {
         try {
-            return await instance.put('workout/go-next-stage', {current_stage}, {headers: {workout_id}})
+            return await instance.put(`workout/go-next-stage?workout_id=${workout_id}`, {current_stage})
         } catch (err) {
             console.log(err)
         }
@@ -116,7 +115,7 @@ export const workoutAPI = {
 
     getTimeStart: async (workout_id: string) => {
         try {
-            const {data} = await instance.get('workout/get-start-time', {headers: {workout_id}})
+            const {data} = await instance.get(`workout/get-start-time?workout_id=${workout_id}`)
             return data
         } catch (err) {
             console.log(err)
@@ -125,7 +124,7 @@ export const workoutAPI = {
 
     updateWorkout: async (workout: WorkoutType[], workout_id: string) => {
         try {
-            return await instance.put('workout/update-workout', {workout}, {headers: {workout_id}})
+            return await instance.put(`workout/update-workout?workout_id=${workout_id}`, {workout})
         } catch (err) {
             console.log(err)
         }
@@ -133,7 +132,7 @@ export const workoutAPI = {
 
     getUpdatedWorkout: async (workout_id: string) => {
         try {
-            const {data} = await instance.get('workout/get-update-workout', {headers: {workout_id}})
+            const {data} = await instance.get(`workout/get-update-workout?workout_id=${workout_id}`)
             return data
         } catch (err) {
             console.log(err)
@@ -178,7 +177,7 @@ export const workoutAPI = {
 
     checkWhoseWorkout: async (workout_id: string) => {
         try {
-            const {data} = await instance.get('workout/check-who-owns-workout', {headers: {token, workout_id}})
+            const {data} = await instance.get(`workout/check-who-owns-workout?workout_id=${workout_id}`, {headers: {token}})
             return data
         } catch (err) {
             console.log(err)
@@ -187,7 +186,7 @@ export const workoutAPI = {
 
     deleteWorkout: async (workout_id: string) => {
         try {
-            const {data} = await instance.delete('workout/delete-workout', {headers: {token, workout_id}})
+            const {data} = await instance.delete(`workout/delete-workout?workout_id=${workout_id}`, {headers: {token}})
             return data
         } catch (err) {
             console.log(err)
